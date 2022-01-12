@@ -1,0 +1,59 @@
+/* .container{
+    margin-top: 30%;
+} */
+body{
+    background-color: grey;
+}
+.nav-container{
+    height: 10vh;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.drinks-container{
+    height: 30vh;
+    width: 100%;
+    padding: 20px;
+    background-color: crimson;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.extras-container{
+    height: 30vh;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#drink-submit-button{
+    width: 40%;
+    background-color: bisque;
+}
+
+#extra{
+    width: 40%;
+    background-color: coral;
+}
+
+.bottom-container{
+    height: 30vh;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#voice-recognition-button{
+    width: 40%;
+    background-color: skyblue;
+}
+
+

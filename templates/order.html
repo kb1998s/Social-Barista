@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" 
+        href="{{ url_for('static', filename='css/order.css') }}"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<header class=order-container>
+    <h1>My Order</h1>
+    <p>Total Items: 3</p>
+</header>
+
+<div class=drinks-container>
+    <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
+    Taylor Swift Latte Grande 16oz
+    <span>Price: 3.65</span>
+</div>
+
+<div class=drinks-container>
+    <img src="https://globalassets.starbucks.com/assets/f24b2303e7734e82852d9132ce604e25.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Mocha">
+    Kim Kardashian Mocha Venti 24oz
+    <span>Price: 4.65</span>
+</div>
+
+<div class=drinks-container>
+    <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
+    Oprah Winfrey Latte Grande 16oz
+    <span>Price: 3.65</span>
+</div>
+{% endblock %}

@@ -1,6 +1,7 @@
 First, clone the repo using either Windows desktop github app or github command, then:
-1. Locate to Social-Barista folder: cd Social-Barista
-2. Install virtualenv if you do not have it already: pip install virtualenv
-3. Activate virtualenv, if you are on Windows: ./env/Scripts/activate
-4. Update all the dependencies: pip install -r requirements.txt
-5. Run the app, if you are on windows: python app.py
+1. Locate to Social-Barista folder: ~ cd Social-Barista
+2. Install virtualenv if you do not have it already: ~ pip install virtualenv
+3. Create virtual environment: ~ virtualenv env
+4. Activate virtualenv, if you are on Windows: ~ ./env/Scripts/activate
+5. Update all the dependencies: ~ pip install -r requirements.txt
+6. Run the app, if you are on windows: ~ python app.py

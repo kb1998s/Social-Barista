@@ -1,6 +1,3 @@
-/* .container{
-    margin-top: 30%;
-} */
 body{
     background-color: grey;
 }
@@ -17,7 +14,7 @@ body{
     height: 30vh;
     width: 100%;
     padding: 20px;
-    background-color: crimson;
+    /* background-color: green; */
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -56,4 +53,35 @@ body{
     background-color: skyblue;
 }
 
+/* drink slider */
 
+#drink-carousels{
+    width: 100%;
+    height: 100%;
+    /* border-radius: 30px; */
+}
+.carousel-inner{
+    height: 100%;
+    width: 100%;
+    border-radius: 30px;
+    object-fit: fill;
+}
+
+.carousel-item {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    /* border-radius: 30px; */
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    /* border-radius: 30px; */
+}
+
+
+.carousel-caption h5{
+    text-shadow: 2px 2px green;
+}

@@ -4,4 +4,4 @@ First, clone the repo using either Windows desktop github app or github command,
 3. Create virtual environment: ~ virtualenv env
 4. Activate virtualenv, if you are on Windows: ~ ./env/Scripts/activate
 5. Update all the dependencies: ~ pip install -r requirements.txt
-6. Run the app, if you are on windows: ~ python app.py
+6. Run the app, if you are on windows: ~ python src/app.py

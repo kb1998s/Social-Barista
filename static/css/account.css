@@ -1,0 +1,25 @@
+.account-container{
+    padding: 20px;
+    background-color:	#00704A;
+    border-bottom: 3px solid black;
+    border-top: 3px solid black;
+}
+
+body{
+    background-color: grey;
+}
+
+.subhead-container{
+    font-weight: bold;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid black
+}
+
+.subhead-container > span{
+    font-weight: normal;
+    padding: 21px;
+    display: flex;
+    flex-direction: column;
+}

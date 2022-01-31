@@ -1,13 +1,37 @@
+/*.container{
+    margin-top: 30%;
+}*/
+
+/* Base Stylings */
+
 body{
-    background-color: grey;
+    background-color:#f5f5f5;
 }
+
+h1{
+    font-family: sans-serif;
+    font-size: 24;
+    padding: 20px;
+    font-weight: bold;
+}
+
+#accountButton{
+    color: black;
+}
+
 .nav-container{
     height: 10vh;
+    top: 0;
     width: 100%;
     padding: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    background-color: #00704A;
+    position: sticky;
+    text-align: top;
+    /* higher z-index brings container to top of display */
+    z-index: 1;
 }
 
 .drinks-container{
@@ -19,6 +43,48 @@ body{
     flex-direction: row;
     justify-content: center;
 }
+
+/* Flavor Profile */
+.flavor-container{
+    padding: 15px;
+    width: 100%;
+}
+
+.flavorProfile{
+    background-color:  rgb(221, 220, 220);
+    box-sizing: border-box;
+    padding: 5px;
+    border-radius: 5%;
+    font: verdana;
+    border: 3px outset rgb(68, 68, 68);
+}
+
+.flavorProfile h1{
+    font: verdana;
+    text-align: left;
+    font-size: 20px;
+}
+
+/* Container for skill bars */
+.flavorStats {
+  width: 100%; /* Full width */
+  background-color:#a3a3a3; /* Grey background */
+}
+
+.flavors {
+  text-align: right; /* Right-align text */
+  padding-top: 5px; /* Add top padding */
+  padding-bottom: 5x; /* Add bottom padding */
+  color: white; /* White text color */
+}
+
+/* User percentages from User ID needed */
+.refreshing {width: 90%; background-color: #2196F3;} /* Green */
+.tropical {width: 80%; background-color: #04AA6D;} /* Blue */
+.spicy {width: 65%; background-color: #FF0000;} /* Red */
+.nutty {width: 60%; background-color: #964B00;} /* Dark Grey */
+
+/* End flavor profile */
 
 .extras-container{
     height: 30vh;
@@ -81,7 +147,35 @@ body{
     /* border-radius: 30px; */
 }
 
-
 .carousel-caption h5{
     text-shadow: 2px 2px green;
 }
+
+/* Navigation Bar */
+
+/* Place the navbar at the bottom of the page, and make it stick */
+.navbar {
+    background-color:#00704A;
+    overflow: hidden;
+    text-align: bottom;
+    position: sticky;
+    bottom: 0px;
+    width: 100%;
+  }
+  
+  /* Style the links inside the navigation bar */
+  .navbar a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 16px;
+  }
+  
+  /* Change the color of links on hover */
+  .navbar a:hover {
+    background-color: #ddd;
+    color: black;
+  }

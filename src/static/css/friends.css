@@ -1,0 +1,25 @@
+.container{
+    padding: 5px;
+    background-color:	#f5f5f5;
+    border-bottom: 3px solid black;
+    border-top: 3px solid black;
+}
+
+body{
+    background-color:#f5f5f5;
+}
+
+.subhead-container{
+    font-weight: bold;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid black
+}
+
+.subhead-container > span{
+    font-weight: normal;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}

@@ -1,2 +1,2 @@
 # Social-Barista
-Train and use a machine learning model that is specifically developed to generate recipes for Starbuck drinks with names (either customers' or celebrities'). The recipe will subsequently be converted into instructions using the Starbuck ordering system's language.
+An app that allows a user to save their drink orders under a name given by the user. This saved order can be accessed at any point, and saves every drink and food item, along with the customizations that were added to it. The app will also keep track of the time and frequency of these orders, and recommend them to the user based on the current time the user accesses the app.

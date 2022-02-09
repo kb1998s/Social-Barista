@@ -14,12 +14,30 @@
 </header>
 
 <div class=form-container>
+    <form method="post">
+        <label for="drinkName">Base Drink:</label><br>
+        <select name = "drink">
+            {% for i in hot_coffee %}
+        <option value="{{ i.key() }}">{{ i.key() }}</option>
+            {% endfor %}
+        </select>
+            <h1>{{ selected_drink.val()[currdrink]['name'] }}</h1>
+        <input type="submit" value="Submit">
+    </form>
     <form>
-        <label for="drinkName">Drink Name:</label><br>
-        <input type="text" id="fname" name="fname"><br>
 
-        <label for="specialInstructions">Special Instructions:</label><br>
-        <input type="text" id="lname" name="lname">
+    <h2>Customizations</h2>
+        {% for j in cust %}
+            {% for k in cust[j] %}
+                <label > {{k}}:</label>
+                <select>
+                {%  for m in cust[j][k] %}
+                    <option >{{ m }}</option>
+
+                {% endfor %}
+                </select><br>
+            {% endfor %}
+        {% endfor %}
     </form>
 </div>
 

@@ -8,26 +8,110 @@
 {% endblock %}
 
 {% block body %}
-<header class=order-container>
-    <h1>My Order</h1>
-    <p>Total Items: 3</p>
-</header>
 
-<div class=drinks-container>
-    <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
-    Taylor Swift Latte Grande 16oz
-    <span>Price: 3.65</span>
+<div class="drinkNavbar">
+    <a href="#menu">Menu</a>
+    <a href="#saved">Saved Drinks</a>
+    <a href="#recent">Recent</a>
+    <a href="#favorite">Favorites</a>
 </div>
 
-<div class=drinks-container>
-    <img src="https://globalassets.starbucks.com/assets/f24b2303e7734e82852d9132ce604e25.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Mocha">
-    Kim Kardashian Mocha Venti 24oz
-    <span>Price: 4.65</span>
-</div>
+<div class="drinklist-container">
+    
+    <!-- scrolling anchor -->
+    <a id="menu"></a>
 
-<div class=drinks-container>
-    <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
-    Oprah Winfrey Latte Grande 16oz
-    <span>Price: 3.65</span>
+    <div>
+        <div class=drink-item>
+            <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
+            Taylor Swift Latte Grande 16oz
+            <span>Price: 3.65</span>
+        </div>
+
+        <div class=drink-item>
+            <img src="https://globalassets.starbucks.com/assets/f24b2303e7734e82852d9132ce604e25.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Mocha">
+            Kim Kardashian Mocha Venti 24oz
+            <span>Price: 4.65</span>
+        </div>
+
+        <div class=drink-item>
+            <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
+            Oprah Winfrey Latte Grande 16oz
+            <span>Price: 3.65</span>
+        </div>
+    </div>
+
+    <!-- scrolling anchor -->
+    <a id="saved"></a>
+
+    <div>
+        <h>Saved Drinks</h>
+        <div class=drink-item>
+            <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
+            Taylor Swift Latte Grande 16oz
+            <span>Price: 3.65</span>
+        </div>
+
+        <div class=drink-item>
+            <img src="https://globalassets.starbucks.com/assets/f24b2303e7734e82852d9132ce604e25.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Mocha">
+            Kim Kardashian Mocha Venti 24oz
+            <span>Price: 4.65</span>
+        </div>
+
+        <div class=drink-item>
+            <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
+            Oprah Winfrey Latte Grande 16oz
+            <span>Price: 3.65</span>
+        </div>
+    </div>
+
+    <!-- scrolling anchor -->
+    <a id="recent"></a>
+
+    <div>
+        <h>Recent Drinks</h>
+        <div class=drink-item>
+            <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
+            Taylor Swift Latte Grande 16oz
+            <span>Price: 3.65</span>
+        </div>
+
+        <div class=drink-item>
+            <img src="https://globalassets.starbucks.com/assets/f24b2303e7734e82852d9132ce604e25.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Mocha">
+            Kim Kardashian Mocha Venti 24oz
+            <span>Price: 4.65</span>
+        </div>
+
+        <div class=drink-item>
+            <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
+            Oprah Winfrey Latte Grande 16oz
+            <span>Price: 3.65</span>
+        </div>
+    </div>
+
+    <!-- scrolling anchor -->
+    <a id="favorite"></a>
+
+    <div>
+        <h>Your Favorites</h>
+        <div class=drink-item>
+            <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
+            Taylor Swift Latte Grande 16oz
+            <span>Price: 3.65</span>
+        </div>
+
+        <div class=drink-item>
+            <img src="https://globalassets.starbucks.com/assets/f24b2303e7734e82852d9132ce604e25.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Mocha">
+            Kim Kardashian Mocha Venti 24oz
+            <span>Price: 4.65</span>
+        </div>
+
+        <div class=drink-item>
+            <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
+            Oprah Winfrey Latte Grande 16oz
+            <span>Price: 3.65</span>
+        </div>
+    </div>
+
 </div>
 {% endblock %}

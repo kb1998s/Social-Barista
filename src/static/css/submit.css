@@ -15,22 +15,7 @@ body{
     background-color:#f5f5f5;
 }
 
-.subhead-container{
-    font-weight: bold;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid black
-}
-
-.subhead-container > span{
-    font-weight: normal;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-  label {
+label {
     padding: 12px 12px 12px 0;
     display: inline-block;
   }

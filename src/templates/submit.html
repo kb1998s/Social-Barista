@@ -21,7 +21,7 @@
         <option value="{{ i.key() }}">{{ i.key() }}</option>
             {% endfor %}
         </select>
-            <h1>{{ selected_drink.val()[currdrink]['name'] }}</h1>
+            <h1>{{ selected_drink.val()['name'] }}</h1>
         <input type="submit" value="Submit">
     </form>
     <form>
@@ -31,9 +31,8 @@
             {% for k in cust[j] %}
                 <label > {{k}}:</label>
                 <select>
-                {%  for m in cust[j][k] %}
+                {% for m in cust[j][k] %}
                     <option >{{ m }}</option>
-
                 {% endfor %}
                 </select><br>
             {% endfor %}

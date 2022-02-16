@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Drink submit - backend prototype</h1>
+    <form action="http://127.0.0.1:5000/submit" method="POST">
+
+        <label for="drinks">Choose a drink:</label>
+        <select name="Drinks" id="drinks">
+            <option value="873068661">Chestnut Praline Latte</option>
+            <option value="saab">Saab</option>
+            
+        </select>
+        <br>
+        <label for="Form">Form:</label>
+        <select name="Form" id="sizes">
+            <option value="hot">Hot</option>
+            <option value="cold">Cold</option>
+        </select>
+        <br>
+        <label for="Size">Size:</label>
+        <select name="Size" id="sizes">
+            <option value="tall">Tall</option>
+            <option value="grande">Grande</option>
+            <option value="venti">Venti</option>
+            <option value="trenta">Trenta</option>
+        </select>
+        <br>
+        <label for="Quantities">Quantity:</label>
+        <select name="Quantities" id="sizes">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+        <br>
+        <label>Instructions: <input type="text" name="instruction" value=""></label>
+        <br>
+        <label>Favorite Order Name: <input type="text" name="order_name" value=""></label>
+
+        <input type="submit" class="fadeIn fourth" value="Submit">
+      </form>
+</body>
+</html>

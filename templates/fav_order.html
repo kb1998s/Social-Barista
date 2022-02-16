@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fav_order</title>
+    <!-- {% block head %} {% endblock %} -->
+</head>
+<body>
+  
+    <h1>You currently have {{length}} saved favorite order:</h1>
+     
+    <div>It's 5pm. These Orders are </div>
+    {% for order in orders %} 
+        <br>
+        <div>Order's Name: {{order.name}}</div>
+        {% for item in order.itemList%}
+        <br>
+        <div>Drink's name: {{item.name}} </div>
+        <div>Form: {{item.formCode}}</div>
+        <div>Quantity: {{item.quantity}}</div>
+        <div>Size: {{item.sizeCode}}</div>
+        <div>Instruction: {{item.instructions}}</div>
+        {% endfor %}
+        <br>
+    {% endfor %}
+   
+</body>
+</html>

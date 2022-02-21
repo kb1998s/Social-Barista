@@ -4,6 +4,19 @@
 
 /* Base Stylings */
 
+#page {
+    animation: fadeIn 0.2s linear;
+    }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+    
+  }
+
 body{
     background-color:#f5f5f5;
 }
@@ -20,6 +33,8 @@ h1{
 }
 
 .nav-container{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
     height: 10vh;
     top: 0;
     width: 100%;
@@ -44,6 +59,21 @@ h1{
     justify-content: center;
 }
 
+.recommendation-container{
+    padding: 15px;
+    width: 100%;
+}
+
+.recommendation{
+    background-color:  #f5f5f5;
+    box-sizing: border-box;
+    border-radius: 10%;
+    font: verdana;
+    border: 2px outset rgb(0, 0, 0);
+    padding: 5px;
+    text-align: center;
+}
+
 /* Flavor Profile */
 .flavor-container{
     padding: 15px;
@@ -51,12 +81,12 @@ h1{
 }
 
 .flavorProfile{
-    background-color:  rgb(221, 220, 220);
+    background-color:  #f5f5f5;
     box-sizing: border-box;
     padding: 5px;
     border-radius: 5%;
     font: verdana;
-    border: 3px outset rgb(68, 68, 68);
+    border: 2px outset rgb(0, 0, 0);
 }
 
 .flavorProfile h1{
@@ -65,7 +95,6 @@ h1{
     font-size: 20px;
 }
 
-/* Container for skill bars */
 .flavorStats {
   width: 100%; /* Full width */
   background-color:#a3a3a3; /* Grey background */
@@ -155,9 +184,10 @@ h1{
 
 /* Place the navbar at the bottom of the page, and make it stick */
 .navbar {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
     background-color:#00704A;
     overflow: hidden;
-    text-align: bottom;
     position: sticky;
     bottom: 0px;
     width: 100%;

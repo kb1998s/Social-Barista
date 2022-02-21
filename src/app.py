@@ -18,6 +18,9 @@ def submit():
 @app.route('/friends/')
 def friends():
     return render_template('friends.html')
+@app.route('/map/')
+def map():
+    return render_template('map.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -2,24 +2,56 @@ body{
     background-color:#f5f5f5;
 }
 
-.order-container{
-    padding: 5px;
-    background-color:	#f5f5f5;
-    border-bottom: 3px solid black;
-    border-top: 3px solid black;
+.drinklist-container{
+    
 }
 
-.drinks-container{
+#menu{
+    display: block;
+    position: relative;
+    top: -18vh;
+    visibility: hidden;
+}
+
+#saved{
+    display: block;
+    position: relative;
+    top: -18vh;
+    visibility: hidden;
+}
+
+#recent{
+    display: block;
+    position: relative;
+    top: -18vh;
+    visibility: hidden;
+}
+
+#favorite{
+    display: block;
+    position: relative;
+    top: -18vh;
+    visibility: hidden;
+}
+
+h{
     font-weight: bold;
+    font-size: 24px;
     padding: 20px;
+}
+
+.drink-item{
+    font-weight: bold;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid black
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
-.drinks-container > span{
+.drink-item > span{
     font-weight: normal;
-    padding: 21px;
+    padding: 10px;
 }
 
 img{
@@ -27,3 +59,30 @@ img{
     height:60px;
     float: left;
 }
+
+/* Navigation for drink menu */
+.drinkNavbar {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    background-color:#00704A;
+    overflow: auto;
+    white-space: nowrap;
+    top:9vh;
+    position: sticky;
+  }
+
+  /* Style the links inside the navigation bar */
+  .drinkNavbar a {
+    display: inline-block;
+    color: #f2f2f2;
+    text-align: center;
+    text-decoration: none;
+    padding: 16px;
+    font-size: 16px;
+    }
+  
+  /* Change the color of links on hover */
+  .drinkNavbar a:hover {
+    background-color: #ddd;
+    color: black;
+  }

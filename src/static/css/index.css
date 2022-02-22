@@ -46,7 +46,7 @@ h1{
     position: sticky;
     text-align: top;
     /* higher z-index brings container to top of display */
-    z-index: 1;
+    z-index: 3;
 }
 
 .drinks-container{

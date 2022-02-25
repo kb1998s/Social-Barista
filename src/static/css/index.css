@@ -46,7 +46,7 @@ h1{
     position: sticky;
     text-align: top;
     /* higher z-index brings container to top of display */
-    z-index: 1;
+    z-index: 3;
 }
 
 .drinks-container{
@@ -95,9 +95,14 @@ h1{
     font-size: 20px;
 }
 
+.flavorProfile p{
+    padding-top: 15px;
+}
+
 .flavorStats {
   width: 100%; /* Full width */
-  background-color:#a3a3a3; /* Grey background */
+  background-color:#e1e1e1; /* Grey background */
+  border-radius: 10%;
 }
 
 .flavors {
@@ -105,13 +110,15 @@ h1{
   padding-top: 5px; /* Add top padding */
   padding-bottom: 5x; /* Add bottom padding */
   color: white; /* White text color */
+  padding-left: 5px;
+  border-radius: 10%;
 }
 
 /* User percentages from User ID needed */
-.refreshing {width: 90%; background-color: #2196F3;} /* Green */
-.tropical {width: 80%; background-color: #04AA6D;} /* Blue */
-.spicy {width: 65%; background-color: #FF0000;} /* Red */
-.nutty {width: 60%; background-color: #964B00;} /* Dark Grey */
+.refreshing {background-color: #2196F3;} /* Green */
+.tropical {background-color: #04AA6D;} /* Blue */
+.spicy {background-color: #FF0000;} /* Red */
+.nutty {background-color: #964B00;} /* Dark Grey */
 
 /* End flavor profile */
 

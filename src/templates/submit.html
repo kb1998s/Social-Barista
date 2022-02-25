@@ -17,25 +17,24 @@
     <form method="post">
         <label for="drinkName">Base Drink:</label><br>
         <select name = "drink">
-            {% for i in hot_coffee %}
-        <option value="{{ i.key() }}">{{ i.key() }}</option>
+            {% for i in range(3) %}
+        <option value="{{ db.child("product_db").child((i + 1)).get().val()["id"] }}">
+            {{ db.child("product_db").child((i + 1)).get().val()["name"] }}</option>
             {% endfor %}
         </select>
-            <h1>{{ selected_drink.val()['name'] }}</h1>
+            <h1>{{ drink.val()['name'] }}</h1>
         <input type="submit" value="Submit">
     </form>
     <form>
 
     <h2>Customizations</h2>
-        {% for j in cust %}
-            {% for k in cust[j] %}
-                <label > {{k}}:</label>
+        {% for i in custRefs %}
+                <label > {{ i.val()["name"]}}:</label>
                 <select>
-                {% for m in cust[j][k] %}
-                    <option >{{ m }}</option>
-                {% endfor %}
+                {% for k in i.val()["opts"] %}
+                    <option> {{ k }}</option>
+                    {% endfor %}
                 </select><br>
-            {% endfor %}
         {% endfor %}
     </form>
 </div>

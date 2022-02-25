@@ -232,7 +232,7 @@ db.child("product_db").child(92).set({"name": "Black Teas", "category": "Hot Tea
 db.child("product_db").child(93).set({"name": "London Fog Tea Latte", "category": "Hot Teas", "sub-category": "Black Teas",
                                           "cust_opts": {0: "cust_id goes here"}, "flavor": "placeholder", "id": 93})
 db.child("product_db").child(94).set({"name": "Royal English Breakfast Tea", "category": "Hot Teas", "sub-category": "Black Teas",
-                                          "cust_opts": {0: "cust_id goes here"}, "flavor": "placeholder", "id": 94})
+                                          "cust_opts": {0: "cust_id goes here"}, "flavor": {0: "smooth"}, "id": 94})
 db.child("product_db").child(95).set({"name": "Royal English Breakfast Tea Latte", "category": "Hot Teas", "sub-category": "Black Teas",
                                           "cust_opts": {0: "cust_id goes here"}, "flavor": "placeholder", "id": 95})
 
@@ -364,7 +364,7 @@ db.child("cust_db").child(23).set({"name": "Caramel Brulée Sauce", "category": 
                                           "opts": {0: "pump(s) Caramel Brulée Sauce"}, "id": 23})
                                           
 """
-
+"""
 db.child("cust_db").child(1).set({"name": "Oatmilk", "category": "Add-ins", "sub-category": "Creamer",
                                           "opts": {0: "Extra Splash of Oatmilk", 1: "Light Splash of Oatmilk",
                                                    2: "No Splash of Oatmilk", 3: "Splash of Oatmilk", 4: "Substitute Splash of Oatmilk"}, "id": 1})
@@ -395,6 +395,12 @@ db.child("cust_db").child(9).set({"name": "Coconutmilk", "category": "Add-ins", 
 db.child("cust_db").child(10).set({"name": "Soymilk", "category": "Add-ins", "sub-category": "Creamer",
                                           "opts": {0: "Extra Splash of Soymilk", 1: "Light Splash of Soymilk",
                                                    2: "Splash of Soymilk"}, "id": 10})
+                                                   
+                                                   
+"""
+
+db.child("product_db").child(94).set({"name": "Royal English Breakfast Tea", "category": "Hot Teas", "sub-category": "Black Teas",
+                                          "cust_opts": {0: "cust_id goes here"}, "flavor": {0: "smooth"}, "id": 94})
 
 cust = db.child("product_db").child(1).child("cust_opts").get()
 
@@ -406,7 +412,49 @@ print(test.get().val()["name"])
 print(db.child("cust_db").child(cust.val()[0]).get().val()["name"])
 
 
-print(cust.val())
+
+user = db.child("user-item-db").child("1XHftVUhoFhBeCoac0p2DhKfoos2").get()
+
+#11
+dict = user.val()
+
+flavorDict = {
+    "sweet": 0,
+    "nutty": 0,
+    "aromatic": 0,
+    "bitter": 0,
+    "robust": 0,
+    "earthy": 0,
+    "tropical": 0,
+    "fruity": 0,
+    "smooth": 0,
+    "creamy": 0,
+    "floral": 0,
+    "refreshing": 0,
+}
+
+drinkslist = []
+timesordered = []
+for x,y in dict.items():
+    drinkslist.append(int(x))
+    timesordered.append(int(y))
+
+print(drinkslist)
+print(timesordered)
+
+
+
+flavorlist = []
+
+for i in range(len(drinkslist)):
+    flavorlist.append(db.child("product_db").child(drinkslist[i]).child("flavor").get().val())
+
+
+for i in flavorlist:
+    for k in i:
+        temp = k
+        flavorDict[temp] += 1
+print(flavorDict)
 
 
 #HTML app routes
@@ -427,7 +475,7 @@ def submit():
 
     custRefs = []
     for i in custVal:
-        custRefs.append(db.child("cust_db").child(i))
+        custRefs.append(db.child("cust_db").child(int(i)).get())
     return render_template('submit.html', custRefs=custRefs, drink = drink, db = db)
 
 @app.route('/submit', methods=['POST'])

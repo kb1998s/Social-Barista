@@ -28,7 +28,13 @@
     <form>
 
     <h2>Customizations</h2>
+    {% for j in custCat %}
+        <h3>{{ j }}</h3>
+        {% for key,val in custDict.items() %}
+            {% if val == j %}
+            <h4>{{ key }}</h4>
         {% for i in custRefs %}
+            {% if i.val()["sub-category"]|string() == key|string() and i.val()["category"]|string() == j|string() %}
                 <label > {{ i.val()["name"]}}:</label>
                     {% if  i.val()["opts"]|length == 1 %}
                     <input type="number" min="0" max ="10"> {{ i.val()["opts"][0] }}
@@ -41,7 +47,12 @@
                     {% endfor %}
                  {% endif %}
                 </select><br>
+            {% endif %}
         {% endfor %}
+
+            {%  endif %}
+    {% endfor %}
+    {% endfor %}
     </form>
 </div>
 

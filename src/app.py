@@ -432,7 +432,7 @@ flavorDict = {
     "floral": 0,
     "refreshing": 0,
 }
-
+"""
 drinkslist = []
 timesordered = []
 for x,y in dict.items():
@@ -455,7 +455,7 @@ for i in flavorlist:
         temp = k
         flavorDict[temp] += 1
 print(flavorDict)
-
+"""
 
 #HTML app routes
 @app.route("/")
@@ -474,9 +474,20 @@ def submit():
     custVal = cust.val()
 
     custRefs = []
+    custDict = {}
+
+
     for i in custVal:
         custRefs.append(db.child("cust_db").child(int(i)).get())
-    return render_template('submit.html', custRefs=custRefs, drink = drink, db = db)
+    for k in custRefs:
+        custDict[k.val()["sub-category"]] = k.val()["category"]
+    custCat = []
+    for k in custRefs:
+        custCat.append(k.val()["category"])
+    custCat = list(OrderedDict.fromkeys(custCat))
+    print(custDict)
+    print(custCat)
+    return render_template('submit.html', custRefs=custRefs, drink = drink, db = db, custDict = custDict, custCat = custCat)
 
 @app.route('/submit', methods=['POST'])
 def submit2():
@@ -486,9 +497,19 @@ def submit2():
     custVal = cust.val()
 
     custRefs = []
+    custDict = {}
+
     for i in custVal:
         custRefs.append(db.child("cust_db").child(int(i)).get())
-    return render_template('submit.html', custRefs=custRefs, drink=drink, db = db)
+    for k in custRefs:
+        custDict[k.val()["sub-category"]] = k.val()["category"]
+    custCat = []
+    for k in custRefs:
+        custCat.append(k.val()["category"])
+    custCat = list(OrderedDict.fromkeys(custCat))
+    print(custDict)
+    print(custCat)
+    return render_template('submit.html', custRefs=custRefs, drink=drink, db = db, custCat = custCat, custDict = custDict)
 
 @app.route('/friends/')
 def friends():

@@ -30,10 +30,16 @@
     <h2>Customizations</h2>
         {% for i in custRefs %}
                 <label > {{ i.val()["name"]}}:</label>
+                    {% if  i.val()["opts"]|length == 1 %}
+                    <input type="number" min="0" max ="10"> {{ i.val()["opts"][0] }}
+                     {% else %}
                 <select>
+                <option></option>
                 {% for k in i.val()["opts"] %}
+
                     <option> {{ k }}</option>
                     {% endfor %}
+                 {% endif %}
                 </select><br>
         {% endfor %}
     </form>

@@ -58,10 +58,22 @@ for i in flavorlist:
         flavorDict[temp] += 1
 print(flavorDict)
 
+numDrinksOrdered = 0
+
+for i in flavorDict:
+    numDrinksOrdered += flavorDict[i]
+
+print(numDrinksOrdered)
+
+import heapq
+heapFlavors = heapq.nlargest(4, flavorDict, key=flavorDict.get)
+#topFlavorDict = dict(heapFlavors)
+print(heapFlavors)
+
 #HTML app routes
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('index.html', flavorProfile = flavorDict, totalDrinks = numDrinksOrdered)
 @app.route('/order/')
 def order():
     return render_template('order.html')
@@ -77,6 +89,9 @@ def friends():
 @app.route('/map/')
 def map():
     return render_template('map.html')
+@app.route('/customization/')
+def customization():
+    return render_template('customization.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

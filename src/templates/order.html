@@ -11,7 +11,7 @@
 
 <div class="drinkNavbar">
     <a href="#menu">Menu</a>
-    <a href="#saved">Saved Drinks</a>
+    <a href="#saved">Saved Orders</a>
     <a href="#recent">Recent</a>
     <a href="#favorite">Favorites</a>
 </div>
@@ -26,6 +26,10 @@
             <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
             Taylor Swift Latte Grande 16oz
             <span>Price: 3.65</span>
+            <div class = actions>
+                <a>Add To Order</a>
+                <a href="{{ url_for('customization') }}">Customize</a>
+                </div>
         </div>
 
         <div class=drink-item>
@@ -45,11 +49,16 @@
     <a id="saved"></a>
 
     <div>
-        <h>Saved Drinks</h>
+        <h>Saved Orders</h>
         <div class=drink-item>
             <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
-            Taylor Swift Latte Grande 16oz
+            Bob's Breakfast
             <span>Price: 3.65</span>
+            <div class = actions>
+                <a>Add To Order</a>
+                <a href="{{ url_for('submit') }}">Customize</a>
+                <a>Remove</a>
+            </div>
         </div>
 
         <div class=drink-item>

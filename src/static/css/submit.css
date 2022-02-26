@@ -7,7 +7,7 @@
 
 .form-container{
     padding: 20px;
-    height: 80vh;
+    height: 100vh;
     width: 100vw;
 }
 
@@ -19,3 +19,41 @@ label {
     padding: 12px 12px 12px 0;
     display: inline-block;
   }
+
+.actions{
+    display: flex;
+    flex-direction:row;
+    align-items: center;
+}
+
+.actions > a{
+    text-align: center;
+    flex: 1 1 0px;
+    color: black;
+    font-size: 14px;
+}
+
+img{
+    width:60px;
+    height:60px;
+    float: left;
+}
+
+.drink-item{
+    font-weight: bold;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.drink-item > span{
+    font-weight: normal;
+    padding: 10px;
+}
+
+.buttons{
+    padding: 10px;
+    float: right;
+}

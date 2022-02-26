@@ -496,8 +496,8 @@ def submit():
     for k in custRefs:
         custCat.append(k.val()["category"])
     custCat = list(OrderedDict.fromkeys(custCat))
-    print(custDict)
-    print(custCat)
+
+
     return render_template('submit.html', custRefs=custRefs, drink = drink, db = db, custDict = custDict, custCat = custCat)
 
 @app.route('/submit', methods=['POST'])
@@ -519,8 +519,8 @@ def submit2():
         for k in custRefs:
             custCat.append(k.val()["category"])
         custCat = list(OrderedDict.fromkeys(custCat))
-        print(custDict)
-        print(custCat)
+
+
         return render_template('submit.html', custRefs=custRefs, drink=drink, db = db, custCat = custCat, custDict = custDict)
     elif request.form['DrinkButton'] == "SubmitDrink":
 
@@ -535,16 +535,15 @@ def submit2():
 
         opts = drinkRef.val()["cust_opts"]
 
-        print(opts)
 
         for i in opts:
             listofcusts.append(db.child("cust_db").child(int(i)).get().val()["name"])
 
 
         for i in range(len(listofcusts)):
-            custDict[listofcusts[i]] = request.form.get(str(opts[i]))
+            if request.form.get(str(opts[i])) != "":
+                custDict[listofcusts[i]] = request.form.get(str(opts[i]))
 
-        print(custDict)
 
         db.child("order_test").child("user1").set({"drink_name": drinkName, "cust": custDict})
 

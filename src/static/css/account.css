@@ -27,3 +27,12 @@ p{
     display: flex;
     flex-direction: column;
 }
+
+.subhead-container > a{
+    font-weight: normal;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    color:black;
+    text-decoration: none;
+}

@@ -6,12 +6,6 @@ body{
     
 }
 
-#addAlert{
-    position:sticky;
-    bottom:10vh;
-    opacity: 0;
-}
-
 #menu{
     display: block;
     position: relative;
@@ -105,3 +99,12 @@ img{
     background-color: #ddd;
     color: black;
   }
+
+.savePage-container{
+    height: 80vh;
+}
+
+.saved-item{
+    border: 3px black;
+    border-style: solid none;
+}

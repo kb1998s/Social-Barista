@@ -92,6 +92,9 @@ def map():
 @app.route('/customization/')
 def customization():
     return render_template('customization.html')
+@app.route('/savedOrders/')
+def savedOrders():
+    return render_template('savedOrders.html')
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" 
+        href="{{ url_for('static', filename='css/order.css') }}"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+<header class=container>
+    <h1>Your Saved Orders</h1>
+</header>
+
+<div class="savePage-container">
+
+
+<div class="saved-item">
+    <h>Bob's Breakfast</h>
+    <div class="actions">
+        <a>Add To Cart</a>
+        <a href="{{ url_for('submit') }}">Customize</a>
+        <a>Remove</a>
+    </div>
+            <div class=drink-item>
+                <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
+                Taylor Swift Latte
+                <span>Price: 3.65</span>
+            </div>
+            <div class="drink-item">
+                <img src="https://globalassets.starbucks.com/assets/f24b2303e7734e82852d9132ce604e25.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Mocha">
+                Kim Kardashian Mocha Venti 24oz
+                <span>Price: 4.65</span>
+            </div>
+    <div style="text-align:right">Total Price : 8.30</div>
+
+</div>
+
+{% endblock %}

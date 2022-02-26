@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, redirect
 import pyrebase
 from collections import OrderedDict
 
@@ -16,6 +16,7 @@ config = {
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
+
 """
 db.child("product_db").child(1).set({"name": "Caffè Americano", "category": "Hot Coffee", "sub-category": "Americanos",
                                           "cust_opts": {0: 1, 1: 4, 2: 8, 3: 11, 4: 23}, "flavor": "sweet", "id": 1})
@@ -376,7 +377,7 @@ db.child("cust_db").child(3).set({"name": "Nonfat Milk", "category": "Add-ins", 
                                                    2: "Splash of Nonfat Milk"}, "id": 3})
 db.child("cust_db").child(4).set({"name": "2% Milk", "category": "Add-ins", "sub-category": "Creamer",
                                           "opts": {0: "Extra Splash of 2% Milk", 1: "Light Splash of 2% Milk",
-                                                   2: "No Splash of Oatmilk", 3: "Splash of 2% Milk"}, "id": 4})
+                                                    2: "Splash of 2% Milk"}, "id": 4})
 db.child("cust_db").child(5).set({"name": "Whole Milk", "category": "Add-ins", "sub-category": "Creamer",
                                           "opts": {0: "Extra Splash of Whole Milk", 1: "Light Splash of Whole Milk",
                                                    2: "Splash of Whole Milk"}, "id": 5})
@@ -398,18 +399,28 @@ db.child("cust_db").child(10).set({"name": "Soymilk", "category": "Add-ins", "su
                                                    
                                                    
 """
+db.child("cust_db").child(4).set({"name": "2% Milk", "category": "Add-ins", "sub-category": "Creamer",
+                                          "opts": {0: "Extra Splash of 2% Milk", 1: "Light Splash of 2% Milk",
+                                                    2: "Splash of 2% Milk"}, "id": 4})
 
+db.child("product_db").child(39).set({"name": "Iced Coffee", "category": "Cold Coffee", "sub-category": "Iced Coffees",
+                                          "cust_opts":{0: 1, 1: 4, 2: 8, 3: 11, 4: 23}, "flavor": {0: "bitter"}, "id": 39})
+db.child("product_db").child(1).set({"name": "Caffè Americano", "category": "Hot Coffee", "sub-category": "Americanos",
+                                          "cust_opts": {0: 1, 1: 4, 2: 8, 3: 23}, "flavor": {0:"bitter"}, "id": 1})
 db.child("product_db").child(94).set({"name": "Royal English Breakfast Tea", "category": "Hot Teas", "sub-category": "Black Teas",
                                           "cust_opts": {0: "cust_id goes here"}, "flavor": {0: "smooth"}, "id": 94})
 
 cust = db.child("product_db").child(1).child("cust_opts").get()
+db.child("cust_db").child(11).set({"name": "Ice", "category": "Add-ins", "sub-category": "Ice",
+                                          "opts": {0: "Extra Ice", 1: "Light Ice",
+                                                   2: "Ice", 3: "No Ice"}, "id": 11})
 
 
-test = db.child("product_db").child(1)
 
-print(test.get().val()["name"])
 
-print(db.child("cust_db").child(cust.val()[0]).get().val()["name"])
+
+
+
 
 
 
@@ -491,26 +502,54 @@ def submit():
 
 @app.route('/submit', methods=['POST'])
 def submit2():
-    sub = request.form.get('drink')
-    drink = db.child("product_db").child(int(sub)).get()
-    cust = db.child("product_db").child(int(sub)).child("cust_opts").get()
-    custVal = cust.val()
+    if request.form['DrinkButton'] == "ChangeDrinkName":
+        sub = request.form.get('drink')
+        drink = db.child("product_db").child(int(sub)).get()
+        cust = db.child("product_db").child(int(sub)).child("cust_opts").get()
+        custVal = cust.val()
 
-    custRefs = []
-    custDict = {}
+        custRefs = []
+        custDict = {}
 
-    for i in custVal:
-        custRefs.append(db.child("cust_db").child(int(i)).get())
-    for k in custRefs:
-        custDict[k.val()["sub-category"]] = k.val()["category"]
-    custCat = []
-    for k in custRefs:
-        custCat.append(k.val()["category"])
-    custCat = list(OrderedDict.fromkeys(custCat))
-    print(custDict)
-    print(custCat)
-    return render_template('submit.html', custRefs=custRefs, drink=drink, db = db, custCat = custCat, custDict = custDict)
+        for i in custVal:
+            custRefs.append(db.child("cust_db").child(int(i)).get())
+        for k in custRefs:
+            custDict[k.val()["sub-category"]] = k.val()["category"]
+        custCat = []
+        for k in custRefs:
+            custCat.append(k.val()["category"])
+        custCat = list(OrderedDict.fromkeys(custCat))
+        print(custDict)
+        print(custCat)
+        return render_template('submit.html', custRefs=custRefs, drink=drink, db = db, custCat = custCat, custDict = custDict)
+    elif request.form['DrinkButton'] == "SubmitDrink":
 
+        id = request.form.get('drinkid')
+        drinkRef = db.child("product_db").child(int(id)).get()
+        drinkName = drinkRef.val()["name"]
+
+        custDict = {}
+
+        listofcusts = []
+
+
+        opts = drinkRef.val()["cust_opts"]
+
+        print(opts)
+
+        for i in opts:
+            listofcusts.append(db.child("cust_db").child(int(i)).get().val()["name"])
+
+
+        for i in range(len(listofcusts)):
+            custDict[listofcusts[i]] = request.form.get(str(opts[i]))
+
+        print(custDict)
+
+        db.child("order_test").child("user1").set({"drink_name": drinkName, "cust": custDict})
+
+
+        return redirect(url_for('order'))
 @app.route('/friends/')
 def friends():
     return render_template('friends.html')

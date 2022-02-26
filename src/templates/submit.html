@@ -21,25 +21,28 @@
         <option value="{{ db.child("product_db").child((i + 1)).get().val()["id"] }}">
             {{ db.child("product_db").child((i + 1)).get().val()["name"] }}</option>
             {% endfor %}
+                <option value="{{ db.child("product_db").child((39)).get().val()["id"] }}">
+            {{ db.child("product_db").child((39)).get().val()["name"] }}</option>
         </select>
             <h1>{{ drink.val()['name'] }}</h1>
-        <input type="submit" value="Submit">
+        <input type="submit" name= "DrinkButton" value="ChangeDrinkName">
     </form>
-    <form>
+    <form method="post">
 
-    <h2>Customizations</h2>
+    <h1>Customizations</h1>
+    <select style = "visibility: hidden" name = "drinkid"><option>{{ drink.val()['id'] }}</option></select>
     {% for j in custCat %}
         <h3>{{ j }}</h3>
         {% for key,val in custDict.items() %}
             {% if val == j %}
-            <h4>{{ key }}</h4>
+            <h5>{{ key }}</h5>
         {% for i in custRefs %}
             {% if i.val()["sub-category"]|string() == key|string() and i.val()["category"]|string() == j|string() %}
                 <label > {{ i.val()["name"]}}:</label>
                     {% if  i.val()["opts"]|length == 1 %}
-                    <input type="number" min="0" max ="10"> {{ i.val()["opts"][0] }}
+                    <input type="number" min="0" max ="10" name = {{ i.val()["id"] }}> {{ i.val()["opts"][0] }}
                      {% else %}
-                <select>
+                <select name = {{ i.val()["id"] }}>
                 <option></option>
                 {% for k in i.val()["opts"] %}
 
@@ -53,6 +56,7 @@
             {%  endif %}
     {% endfor %}
     {% endfor %}
+    <input type="submit" name= "DrinkButton" value= "SubmitDrink">
     </form>
 </div>
 

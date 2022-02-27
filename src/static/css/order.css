@@ -37,7 +37,7 @@ body{
 h{
     font-weight: bold;
     font-size: 24px;
-    padding: 20px;
+    padding: 20px;;
 }
 
 .drink-item{
@@ -99,6 +99,65 @@ img{
     background-color: #ddd;
     color: black;
   }
+
+
+/*drink catalog menu*/
+#hot-coffees{
+    border: 1px black;
+    border-style: solid none;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 20px;
+}
+
+#hot-items{
+    border: 1px black;
+    border-style: solid none;
+    font-weight: 500;
+    font-size: 18px;
+    padding: 10px;
+    display: none;
+}
+
+#cold-coffees{
+    border: 1px black;
+    border-style: solid none;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 20px;
+}
+
+#cold-items{
+    border: 1px black;
+    border-style: solid none;
+    font-weight: 500;
+    font-size: 18px;
+    padding: 10px;
+    display: none;
+}
+
+.items{
+    font-weight: normal;
+    font-size: 15px;
+    display:inline-flex;
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.items > li{
+    list-style-type: none;
+    padding: 8px;
+}
+
+li > a{
+    color: black;
+    text-decoration: none;
+}
 
 .savePage-container{
     height: 80vh;

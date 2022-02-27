@@ -5,6 +5,10 @@
         href="{{ url_for('static', filename='css/order.css') }}"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
         rel="stylesheet">
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -20,29 +24,61 @@
     
     <!-- scrolling anchor -->
     <a id="menu"></a>
+    
+    <h>Menu</h>
 
+    <!--drink catalog menu-->
     <div>
-        <div class=drink-item>
-            <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
-            Taylor Swift Latte Grande 16oz
-            <span>Price: 3.65</span>
-            <div class = actions>
-                <a>Add To Order</a>
-                <a href="{{ url_for('customization') }}">Customize</a>
-                </div>
+        <div id="hot-coffees">
+            Hot Coffees <i class="fa fa-caret-down"></i>
         </div>
 
-        <div class=drink-item>
-            <img src="https://globalassets.starbucks.com/assets/f24b2303e7734e82852d9132ce604e25.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Mocha">
-            Kim Kardashian Mocha Venti 24oz
-            <span>Price: 4.65</span>
+        <ul id="hot-items">
+            Americanos
+            <div class="items">
+                <li><a href="{{ url_for('customization') }}">Caffé Americano</a></li>
+            </div>
+
+            Brewed Coffees
+            <div class="items">
+                <li><a href="{{ url_for('customization') }}">Veranda Blend</a></li>
+            
+                <li><a href="{{ url_for('customization') }}">Caffé Misto</a></li>
+
+                <li><a href="{{ url_for('customization') }}">Dark Roast Coffee</a></li>
+
+                <li><a href="{{ url_for('customization') }}">Pike Place Roast</a></li>
+
+                <li><a href="{{ url_for('customization') }}">Decaf Pike Place Roast</a></li>
+            </div>
+        </ul>
+    </div>
+    <div>
+        <div id="cold-coffees">
+            Cold Coffees <i class="fa fa-caret-down"></i>
         </div>
 
-        <div class=drink-item>
-            <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
-            Oprah Winfrey Latte Grande 16oz
-            <span>Price: 3.65</span>
-        </div>
+        <ul id="cold-items">
+            Cold Brews
+            <div class="items">
+                <li><a href="{{ url_for('customization') }}">Irish Cream</a></li>
+
+                <li><a href="{{ url_for('customization') }}">Salted Caramel Cream</a></li>
+
+                <li><a href="{{ url_for('customization') }}">Starbucks Reserve Cold</a></li>
+
+                <li><a href="{{ url_for('customization') }}">Sweet Cream</a></li>
+            </div>
+
+            Nitro Cold Brews
+            <div class="items">
+                <li><a href="{{ url_for('customization') }}">Starbucks Reserve Nitro</a></li>
+            
+                <li><a href="{{ url_for('customization') }}">Nitro Cold Brew</a></li>
+
+                <li><a href="{{ url_for('customization') }}">Vanilla Sweat Cream</a></li>
+            </div>
+        </ul>
     </div>
 
     <!-- scrolling anchor -->
@@ -123,4 +159,15 @@
     </div>
 
 </div>
+
+<script>
+    //dropdown script function
+    $( "#hot-coffees" ).click(function() {
+      $( "#hot-items" ).toggle( "fast" );
+    });
+
+    $( "#cold-coffees" ).click(function() {
+      $( "#cold-items" ).toggle( "fast" );
+    });
+</script>
 {% endblock %}

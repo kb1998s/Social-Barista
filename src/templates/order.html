@@ -29,11 +29,11 @@
 
     <!--drink catalog menu-->
     <div>
-        <div id="hot-coffees">
+        <div class="category">
             Hot Coffees <i class="fa fa-caret-down"></i>
-        </div>
+        
 
-        <ul id="hot-items">
+        <ul class="subcategory">
             Americanos
             <div class="items">
                 <li><a href="{{ url_for('customization') }}">Caffé Americano</a></li>
@@ -52,13 +52,15 @@
                 <li><a href="{{ url_for('customization') }}">Decaf Pike Place Roast</a></li>
             </div>
         </ul>
-    </div>
-    <div>
-        <div id="cold-coffees">
-            Cold Coffees <i class="fa fa-caret-down"></i>
         </div>
+    </div>
+    
+    <div>
+        <div class="category">
+            Cold Coffees <i class="fa fa-caret-down"></i>
+        
 
-        <ul id="cold-items">
+        <ul class="subcategory">
             Cold Brews
             <div class="items">
                 <li><a href="{{ url_for('customization') }}">Irish Cream</a></li>
@@ -79,6 +81,7 @@
                 <li><a href="{{ url_for('customization') }}">Vanilla Sweat Cream</a></li>
             </div>
         </ul>
+        </div>
     </div>
 
     <!-- scrolling anchor -->
@@ -162,12 +165,14 @@
 
 <script>
     //dropdown script function
-    $( "#hot-coffees" ).click(function() {
-      $( "#hot-items" ).toggle( "fast" );
-    });
+    $('.category').click(function(event){
+    
+    var isDim = $(event.target).is('.category');
+    if(isDim){ //make sure I am a dim element
+        $('.subcategory', this).toggle("fast"); // p00f
+    }
+    
+});
 
-    $( "#cold-coffees" ).click(function() {
-      $( "#cold-items" ).toggle( "fast" );
-    });
 </script>
 {% endblock %}

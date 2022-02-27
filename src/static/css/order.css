@@ -102,7 +102,7 @@ img{
 
 
 /*drink catalog menu*/
-#hot-coffees{
+.category{
     border: 1px black;
     border-style: solid none;
     padding: 15px;
@@ -111,25 +111,7 @@ img{
     padding: 20px;
 }
 
-#hot-items{
-    border: 1px black;
-    border-style: solid none;
-    font-weight: 500;
-    font-size: 18px;
-    padding: 10px;
-    display: none;
-}
-
-#cold-coffees{
-    border: 1px black;
-    border-style: solid none;
-    padding: 15px;
-    font-weight: bold;
-    font-size: 20px;
-    padding: 20px;
-}
-
-#cold-items{
+.subcategory{
     border: 1px black;
     border-style: solid none;
     font-weight: 500;
@@ -159,6 +141,7 @@ li > a{
     text-decoration: none;
 }
 
+/* savedOrders.html page */
 .savePage-container{
     height: 80vh;
 }

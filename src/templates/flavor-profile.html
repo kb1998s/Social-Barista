@@ -1,26 +1,48 @@
 <!-- Use user percentages linked with ID-->
+<!-- topFlavors = top flavor values -->
+<!-- topStats = top stat values -->
+<!-- totalDrinks = num drinks ordered -->
+
+{% set percent1 = "%.0f" % ((topStats[0]*100)/totalDrinks) %}
+{% set percent2 = "%.0f" % ((topStats[1]*100)/totalDrinks) %}
+{% set percent3 = "%.0f" % ((topStats[2]*100)/totalDrinks) %}
+{% set percent4 = "%.0f" % ((topStats[3]*100)/totalDrinks) %}
+<!DOCTYPE html>
+<html>
+<body>
 
 <div class="flavorProfile">
     <h1>
-      Your Flavor Profile
+      Your Top Flavors Profile
     </h1>
-  <p>Refreshing</p>
+  <p>{{topFlavors[0]}}</p>
       <div class="flavorStats">
-          <div class="flavors refreshing" style="width:25%">25%</div>
+          <div class="flavors" id="stat1">{{ percent1 }}%</div>
       </div>
   
-  <p>Tropical</p>
+  <p>{{topFlavors[1]}}</p>
       <div class="flavorStats">
-          <div class="flavors tropical" style="width:56%">56%</div>
+          <div class="flavors" id="stat2">{{ percent2 }}%</div>
       </div>
-  
-  <p>Spicy</p>
+    
+    <p>{{topFlavors[2]}}</p>
       <div class="flavorStats">
-          <div class="flavors spicy" style="width:80%">80%</div>
+          <div class="flavors" id="stat3">{{ percent3 }}%</div>
       </div>
-  
-  <p>Nutty</p>
+
+    <p>{{topFlavors[3]}}</p>
       <div class="flavorStats">
-          <div class="flavors nutty" style="width:15%">15%</div>
+          <div class="flavors" id="stat4">{{ percent4 }}%</div>
       </div>
-  </div>
+      <br>
+    <div>Out of {{totalDrinks}} Drinks Ordered</div>
+
+<script>
+    document.getElementById("stat1").style.width = "{{percent1}}%";
+    document.getElementById("stat2").style.width = "{{percent2}}%";
+    document.getElementById("stat3").style.width = "{{percent3}}%";
+    document.getElementById("stat4").style.width = "{{percent4}}%";
+</script>
+
+</body>
+</html>

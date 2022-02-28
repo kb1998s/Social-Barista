@@ -17,9 +17,9 @@ firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
 
+#FLAVOR PROFILE LOGIC (using dummt user)
 #flavor profile dict
 user = db.child("user-item-db").child("1XHftVUhoFhBeCoac0p2DhKfoos2").get()
-
 dict = user.val()
 
 flavorDict = {
@@ -37,49 +37,53 @@ flavorDict = {
     "refreshing": 0,
 }
 
+#list of ordered drinks ID's
 drinkslist = []
+#number of times drink was ordered
 timesordered = []
 for x,y in dict.items():
     drinkslist.append(int(x))
     timesordered.append(int(y))
 
-print(drinkslist)
-print(timesordered)
-
 flavorlist = []
-
 for i in range(len(drinkslist)):
     flavorlist.append(db.child("product_db").child(drinkslist[i]).child("flavor").get().val())
 
-
-for i in flavorlist:
-    for k in i:
+#Count number of times flavor was ordered
+for i, item in enumerate(flavorlist):
+    for k in item:
         temp = k
-        flavorDict[temp] += 1
-print(flavorDict)
+        flavorDict[temp] += timesordered[i]
 
+#Get total drinks ordered
 numDrinksOrdered = 0
+for i, item in enumerate(timesordered):
+    numDrinksOrdered += timesordered[i]
 
-for i in flavorDict:
-    numDrinksOrdered += flavorDict[i]
-
-print(numDrinksOrdered)
-
+#Get top 4 stats
 import heapq
 heapFlavors = heapq.nlargest(4, flavorDict, key=flavorDict.get)
-#topFlavorDict = dict(heapFlavors)
-print(heapFlavors)
+
+topFlavors = []
+topStats = []
+for i in heapFlavors:
+    topFlavors.append(i)
+
+for i in topFlavors:
+    topStats.append(flavorDict[i])
+#END FLAVOR PROFILE
+
 
 #HTML app routes
 @app.route("/")
 def index():
-    return render_template('index.html', flavorProfile = flavorDict, totalDrinks = numDrinksOrdered)
+    return render_template('index.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered)
 @app.route('/order/')
 def order():
     return render_template('order.html')
 @app.route('/account/')
 def account():
-    return render_template('account.html')
+    return render_template('account.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered)
 @app.route('/submit/')
 def submit():
     return render_template('submit.html')

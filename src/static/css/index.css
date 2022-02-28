@@ -96,7 +96,8 @@ h1{
 }
 
 .flavorProfile p{
-    padding-top: 15px;
+    padding-top: 10px;
+    text-transform: capitalize;
 }
 
 .flavorStats {
@@ -106,7 +107,7 @@ h1{
 }
 
 .flavors {
-  text-align: right; /* Right-align text */
+  text-align: left; /* Right-align text */
   padding-top: 5px; /* Add top padding */
   padding-bottom: 5x; /* Add bottom padding */
   color: white; /* White text color */
@@ -115,10 +116,10 @@ h1{
 }
 
 /* User percentages from User ID needed */
-.refreshing {background-color: #2196F3;} /* Green */
-.tropical {background-color: #04AA6D;} /* Blue */
-.spicy {background-color: #FF0000;} /* Red */
-.nutty {background-color: #964B00;} /* Dark Grey */
+#stat1 {background-color: #00442d;}
+#stat2 {background-color: #00442d;}
+#stat3 {background-color: #00442d;}
+#stat4 {background-color: #00442d;}
 
 /* End flavor profile */
 

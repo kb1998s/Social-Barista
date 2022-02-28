@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
+
+
+<script>
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+</script>
+
 {% block head %}
 <link rel="stylesheet" 
         href="{{ url_for('static', filename='css/submit.css') }}"/>
@@ -14,6 +22,7 @@
 </header>
 
 <div class=form-container>
+
     <form method="post">
         <label for="drinkName">Base Drink:</label><br>
         <select name = "drink">
@@ -24,12 +33,13 @@
                 <option value="{{ db.child("product_db").child((39)).get().val()["id"] }}">
             {{ db.child("product_db").child((39)).get().val()["name"] }}</option>
         </select>
-            <h1>{{ drink.val()['name'] }}</h1>
         <input type="submit" name= "DrinkButton" value="ChangeDrinkName">
     </form>
+
+    <h1 style="text-align: center">{{ drink.val()['name'] }}</h1>
     <form method="post">
 
-    <h1>Customizations</h1>
+    <h1 style="text-align: center">Customizations</h1>
     <select style = "visibility: hidden" name = "drinkid"><option>{{ drink.val()['id'] }}</option></select>
     {% for j in custCat %}
         <h3>{{ j }}</h3>
@@ -56,9 +66,14 @@
             {%  endif %}
     {% endfor %}
     {% endfor %}
+    <label>Your Drink Name</label>
+
+    <input type="text" name="custDrinkName"><br>
+
     <input type="submit" name= "DrinkButton" value= "SubmitDrink">
     </form>
 </div>
 
+<div style="clear:both; margin: 3rem 0 0 -3rem; "></div>
 
 {% endblock %}

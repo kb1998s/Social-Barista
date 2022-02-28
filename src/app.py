@@ -365,7 +365,7 @@ db.child("cust_db").child(23).set({"name": "Caramel Brulée Sauce", "category": 
                                           "opts": {0: "pump(s) Caramel Brulée Sauce"}, "id": 23})
                                           
 """
-"""
+
 db.child("cust_db").child(1).set({"name": "Oatmilk", "category": "Add-ins", "sub-category": "Creamer",
                                           "opts": {0: "Extra Splash of Oatmilk", 1: "Light Splash of Oatmilk",
                                                    2: "No Splash of Oatmilk", 3: "Splash of Oatmilk", 4: "Substitute Splash of Oatmilk"}, "id": 1})
@@ -397,32 +397,12 @@ db.child("cust_db").child(10).set({"name": "Soymilk", "category": "Add-ins", "su
                                           "opts": {0: "Extra Splash of Soymilk", 1: "Light Splash of Soymilk",
                                                    2: "Splash of Soymilk"}, "id": 10})
                                                    
-                                                   
-"""
-db.child("cust_db").child(4).set({"name": "2% Milk", "category": "Add-ins", "sub-category": "Creamer",
-                                          "opts": {0: "Extra Splash of 2% Milk", 1: "Light Splash of 2% Milk",
-                                                    2: "Splash of 2% Milk"}, "id": 4})
+db.child("cust_db").child(11).set({"name": "Brown Sugar Syrup", "category": "Flavors", "sub-category": "Syrups",
+                                          "opts": {0: "pump(s) Brown Sugar Syrup"}, "id": 11})
 
-db.child("product_db").child(39).set({"name": "Iced Coffee", "category": "Cold Coffee", "sub-category": "Iced Coffees",
-                                          "cust_opts":{0: 1, 1: 4, 2: 8, 3: 11, 4: 23}, "flavor": {0: "bitter"}, "id": 39})
-db.child("product_db").child(1).set({"name": "Caffè Americano", "category": "Hot Coffee", "sub-category": "Americanos",
-                                          "cust_opts": {0: 1, 1: 4, 2: 8, 3: 23}, "flavor": {0:"bitter"}, "id": 1})
-db.child("product_db").child(94).set({"name": "Royal English Breakfast Tea", "category": "Hot Teas", "sub-category": "Black Teas",
-                                          "cust_opts": {0: "cust_id goes here"}, "flavor": {0: "smooth"}, "id": 94})
+
 
 cust = db.child("product_db").child(1).child("cust_opts").get()
-db.child("cust_db").child(11).set({"name": "Ice", "category": "Add-ins", "sub-category": "Ice",
-                                          "opts": {0: "Extra Ice", 1: "Light Ice",
-                                                   2: "Ice", 3: "No Ice"}, "id": 11})
-
-
-
-
-
-
-
-
-
 
 user = db.child("user-item-db").child("1XHftVUhoFhBeCoac0p2DhKfoos2").get()
 
@@ -537,15 +517,15 @@ def submit2():
 
 
         for i in opts:
-            listofcusts.append(db.child("cust_db").child(int(i)).get().val()["name"])
+            listofcusts.append(db.child("cust_db").child(int(i)).get().val()["id"])
 
 
         for i in range(len(listofcusts)):
             if request.form.get(str(opts[i])) != "":
-                custDict[listofcusts[i]] = request.form.get(str(opts[i]))
+                custDict[str(listofcusts[i])] = request.form.get(str(opts[i]))
 
-
-        db.child("order_test").child("user1").set({"drink_name": drinkName, "cust": custDict})
+        custDrinkName = request.form.get('custDrinkName')
+        db.child("order_test").child("user1").child(custDrinkName).set({"base_product": drinkName,"custom_name": custDrinkName, "cust": custDict})
 
 
         return redirect(url_for('order'))

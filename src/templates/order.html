@@ -28,61 +28,24 @@
     <h>Menu</h>
 
     <!--drink catalog menu-->
+    {% for cat in drinkCat_dic: %}
     <div>
         <div class="category">
-            Hot Coffees <i class="fa fa-caret-down"></i>
-        
+            {{cat}} <i class="fa fa-caret-down"></i>
+        {% for subcat in drinkCat_dic[cat] %}
 
-        <ul class="subcategory">
-            Americanos
-            <div class="items">
-                <li><a href="{{ url_for('customization') }}">Caffé Americano</a></li>
-            </div>
-
-            Brewed Coffees
-            <div class="items">
-                <li><a href="{{ url_for('customization') }}">Veranda Blend</a></li>
-            
-                <li><a href="{{ url_for('customization') }}">Caffé Misto</a></li>
-
-                <li><a href="{{ url_for('customization') }}">Dark Roast Coffee</a></li>
-
-                <li><a href="{{ url_for('customization') }}">Pike Place Roast</a></li>
-
-                <li><a href="{{ url_for('customization') }}">Decaf Pike Place Roast</a></li>
-            </div>
-        </ul>
+            <ul class="subcategory">
+                {{subcat}}
+                {% for item in drinkCat_dic[cat][subcat] %}
+                    <div class="items">
+                        <li><a href="{{ url_for('customization') }}">{{item.name}}</a></li>
+                    </div>
+                {% endfor %}
+            </ul>
+        {% endfor %}
         </div>
     </div>
-    
-    <div>
-        <div class="category">
-            Cold Coffees <i class="fa fa-caret-down"></i>
-        
-
-        <ul class="subcategory">
-            Cold Brews
-            <div class="items">
-                <li><a href="{{ url_for('customization') }}">Irish Cream</a></li>
-
-                <li><a href="{{ url_for('customization') }}">Salted Caramel Cream</a></li>
-
-                <li><a href="{{ url_for('customization') }}">Starbucks Reserve Cold</a></li>
-
-                <li><a href="{{ url_for('customization') }}">Sweet Cream</a></li>
-            </div>
-
-            Nitro Cold Brews
-            <div class="items">
-                <li><a href="{{ url_for('customization') }}">Starbucks Reserve Nitro</a></li>
-            
-                <li><a href="{{ url_for('customization') }}">Nitro Cold Brew</a></li>
-
-                <li><a href="{{ url_for('customization') }}">Vanilla Sweat Cream</a></li>
-            </div>
-        </ul>
-        </div>
-    </div>
+    {% endfor %}
 
     <!-- scrolling anchor -->
     <a id="saved"></a>

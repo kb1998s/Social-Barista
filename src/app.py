@@ -73,6 +73,9 @@ for i in topFlavors:
     topStats.append(flavorDict[i])
 #END FLAVOR PROFILE
 
+# Drinks Menu loading
+from DrinkLoader import drinkCat_dic
+
 
 #HTML app routes
 @app.route("/")
@@ -80,7 +83,7 @@ def index():
     return render_template('index.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered)
 @app.route('/order/')
 def order():
-    return render_template('order.html')
+    return render_template('order.html', drinkCat_dic = drinkCat_dic)
 @app.route('/account/')
 def account():
     return render_template('account.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered)

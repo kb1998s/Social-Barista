@@ -1,24 +1,26 @@
 from flask import Flask, render_template, url_for
 import pyrebase
+from dbInit import config, firebase, auth, db
 
 app = Flask(__name__)
 
-config = {
-    'apiKey': "AIzaSyBztWUIwgKYvM8YLFHbpuazAgPBak3gSXE",
-    'authDomain': "socialbarista-a9ddc.firebaseapp.com",
-    'projectId': "socialbarista-a9ddc",
-    'databaseURL': "https://socialbarista-a9ddc-default-rtdb.firebaseio.com/",
-    'storageBucket': "socialbarista-a9ddc.appspot.com",
-    'messagingSenderId': "947484314169",
-    'appId': "1:947484314169:web:7fa9c1b550a1051d1f5be8"}
+# config = {
+#     'apiKey': "AIzaSyBztWUIwgKYvM8YLFHbpuazAgPBak3gSXE",
+#     'authDomain': "socialbarista-a9ddc.firebaseapp.com",
+#     'projectId': "socialbarista-a9ddc",
+#     'databaseURL': "https://socialbarista-a9ddc-default-rtdb.firebaseio.com/",
+#     'storageBucket': "socialbarista-a9ddc.appspot.com",
+#     'messagingSenderId': "947484314169",
+#     'appId': "1:947484314169:web:7fa9c1b550a1051d1f5be8"}
 
 
-firebase = pyrebase.initialize_app(config)
-auth = firebase.auth()
-db = firebase.database()
+# firebase = pyrebase.initialize_app(config)
+# auth = firebase.auth()
+# db = firebase.database()
 
 #FLAVOR PROFILE LOGIC (using dummt user)
 #flavor profile dict
+
 user = db.child("user-item-db").child("1XHftVUhoFhBeCoac0p2DhKfoos2").get()
 dict = user.val()
 
@@ -73,32 +75,48 @@ for i in topFlavors:
     topStats.append(flavorDict[i])
 #END FLAVOR PROFILE
 
-# Drinks Menu loading
+# DRINKS MENU LOADING -- for testing only
 from DrinkLoader import drinkCat_dic
+from order import userOrderInit, getToBeDisplayIndex
+from timeHelpers import getGreeting
+user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
 
+[order_list, usualOrders] = userOrderInit(user_id, db)
+greeting = getGreeting()
+toBeDisplayIndex = getToBeDisplayIndex(usualOrders)
+
+# END DRINK LOADING TEST
 
 #HTML app routes
 @app.route("/")
 def index():
-    return render_template('index.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered)
+    return render_template('index.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered,
+                            orders = toBeDisplayIndex, greeting = greeting, length = len(usualOrders))
+    
 @app.route('/order/')
 def order():
     return render_template('order.html', drinkCat_dic = drinkCat_dic)
+
 @app.route('/account/')
 def account():
     return render_template('account.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered)
+
 @app.route('/submit/')
 def submit():
     return render_template('submit.html')
+
 @app.route('/friends/')
 def friends():
     return render_template('friends.html')
+
 @app.route('/map/')
 def map():
     return render_template('map.html')
+
 @app.route('/customization/')
 def customization():
     return render_template('customization.html')
+
 @app.route('/savedOrders/')
 def savedOrders():
     return render_template('savedOrders.html')

@@ -399,14 +399,134 @@ db.child("cust_db").child(10).set({"name": "Soymilk", "category": "Add-ins", "su
                                                    
 db.child("cust_db").child(11).set({"name": "Brown Sugar Syrup", "category": "Flavors", "sub-category": "Syrups",
                                           "opts": {0: "pump(s) Brown Sugar Syrup"}, "id": 11})
+db.child("cust_db").child(12).set({"name": "Caramel Syrup", "category": "Flavors", "sub-category": "Syrups",
+                                          "opts": {0: "pump(s) Caramel Syrup"}, "id": 12})
+db.child("cust_db").child(13).set({"name": "Cinnamon Dolce Syrup", "category": "Flavors", "sub-category": "Syrups",
+                                          "opts": {0: "pump(s) Cinnamon Dolce Syrup"}, "id": 13})
+db.child("cust_db").child(14).set({"name": "Hazelnut Syrup", "category": "Flavors", "sub-category": "Syrups",
+                                          "opts": {0: "pump(s) Hazelnut Syrup"}, "id": 14})
+db.child("cust_db").child(15).set({"name": "Peppermint Syrup", "category": "Flavors", "sub-category": "Syrups",
+                                          "opts": {0: "pump(s) Peppermint Syrup"}, "id": 15})
+db.child("cust_db").child(16).set({"name": "Raspberry Syrup", "category": "Flavors", "sub-category": "Syrups",
+                                          "opts": {0: "pump(s) Raspberry Syrup"}, "id": 16})
+db.child("cust_db").child(17).set({"name": "Toasted Vanilla Syrup", "category": "Flavors", "sub-category": "Syrups",
+                                          "opts": {0: "pump(s) Toasted Vanilla Syrup"}, "id": 17})
+db.child("cust_db").child(18).set({"name": "Toffee Nut Syrup", "category": "Flavors", "sub-category": "Syrups",
+                                          "opts": {0: "pump(s) Toffee Nut Syrup"}, "id": 18})
+db.child("cust_db").child(19).set({"name": "Vanilla Syrup", "category": "Flavors", "sub-category": "Syrups",
+                                          "opts": {0: "pump(s) Vanilla Syrup"}, "id": 19})
+db.child("cust_db").child(20).set({"name": "Sugar Free Vanilla Syrup", "category": "Flavors", "sub-category": "Syrups",
+                                          "opts": {0: "pump(s) Sugar Free Vanilla Syrup"}, "id": 20})
+db.child("cust_db").child(21).set({"name": "Mocha Sauce", "category": "Flavors", "sub-category": "Sauces",
+                                          "opts": {0: "pump(s) Mocha Sauce"}, "id": 21})
+db.child("cust_db").child(21).set({"name": "Dark Caramel Sauce", "category": "Flavors", "sub-category": "Sauces",
+                                          "opts": {0: "pump(s) Dark Caramel Sauce"}, "id": 21})
+db.child("cust_db").child(22).set({"name": "Pistachio Sauce", "category": "Flavors", "sub-category": "Sauces",
+                                          "opts": {0: "pump(s) Pistachio Sauce"}, "id": 22})
+db.child("cust_db").child(23).set({"name": "White Chocolate Mocha Sauce", "category": "Flavors", "sub-category": "Sauces",
+                                          "opts": {0: "pump(s) White Chocolate Mocha Sauce"}, "id": 23})
+
+db.child("cust_db").child(24).set({"name": "Cinnamon Dolce Sprinkles", "category": "Toppings", "sub-category": "Topping Options",
+                                           "opts": {0: "Extra Cinnamon Dolce Sprinkles", 1: "Light Cinnamon Dolce Sprinkles",
+                                                   2: "Cinnamon Dolce Sprinkles", 3: "No Cinnamon Dolce Sprinkles"}, "id": 24})
+
+db.child("cust_db").child(25).set({"name": "Salted Brown Butter Topping", "category": "Toppings", "sub-category": "Topping Options",
+                                           "opts": {0: "Extra Salted Brown Butter Topping", 1: "Light Salted Brown Butter Topping",
+                                                   2: "Salted Brown Butter Topping", 3: "No Salted Brown Butter Topping",
+                                                    4: "Substitute Salted Brown Butter Topping"}, "id": 25})
+
+db.child("cust_db").child(26).set({"name": "Caramel Drizzle", "category": "Toppings", "sub-category": "Drizzle",
+                                           "opts": {0: "Extra Caramel Drizzle", 1: "Light Caramel Drizzle",
+                                                   2: "Caramel Drizzle", 3: "No Caramel Drizzle"}, "id": 26})
+db.child("cust_db").child(27).set({"name": "Mocha Drizzle", "category": "Toppings", "sub-category": "Drizzle",
+                                           "opts": {0: "Extra Mocha Drizzle", 1: "Light Mocha Drizzle",
+                                                   2: "Mocha Drizzle", 3: "No Mocha Drizzle"}, "id": 27})
+db.child("cust_db").child(28).set({"name": "Cinnamon Powder", "category": "Toppings", "sub-category": "Powders",
+                                           "opts": {0: "Extra Cinnamon Powder", 1: "Light Cinnamon Powder",
+                                                   2: "Cinnamon Powder", 3: "No Cinnamon Powder"}, "id": 28})
+db.child("cust_db").child(29).set({"name": "Whipped Cream", "category": "Toppings", "sub-category": "Whipped Cream",
+                                           "opts": {0: "with Extra Whipped Cream", 1: "with Light Whipped Cream",
+                                                   2: "with Whipped Cream", 3: "with No Whipped Cream"}, "id": 29})
+db.child("cust_db").child(30).set({"name": "Cold Foam", "category": "Toppings", "sub-category": "Cold Foam",
+                                           "opts": {0: "Extra Cold Foam", 1: "Light Cold Foam",
+                                                   2: "Cold Foam", 3: "No Cold Foam"}, "id": 30})
+db.child("cust_db").child(31).set({"name": "Salted Caramel Cream Cold Foam", "category": "Toppings", "sub-category": "Salted Caramel Cream Cold Foam",
+                                           "opts": {0: "Extra Salted Caramel Cream Cold Foam", 1: "Light Salted Caramel Cream Cold Foam",
+                                                   2: "Salted Caramel Cream Cold Foam", 3: "No Salted Caramel Cream Cold Foam"
+                                                    ,4: "Substitute Salted Caramel Cream Cold Foam"}, "id": 31})
+db.child("cust_db").child(32).set({"name": "Vanilla Sweet Cream Cold Foam", "category": "Toppings", "sub-category": "Cold Foam",
+                                           "opts": {0: "Extra Vanilla Sweet Cream Cold Foam", 1: "Light Vanilla Sweet Cream Cold Foam",
+                                                   2: "Vanilla Sweet Cream Cold Foam", 3: "No Vanilla Sweet Cream Cold Foam"}, "id": 32})
+
+db.child("cust_db").child(33).set({"name": "Chai", "category": "Tea", "sub-category": "Chai",
+                                          "opts": {0: "pump(s) Chai"}, "id": 33})
+
+db.child("cust_db").child(34).set({"name": "Sugar", "category": "Sweeteners", "sub-category": "Sweetener Packets",
+                                          "opts": {0: "packets(s) Sugar"}, "id": 34})
+db.child("cust_db").child(35).set({"name": "Sugar In The Raw", "category": "Sweeteners", "sub-category": "Sweetener Packets",
+                                          "opts": {0: "packets(s) Sugar In The Raw"}, "id": 35})
+db.child("cust_db").child(36).set({"name": "Honey", "category": "Sweeteners", "sub-category": "Sweetener Packets",
+                                          "opts": {0: "packets(s) Honey"}, "id": 36})
+db.child("cust_db").child(37).set({"name": "Splenda", "category": "Sweeteners", "sub-category": "Sweetener Packets",
+                                          "opts": {0: "packets(s) Splenda"}, "id": 37})
+db.child("cust_db").child(38).set({"name": "Stevia In The Raw", "category": "Sweeteners", "sub-category": "Sweetener Packets",
+                                          "opts": {0: "packets(s) Stevia In The Raw"}, "id": 38})
 
 
+
+
+db.child("cust_db").child(39).set({"name": "Classic Syrup", "category": "Sweeteners", "sub-category": "Liquid Sweeteners",
+                                          "opts": {0: "pump(s) Classic Syrup"}, "id": 39})
+db.child("cust_db").child(40).set({"name": "Cane Sugar (Best For Iced Tea)", "category": "Sweeteners", "sub-category": "Liquid Sweeteners",
+                                          "opts": {0: "pump(s) ane Sugar (Best For Iced Tea)"}, "id": 40})
+db.child("cust_db").child(41).set({"name": "Honey Blend", "category": "Sweeteners", "sub-category": "Liquid Sweeteners",
+                                          "opts": {0: "pump(s) Honey Blend"}, "id": 41})
+
+db.child("cust_db").child(42).set({"name": "Shots", "category": "Espresso & Shot Options", "sub-category": "Espresso Shots",
+                                          "opts": {0: "Shots"}, "id": 42})
+db.child("cust_db").child(43).set({"name": "Espresso Roast Options", "category": "Espresso & Shot Options", "sub-category": "Espresso Roast Options",
+                                          "opts": {0: "Signature Espresso", 1: "Blonde Espresso", 2: "Decaf Espresso",
+                                                   3: "1/3 Decaf Espresso", 4: "1/2 Decaf Espresso", 5: "2/3 Decaf Espresso"}, "id": 43})
+db.child("cust_db").child(44).set({"name": "Ristretto or Long Shot", "category": "Espresso & Shot Options", "sub-category": "Ristretto or Long Shot",
+                                          "opts": {0: "Ristretto", 1: "Long Shot"}, "id": 44})
+
+db.child("cust_db").child(45).set({"name": "Chocolate Malt Powder", "category": "Add-ins", "sub-category": "Powders",
+                                          "opts": {0: "Extra Chocolate Malt Powder", 1: "Light Chocolate Malt Powder",
+                                                   2: "No Chocolate Malt Powder", 3: "Chocolate Malt Powder", 4: "Substitute Chocolate Malt Powder"}, "id": 45})
+db.child("cust_db").child(46).set({"name": "Vanilla Bean Powder", "category": "Add-ins", "sub-category": "Powders",
+                                          "opts": {0: "scoop(s) Honey Blend"}, "id": 46})
+
+
+db.child("cust_db").child(47).set({"name": "Milk Options", "category": "Milk", "sub-category": "Milk Options",
+                                          "opts": {0: "2% Milk", 1: "Nonfat Milk", 2: "Whole Milk", 3: "Breve (Half & Half)",
+                                                   4: "Heavy Cream", 5: "Almond", 6: "Coconut", 7: "Oatmilk",8: "Soy" }, "id": 47})
+
+
+db.child("cust_db").child(48).set({"name": "Milk Foam", "category": "Milk", "sub-category": "Milk Foam",
+                                           "opts": {0: "Extra Milk Foam", 1: "Light Milk Foam",
+                                                   2: "Milk Foam", 3: "No Milk Foam"}, "id": 48})
+
+db.child("cust_db").child(49).set({"name": "Milk Temperature", "category": "Milk", "sub-category": "Milk Temperature",
+                                           "opts": {0: "Warm", 1: "Steamed Hot",
+                                                   2: "Extra Hot"}, "id": 49})
+
+db.child("cust_db").child(50).set({"name": "Shot Prep", "category": "Espresso & Shot Options", "sub-category": "Shot Prep",
+                                          "opts": {0: "Upside Down"}, "id": 50})
 
 cust = db.child("product_db").child(1).child("cust_opts").get()
 
 user = db.child("user-item-db").child("1XHftVUhoFhBeCoac0p2DhKfoos2").get()
 
+
+custlistpop = [];
+
+for i in range(44):
+    custlistpop.append(i+1)
+print(custlistpop)
+
 #11
+db.child("product_db").child(1).update({"cust_opts": custlistpop})
+
 dict = user.val()
 
 flavorDict = {
@@ -525,10 +645,12 @@ def submit2():
                 custDict[str(listofcusts[i])] = request.form.get(str(opts[i]))
 
         custDrinkName = request.form.get('custDrinkName')
-        db.child("order_test").child("user1").child(custDrinkName).set({"base_product": drinkName,"custom_name": custDrinkName, "cust": custDict})
+        custDrinkInstructions = request.form.get('custDrinkInstruction')
+        db.child("order_test").child("user1").child(custDrinkName).set({"base_product": drinkName,"custom_name": custDrinkName, "special_instructions": custDrinkInstructions
+                                                                        ,"cust": custDict})
+        return redirect(url_for('submit'))
 
 
-        return redirect(url_for('order'))
 @app.route('/friends/')
 def friends():
     return render_template('friends.html')

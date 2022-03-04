@@ -1,6 +1,7 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request, redirect
 import pyrebase
 from dbInit import config, firebase, auth, db
+from collections import OrderedDict
 
 app = Flask(__name__)
 
@@ -77,7 +78,7 @@ for i in topFlavors:
 
 # DRINKS MENU LOADING -- for testing only
 from DrinkLoader import drinkCat_dic
-from order import userOrderInit, getToBeDisplayIndex
+from order import userOrderInit, getToBeDisplayIndex, addOrderToCart
 from timeHelpers import getGreeting
 user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
 
@@ -101,9 +102,55 @@ def order():
 def account():
     return render_template('account.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered)
 
-@app.route('/submit/')
+@app.route('/submit')
 def submit():
-    return render_template('submit.html')
+    drink = db.child("product_db").child(1).get()
+    cust = db.child("product_db").child(1).child("cust_opts").get()
+    custVal = cust.val()
+
+    custRefs = []
+    custDict = {}
+
+
+    for i in custVal:
+        custRefs.append(db.child("cust_db").child(int(i)).get())
+    for k in custRefs:
+        custDict[k.val()["sub-category"]] = k.val()["category"]
+    custCat = []
+    for k in custRefs:
+        custCat.append(k.val()["category"])
+    custCat = list(OrderedDict.fromkeys(custCat))
+
+
+    return render_template('submit.html', custRefs=custRefs, drink = drink, db = db, custDict = custDict, custCat = custCat)
+
+@app.route('/submit', methods=['POST'])
+def submit2():
+    if request.form['DrinkButton'] == "ChangeDrinkName":
+        sub = request.form.get('drink')
+        drink = db.child("product_db").child(int(sub)).get()
+        cust = db.child("product_db").child(int(sub)).child("cust_opts").get()
+        custVal = cust.val()
+
+        custRefs = []
+        custDict = {}
+
+        for i in custVal:
+            custRefs.append(db.child("cust_db").child(int(i)).get())
+        for k in custRefs:
+            custDict[k.val()["sub-category"]] = k.val()["category"]
+        custCat = []
+        for k in custRefs:
+            custCat.append(k.val()["category"])
+        custCat = list(OrderedDict.fromkeys(custCat))
+
+
+        return render_template('submit.html', custRefs=custRefs, drink=drink, db = db, custCat = custCat, custDict = custDict)
+    elif request.form['DrinkButton'] == "SubmitDrink":
+        addOrderToCart(request, user_id)
+        
+        return redirect(url_for('submit'))
+
 
 @app.route('/friends/')
 def friends():

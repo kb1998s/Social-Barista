@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
+
+
+<script>
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+</script>
+
 {% block head %}
 <link rel="stylesheet" 
         href="{{ url_for('static', filename='css/submit.css') }}"/>
@@ -10,46 +18,65 @@
 {% block body %}
 
 <header class=container>
-    <h1>Submit Your Order</h1>
+    <h1>Submit a Drink!</h1>
 </header>
 
 <div class=form-container>
-    <form>
-        <label for="orderkName">Order Name:</label><br>
-        <input type="text" id="order" name="order"><br>
 
+    <form method="post">
+        <label for="drinkName">Base Drink:</label><br>
+        <select name = "drink">
+            {% for i in range(3) %}
+        <option value="{{ db.child("product_db").child((i + 1)).get().val()["id"] }}">
+            {{ db.child("product_db").child((i + 1)).get().val()["name"] }}</option>
+            {% endfor %}
+                <option value="{{ db.child("product_db").child((39)).get().val()["id"] }}">
+            {{ db.child("product_db").child((39)).get().val()["name"] }}</option>
+        </select>
+        <input type="submit" name= "DrinkButton" value="ChangeDrinkName">
+    </form>
+
+    <h1 style="text-align: center">{{ drink.val()['name'] }}</h1>
+    <form method="post">
+
+    <h1 style="text-align: center">Customizations</h1>
+    <select style = "visibility: hidden" name = "drinkid"><option>{{ drink.val()['id'] }}</option></select>
+    {% for j in custCat %}
+        <h3>{{ j }}</h3>
         <br>
-        
-        <div class="drink-item">
-            <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
-            Taylor Swift Latte Grande 16oz
-            <span>Price: 3.65</span>
-            <div class = actions>
-            <a href="{{ url_for('customization') }}">Customize</a>
-            <a>Remove</a>
-            </div>
-        </div>
+        {% for key,val in custDict.items() %}
+            {% if val == j %}
+                  <br>
+            <h5>{{ key }}</h5>
+        {% for i in custRefs %}
+            {% if i.val()["sub-category"]|string() == key|string() and i.val()["category"]|string() == j|string() %}
+                <label > {{ i.val()["name"]}}:</label>
+                    {% if  i.val()["opts"]|length == 1 %}
+                    <input type="number" min="0" max ="10" name = {{ i.val()["id"] }}> {{ i.val()["opts"][0] }}
+                     {% else %}
+                <select name = {{ i.val()["id"] }}>
+                <option></option>
+                {% for k in i.val()["opts"] %}
 
-        <div class="drink-item">
-            <img src="https://globalassets.starbucks.com/assets/f24b2303e7734e82852d9132ce604e25.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Mocha">
-            Kim Kardashian Mocha Venti 24oz
-            <span>Price: 4.65</span>
-            <div class = actions>
-            <a href="{{ url_for('customization') }}">Customize</a>
-            <a>Remove</a>
-            </div>
-        </div>
+                    <option> {{ k }}</option>
+                    {% endfor %}
+                 {% endif %}
+                </select><br>
+            {% endif %}
+        {% endfor %}
 
-        <label for="specialInstructions">Special Instructions:</label><br>
-        <input type="text" id="instructions" name="instructions">
+            {%  endif %}
+    {% endfor %}
+    {% endfor %}
+    <label>Your Drink Name</label>
 
-        <div class="buttons">
-            <button>Save Order</button>
-            <button>Submit Order</button>
-        </div>
-
+    <input type="text" name="custDrinkName" required><br>
+    <label>Additional Instructions</label>
+    <input type="text" name="custDrinkInstruction"><br>
+    <input type="submit" name= "DrinkButton" value= "SubmitDrink">
     </form>
 </div>
 
+<div style="clear:both; margin-bottom: 300px "></div>
 
 {% endblock %}

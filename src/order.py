@@ -35,6 +35,9 @@ def getOrderList(inventory):
     
     orders = []
     for order in order_list:
+        if order == 'cart': 
+            continue
+        
         category = inventory[order]['category'] 
         items_dic = inventory[order]['items']
         itemList = []
@@ -150,9 +153,55 @@ def saveOrder(order, userId):
 
 
 # ADD ORDER TO CART
-def addOrderToCart(cart, order):
-    itemList = order.itemList
-    for item in itemList: cart.itemList.append(item)
+def addOrderToCart(request, userId):
+    id = request.form.get('drinkid')
+    drinkRef = db.child("product_db").child(int(id)).get()
+    drinkName = drinkRef.val()["name"]
+    cusDict = {}
+    cusList = []
+    opts = drinkRef.val()["cust_opts"]
+
+    for i in opts:
+        cusList.append(db.child("cust_db").child(int(i)).get().val()["id"])
+
+    for i in range(len(cusList)):
+        if request.form.get(str(opts[i])) != "":
+            cusDict[str(cusList[i])] = request.form.get(str(opts[i]))
+
+    custDrinkName = request.form.get('custDrinkName')
+    custDrinkInstructions = request.form.get('custDrinkInstruction')
+    
+    # Get time category
+    timeCategory = getTimeCategory()
+    cartInit = {
+        'cart' : {
+            'category': timeCategory,
+            'items': 'None'
+        }
+    }
+    
+    # only for testing - need more work initializing stuffs - Cart initializing
+    keys_dic = db.child("fav_db").shallow().get().val()
+    if userId not in keys_dic:
+        db.child('fav_db').child(userId).set({cartInit})
+    
+    # Updating item to cart
+    cart_rf = db.child('fav_db').child(userId).child('cart')
+    cart_rf.update({'category': timeCategory})
+    item = {
+        id : {
+                'cus_name': custDrinkName, 
+                'name': drinkName,
+                'customizations': cusDict,
+                'instructions': custDrinkInstructions,
+                'quantity': 1,
+                'sizeCode': 'large'
+            }
+    }
+    cart_rf.child('items').update(item)
+    
+    
+    
 
 # from app import firebase
 # db = firebase.database()

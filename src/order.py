@@ -1,4 +1,5 @@
 # from typing_extensions import Self
+from asyncio.windows_events import NULL
 from unicodedata import category
 from timeHelpers import getTimeCategory
 from dbInit import db
@@ -119,9 +120,7 @@ def getToBeDisplayIndex(usualOrders):
     return curDisplayOrder
 
 
-# ADD TO CURRENT CART
-def addToCart(order, item):
-    order.ItemList.append(item)
+
     
 # SAVE CURRENT CART TO DB:
 def saveOrder(order, userId):
@@ -151,6 +150,28 @@ def saveOrder(order, userId):
     
     print(toBeSubmitted)
 
+# CART INIT
+def cartInit(userId):
+    timeCategory = getTimeCategory()
+    cartInit = {
+        'cart' : {
+            'category': timeCategory,
+            'items': 'NONE'
+        }
+    }
+    # init card in db
+    keys_dic = db.child("fav_db").shallow().get().val()
+    # print(keys_dic)
+    # print(userId)
+    if userId not in keys_dic:
+        db.child('fav_db').child(userId).set(cartInit)
+        print('init',userId,' and cart in favdb')
+    orders_dic = db.child('fav_db').child(userId).shallow().get().val()
+    # print(orders_dic)
+    if 'cart' not in orders_dic:
+        db.child('fav_db').child(userId).update(cartInit)
+        print('init cart in favdb')
+    
 
 # ADD ORDER TO CART
 def addOrderToCart(request, userId):
@@ -173,21 +194,10 @@ def addOrderToCart(request, userId):
     
     # Get time category
     timeCategory = getTimeCategory()
-    cartInit = {
-        'cart' : {
-            'category': timeCategory,
-            'items': 'None'
-        }
-    }
-    
-    # only for testing - need more work initializing stuffs - Cart initializing
-    keys_dic = db.child("fav_db").shallow().get().val()
-    if userId not in keys_dic:
-        db.child('fav_db').child(userId).set({cartInit})
+   
     
     # Updating item to cart
-    cart_rf = db.child('fav_db').child(userId).child('cart')
-    cart_rf.update({'category': timeCategory})
+    
     item = {
         id : {
                 'cus_name': custDrinkName, 
@@ -198,7 +208,10 @@ def addOrderToCart(request, userId):
                 'sizeCode': 'large'
             }
     }
-    cart_rf.child('items').update(item)
+    
+    db.child('fav_db').child(userId).child('cart').update({'category': timeCategory})
+    db.child('fav_db').child(userId).child('cart').child('items').update(item)
+    
     
     
     

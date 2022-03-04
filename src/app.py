@@ -78,10 +78,10 @@ for i in topFlavors:
 
 # DRINKS MENU LOADING -- for testing only
 from DrinkLoader import drinkCat_dic
-from order import userOrderInit, getToBeDisplayIndex, addOrderToCart
+from order import userOrderInit, getToBeDisplayIndex, addOrderToCart, cartInit
 from timeHelpers import getGreeting
 user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
-
+cartInit(user_id)
 [order_list, usualOrders] = userOrderInit(user_id, db)
 greeting = getGreeting()
 toBeDisplayIndex = getToBeDisplayIndex(usualOrders)

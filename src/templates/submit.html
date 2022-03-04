@@ -68,11 +68,21 @@ if ( window.history.replaceState ) {
             {%  endif %}
     {% endfor %}
     {% endfor %}
-    <label>Your Drink Name</label>
+    <label for="sizeCode">Size</label>
+    <select id="sizeCode" name="sizeCode">
+        <option value="Short">Short (8 Oz.)</option>
+        <option value="Tall">Tall (12 Oz.)</option>
+        <option value="Grande">Grande (16 Oz.)</option>
+        <option value="Venti">Venti (Hot – 20 Oz., Cold – 24 Oz.)</option>
+        <option value="Trenta">Trenta (30 Oz.)</option>
+    </select>
 
-    <input type="text" name="custDrinkName" required><br>
+    <label>Your Drink Name</label>
+    <input type="text" name="custDrinkName"><br>
+
     <label>Additional Instructions</label>
     <input type="text" name="custDrinkInstruction"><br>
+    
     <input type="submit" name= "DrinkButton" value= "SubmitDrink">
     </form>
 </div>

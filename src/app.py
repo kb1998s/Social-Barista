@@ -75,23 +75,23 @@ for i in topFlavors:
     topStats.append(flavorDict[i])
 #END FLAVOR PROFILE
 
-# DRINKS MENU LOADING -- for testing only
+# # DRINKS MENU LOADING -- for testing only
 from DrinkLoader import drinkCat_dic
-from order import userOrderInit, getToBeDisplayIndex
-from timeHelpers import getGreeting
-user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
+# from order import userOrderInit, getToBeDisplayIndex
+# from timeHelpers import getGreeting
+# user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
 
-[order_list, usualOrders] = userOrderInit(user_id, db)
-greeting = getGreeting()
-toBeDisplayIndex = getToBeDisplayIndex(usualOrders)
+# [order_list, usualOrders] = userOrderInit(user_id, db)
+# greeting = getGreeting()
+# toBeDisplayIndex = getToBeDisplayIndex(usualOrders)
 
-# END DRINK LOADING TEST
+# # END DRINK LOADING TEST
 
 #HTML app routes
 @app.route("/")
 def index():
-    return render_template('index.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered,
-                            orders = toBeDisplayIndex, greeting = greeting, length = len(usualOrders))
+    return render_template('index.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered)
+                            #orders = toBeDisplayIndex, greeting = greeting, length = len(usualOrders))
     
 @app.route('/order/')
 def order():

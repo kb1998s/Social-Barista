@@ -31,16 +31,18 @@ def getOrderList(inventory):
     
     orders = []
     for order in order_list:
+        if order == 'cart': 
+            continue
+        
         category = inventory[order]['category'] 
         items_dic = inventory[order]['items']
         itemList = []
-        # print(order)
+
         for i in items_dic:
-            # print(i)
+
             customizations = []
             instructions = items_dic[i]['instructions']
             name = items_dic[i]['name']
-            # print(name)
             quantity = items_dic[i]['quantity']
             sizeCode = items_dic[i]['sizeCode']
             custom_inventory = items_dic[i]['customizations']
@@ -49,18 +51,16 @@ def getOrderList(inventory):
                 if (k != None):
                     custom_name = db.child('cust_db').child(k).child('name').get().val()
                     opt_id = custom_inventory[k]
-                    # print(opt_id)
                     custom_option = db.child('cust_db').child(k).child('opts').child(opt_id).get().val()
                     custom = Customization(custom_name, custom_option)
                     print(custom_name, custom_option)
                     customizations.append(custom)
-            item = Item(name, customizations, sizeCode, quantity, instructions)
+            item = Item(name, customizations, sizeCode, quantity, instructions, i)
             itemList.append(item)
         cur = Order(order, category, itemList)
         orders.append(cur)
     
     return orders
-
 
 # TO GET TIME-BASED ORDERS
 def getUsualOrders(orders):

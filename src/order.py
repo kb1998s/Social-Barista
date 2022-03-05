@@ -1,8 +1,10 @@
 # from typing_extensions import Self
 from asyncio.windows_events import NULL
+from itertools import count
 from unicodedata import category
 from timeHelpers import getTimeCategory
 from dbInit import db
+from DrinkLoader import drinkList
 # from main import db, auth, person
 
 class Item:
@@ -175,9 +177,10 @@ def cartInit(userId):
 
 # ADD ORDER TO CART
 def addOrderToCart(request, userId):
-    id = request.form.get('drinkid')
-    drinkRef = db.child("product_db").child(int(id)).get()
-    drinkName = drinkRef.val()["name"]
+    drink_id = request.form.get('drinkid')
+    sizeCode = request.form.get('sizeCode')
+    drinkRef = db.child("product_db").child(int(drink_id)).get()
+    drinkName = drinkList[int(drink_id) - 1].name
     cusDict = {}
     cusList = []
     opts = drinkRef.val()["cust_opts"]
@@ -194,25 +197,62 @@ def addOrderToCart(request, userId):
     
     # Get time category
     timeCategory = getTimeCategory()
-   
+    print(custDrinkName)
+    
+    # Processing cus drink name
+    if custDrinkName == '':
+        custDrinkName = 'custom' + ' ' + drinkName + ' ' + '1'
+        item_name_dic = db.child('fav_db').child(userId).child('cart').child('items').shallow().get().val()
+        counter = 1
+        while custDrinkName in item_name_dic:
+            custDrinkName = custDrinkName[:len(custDrinkName) - 1] + str(counter)
+            counter += 1
     
     # Updating item to cart
+    if cusDict == {}: cusDict = "NONE"
     
     item = {
-        id : {
-                'cus_name': custDrinkName, 
-                'name': drinkName,
+        custDrinkName : {
+                'drink_id': drink_id, 
                 'customizations': cusDict,
                 'instructions': custDrinkInstructions,
                 'quantity': 1,
-                'sizeCode': 'large'
+                'sizeCode': sizeCode
             }
     }
     
+    
     db.child('fav_db').child(userId).child('cart').update({'category': timeCategory})
     db.child('fav_db').child(userId).child('cart').child('items').update(item)
-    
-    
+
+# UPDATE CART FROM DB
+def getCart(userId):
+    inventory = db.child('fav_db').child(userId).child('cart').get().val()
+    category = inventory['category'] 
+    items_dic = inventory['items']
+    itemList = []
+
+    # for i in items_dic:
+    #     customizations = []
+    #     instructions = items_dic[i]['instructions']
+    #     name = items_dic[i]['name']
+    #     quantity = items_dic[i]['quantity']
+    #     sizeCode = items_dic[i]['sizeCode']
+    #     custom_inventory = items_dic[i]['customizations']
+    #     # get customizations
+    #     for k in custom_inventory:
+    #         if (k != None):
+    #             custom_name = db.child('cust_db').child(k).child('name').get().val()
+    #             opt_id = custom_inventory[k]
+    #             custom_option = db.child('cust_db').child(k).child('opts').child(opt_id).get().val()
+    #             custom = Customization(custom_name, custom_option)
+    #             print(custom_name, custom_option)
+    #             customizations.append(custom)
+    #     item = Item(name, customizations, sizeCode, quantity, instructions, i)
+    #     itemList.append(item)
+     
+    # cart = Order(name, category, itemList)
+    # return cart
     
     
 

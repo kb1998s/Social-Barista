@@ -107,13 +107,17 @@ def index():
 @app.route('/order/', methods = ['POST','GET'])
 def order():
     if request.method == 'POST':
-        if request.form['drink-menu'] == 'add-to-cart':
-            drink_id = request.form.get('drink-menu')
-            print(drink_id)
-            return render_template('cart.html', itemList = cart_itemList)
+        # if request.form['drink-menu'] == 'add-to-cart':
+        #     drink_id = request.form.get('drink-menu')
+        #     print(drink_id)
+        #     return render_template('cart.html', itemList = cart_itemList)
+        
+        return render_template('cart.html', itemList = cart_itemList)
     else:
         
         return render_template('order.html', drinkCat_dic = drinkCat_dic)
+
+@app.route('/add-to-cart/', methods = ['POST','GET'])
 
 @app.route('/account/')
 def account():

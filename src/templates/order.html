@@ -37,19 +37,17 @@
             <ul class="subcategory">
                 {{subcat}}
                 {% for item in drinkCat_dic[cat][subcat] %}
+                
                     <div class="items">
-                        <!-- <li><a href="{{ url_for('customization') }}">{{item.name}}</a></li> -->
-                        <form method="post">
-                            <ul name="drink-item" value="ok"> {{item.name}}
-                            
-                                    <li><button type="submit" name="drink-menu" value="add-to-cart">Add to Cart</button> </li>
-                                
-                                    <li><button type="submit" name="drink-menu" value="customize">Customize</button> </li>
-                                
-                                
-                            </ul>
-                        </form>
+                        <li><a id="{{item.id}}" onclick="dropFunction(this.id)" class="dropbtn">{{item.name}}</a></li>
                     </div>
+                    <div id="drop{{item.id}}" class="dropdown-content">
+                        <form method="post" id ="drink-form">
+                            <button type="submit" name="drink-id" value="working?">Add to Order</button>
+                        </form>
+                        <button>Customize</button>
+                    </div>
+               
                 {% endfor %}
             </ul>
         {% endfor %}
@@ -137,15 +135,36 @@
 </div>
 
 <script>
-    //dropdown script function
+    //dropdown script function for categrories
     $('.category').click(function(event){
     
     var isDim = $(event.target).is('.category');
     if(isDim){ //make sure I am a dim element
         $('.subcategory', this).toggle("fast"); // p00f
     }
-    
-});
+    });
+
+    function dropFunction(clicked_id) {
+        document.getElementById("drop" + clicked_id).classList.toggle("show");
+    }
+
+    // Close the dropdown menu if the user clicks outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+    function addToCartSubmit(){
+        document.getElementById('drink-form').submit()
+    }
 
 </script>
 {% endblock %}

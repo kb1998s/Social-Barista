@@ -38,9 +38,9 @@
                 {{subcat}}
                 {% for item in drinkCat_dic[cat][subcat] %}
                     <div class="items">
-                        <li><a onclick="dropFunction()" class="dropbtn">{{item.name}}</a></li>
+                        <li><a id="{{item.id}}" onclick="dropFunction(this.id)" class="dropbtn">{{item.name}}</a></li>
                     </div>
-                    <div id="myDropdown" class="dropdown-content">
+                    <div id="drop{{item.id}}" class="dropdown-content">
                         <a href="{{ url_for('order') }}">Add to Order</a>
                         <a href="{{ url_for('customization') }}">Customize</a>
                     </div>
@@ -138,25 +138,25 @@
     if(isDim){ //make sure I am a dim element
         $('.subcategory', this).toggle("fast"); // p00f
     }
-});
+    });
 
-    function dropFunction() {
-  document.getElementById("myDropdown").classList.toggle("show");
-}
-
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
+    function dropFunction(clicked_id) {
+        document.getElementById("drop" + clicked_id).classList.toggle("show");
     }
-  }
-}
+
+    // Close the dropdown menu if the user clicks outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
 
 </script>
 {% endblock %}

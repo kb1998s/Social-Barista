@@ -10,27 +10,24 @@
 {% block body %}
 
 <header class=container>
-    <h1>Submit Your Order</h1>
+    <h1>CART</h1>
 </header>
 
 <div class=form-container>
     <form>
-        <label for="orderkName">Order Name:</label><br>
-        <input type="text" id="order" name="order"><br>
+        {% for item in itemList: %}
 
-        <br>
-        
-        <div class="drink-item">
-            <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
-            Taylor Swift Latte Grande 16oz
-            <span>Price: 3.65</span>
-            <div class = actions>
-            <a href="{{ url_for('customization') }}">Customize</a>
-            <a>Remove</a>
+            <div class="drink-item">
+                <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
+                {{item.name}}
+                <span>Price: 3.65</span>
+                <div class = actions>
+                <a href="{{ url_for('customization') }}">Customize</a>
+                <a>Remove</a>
+                </div>
             </div>
-        </div>
-
-        <div class="drink-item">
+        {% endfor %}
+        <!-- <div class="drink-item">
             <img src="https://globalassets.starbucks.com/assets/f24b2303e7734e82852d9132ce604e25.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Mocha">
             Kim Kardashian Mocha Venti 24oz
             <span>Price: 4.65</span>
@@ -38,11 +35,15 @@
             <a href="{{ url_for('customization') }}">Customize</a>
             <a>Remove</a>
             </div>
-        </div>
+        </div> -->
+
+        <label for="orderkName">Order Name:</label><br>
+        <input type="text" id="order" name="order"><br>
 
         <label for="specialInstructions">Special Instructions:</label><br>
         <input type="text" id="instructions" name="instructions">
 
+        
         <div class="buttons">
             <button>Save Order</button>
             <button>Submit Order</button>

@@ -38,7 +38,17 @@
                 {{subcat}}
                 {% for item in drinkCat_dic[cat][subcat] %}
                     <div class="items">
-                        <li><a href="{{ url_for('customization') }}">{{item.name}}</a></li>
+                        <!-- <li><a href="{{ url_for('customization') }}">{{item.name}}</a></li> -->
+                        <form method="post">
+                            <ul name="drink-item" value="ok"> {{item.name}}
+                            
+                                    <li><button type="submit" name="drink-menu" value="add-to-cart">Add to Cart</button> </li>
+                                
+                                    <li><button type="submit" name="drink-menu" value="customize">Customize</button> </li>
+                                
+                                
+                            </ul>
+                        </form>
                     </div>
                 {% endfor %}
             </ul>

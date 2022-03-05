@@ -22,7 +22,7 @@ app = Flask(__name__)
 #FLAVOR PROFILE LOGIC (using dummt user)
 #flavor profile dict
 
-user = db.child("user-item-db").child("1XHftVUhoFhBeCoac0p2DhKfoos2").get()
+user = db.child("user-item-db").child("262ZKKD4IDWdNTa6BeSHtEljKJi1").get()
 dict = user.val()
 
 flavorDict = {
@@ -78,25 +78,42 @@ for i in topFlavors:
 
 # DRINKS MENU LOADING -- for testing only
 from DrinkLoader import drinkCat_dic
-from order import userOrderInit, getToBeDisplayIndex, addOrderToCart, cartInit
+
+# ORDER, CART
+from order import userOrderInit, getToBeDisplayIndex, addOrderToCart, cartInit, getCart
 from timeHelpers import getGreeting
 user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
 cartInit(user_id)
 [order_list, usualOrders] = userOrderInit(user_id, db)
+cart = getCart(user_id)
+cart_itemList = cart.itemList
+print(cart)
+
+# RECOMMENDATIONS
 greeting = getGreeting()
 toBeDisplayIndex = getToBeDisplayIndex(usualOrders)
 
 # END DRINK LOADING TEST
+
+
+
 
 #HTML app routes
 @app.route("/")
 def index():
     return render_template('index.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered,
                             orders = toBeDisplayIndex, greeting = greeting, length = len(usualOrders))
-    
-@app.route('/order/')
+
+@app.route('/order/', methods = ['POST','GET'])
 def order():
-    return render_template('order.html', drinkCat_dic = drinkCat_dic)
+    if request.method == 'POST':
+        if request.form['drink-menu'] == 'add-to-cart':
+            drink_id = request.form.get('drink-menu')
+            print(drink_id)
+            return render_template('cart.html', itemList = cart_itemList)
+    else:
+        
+        return render_template('order.html', drinkCat_dic = drinkCat_dic)
 
 @app.route('/account/')
 def account():
@@ -167,6 +184,10 @@ def customization():
 @app.route('/savedOrders/')
 def savedOrders():
     return render_template('savedOrders.html')
+
+@app.route('/cart/', methods=['POST', 'GET'])
+def cart():
+    return render_template('cart.html', itemList = cart_itemList)
 
 if __name__ == "__main__":
     app.run(debug=True)

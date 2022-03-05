@@ -7,7 +7,7 @@ from dbInit import db
 from DrinkLoader import drinkList
 # from main import db, auth, person
 
-class Item:
+class CustomItem:
     def __init__(self, name, customizations, sizeCode, quantity, instructions, id):
         self.name = name
         self.customizations = customizations
@@ -15,7 +15,14 @@ class Item:
         self.quantity = quantity
         self.instructions = instructions
         self.id = id
-        
+
+class Item:
+    def __init__(self, name, sizeCode, quantity, id):
+        self.name = name
+        self.sizeCode = sizeCode
+        self.quantity = quantity
+        self.id = id
+
 class Customization:
     def __init__(self, name, option):
         self.name = name
@@ -62,7 +69,7 @@ def getOrderList(inventory):
                     custom = Customization(custom_name, custom_option)
                     print(custom_name, custom_option)
                     customizations.append(custom)
-            item = Item(name, customizations, sizeCode, quantity, instructions, i)
+            item = CustomItem(name, customizations, sizeCode, quantity, instructions, i)
             itemList.append(item)
         cur = Order(order, category, itemList)
         orders.append(cur)
@@ -227,33 +234,37 @@ def addOrderToCart(request, userId):
 
 # UPDATE CART FROM DB
 def getCart(userId):
+
     inventory = db.child('fav_db').child(userId).child('cart').get().val()
     category = inventory['category'] 
     items_dic = inventory['items']
     itemList = []
-
-    # for i in items_dic:
-    #     customizations = []
-    #     instructions = items_dic[i]['instructions']
-    #     name = items_dic[i]['name']
-    #     quantity = items_dic[i]['quantity']
-    #     sizeCode = items_dic[i]['sizeCode']
-    #     custom_inventory = items_dic[i]['customizations']
-    #     # get customizations
-    #     for k in custom_inventory:
-    #         if (k != None):
-    #             custom_name = db.child('cust_db').child(k).child('name').get().val()
-    #             opt_id = custom_inventory[k]
-    #             custom_option = db.child('cust_db').child(k).child('opts').child(opt_id).get().val()
-    #             custom = Customization(custom_name, custom_option)
-    #             print(custom_name, custom_option)
-    #             customizations.append(custom)
-    #     item = Item(name, customizations, sizeCode, quantity, instructions, i)
-    #     itemList.append(item)
-     
-    # cart = Order(name, category, itemList)
-    # return cart
     
+    for item in items_dic:
+        if item.isnumeric():
+            id = item
+            quantity = items_dic[item]['quantity']
+            sizeCode = items_dic[item]['sizeCode']
+            name =  drinkList[int(item) - 1].name
+            curItem = Item(name, sizeCode, quantity, id)
+            itemList.append(curItem)
+            continue
+        
+        instructions = items_dic[item]['instructions']
+        name = item
+        quantity = items_dic[item]['quantity']
+        sizeCode = items_dic[item]['sizeCode']
+        customizations = items_dic[item]['customizations']
+        id =  items_dic[item]['drink_id']
+        
+        curItem = CustomItem(name, customizations, sizeCode, quantity, instructions, id)
+        itemList.append(curItem)
+     
+    cart = Order(name, category, itemList)
+    return cart
+    
+def addItemToCart(userId, drinkId, quantity, size):
+    return
     
 
 # from app import firebase

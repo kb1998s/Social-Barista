@@ -38,7 +38,11 @@
                 {{subcat}}
                 {% for item in drinkCat_dic[cat][subcat] %}
                     <div class="items">
-                        <li><a href="{{ url_for('customization') }}">{{item.name}}</a></li>
+                        <li><a onclick="dropFunction()" class="dropbtn">{{item.name}}</a></li>
+                    </div>
+                    <div id="myDropdown" class="dropdown-content">
+                        <a href="{{ url_for('order') }}">Add to Order</a>
+                        <a href="{{ url_for('customization') }}">Customize</a>
                     </div>
                 {% endfor %}
             </ul>
@@ -127,15 +131,32 @@
 </div>
 
 <script>
-    //dropdown script function
+    //dropdown script function for categrories
     $('.category').click(function(event){
     
     var isDim = $(event.target).is('.category');
     if(isDim){ //make sure I am a dim element
         $('.subcategory', this).toggle("fast"); // p00f
     }
-    
 });
+
+    function dropFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
 
 </script>
 {% endblock %}

@@ -1,3 +1,4 @@
+from audioop import add
 from flask import Flask, render_template, url_for, request, redirect
 import pyrebase
 from dbInit import config, firebase, auth, db
@@ -80,14 +81,13 @@ for i in topFlavors:
 from DrinkLoader import drinkCat_dic
 
 # ORDER, CART
-from order import userOrderInit, getToBeDisplayIndex, addOrderToCart, cartInit, getCart
+from order import userOrderInit, getToBeDisplayIndex, addItemToCart, addCustomItemToCart, cartInit, getCart
 from timeHelpers import getGreeting
 user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
 cartInit(user_id)
 [order_list, usualOrders] = userOrderInit(user_id, db)
-cart = getCart(user_id)
-cart_itemList = cart.itemList
-print(cart)
+
+
 
 # RECOMMENDATIONS
 greeting = getGreeting()
@@ -104,20 +104,18 @@ def index():
     return render_template('index.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered,
                             orders = toBeDisplayIndex, greeting = greeting, length = len(usualOrders))
 
-@app.route('/order/', methods = ['POST','GET'])
+@app.route('/order/', methods = ['GET'])
 def order():
-    if request.method == 'POST':
-        # if request.form['drink-menu'] == 'add-to-cart':
-        #     drink_id = request.form.get('drink-menu')
-        #     print(drink_id)
-        #     return render_template('cart.html', itemList = cart_itemList)
-        
-        return render_template('cart.html', itemList = cart_itemList)
-    else:
         
         return render_template('order.html', drinkCat_dic = drinkCat_dic)
 
-@app.route('/add-to-cart/', methods = ['POST','GET'])
+# CART ROUTING FROM THE ORDER MENU
+@app.route('/addItem/', methods = ['POST'])
+def addItem():
+    drink_id = request.form.get('drink-id')
+    addItemToCart(user_id, drink_id)
+    cart = getCart(user_id)
+    return render_template('cart.html', itemList = cart.itemList)
 
 @app.route('/account/')
 def account():
@@ -168,8 +166,7 @@ def submit2():
 
         return render_template('submit.html', custRefs=custRefs, drink=drink, db = db, custCat = custCat, custDict = custDict)
     elif request.form['DrinkButton'] == "SubmitDrink":
-        addOrderToCart(request, user_id)
-        
+        addCustomItemToCart(request, user_id)
         return redirect(url_for('submit'))
 
 
@@ -191,7 +188,8 @@ def savedOrders():
 
 @app.route('/cart/', methods=['POST', 'GET'])
 def cart():
-    return render_template('cart.html', itemList = cart_itemList)
+    cart = getCart(user_id)
+    return render_template('cart.html', itemList = cart.itemList)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -197,6 +197,7 @@ li > a{
     text-decoration: none;
     display: block;
     font-size: 16px;
+    border: none;
   }
 
 /* Change color of dropdown links on hover */

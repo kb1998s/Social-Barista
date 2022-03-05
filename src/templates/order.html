@@ -41,8 +41,8 @@
                         <li><a id="{{item.id}}" onclick="dropFunction(this.id)" class="dropbtn">{{item.name}}</a></li>
                     </div>
                     <div id="drop{{item.id}}" class="dropdown-content">
-                        <a href="{{ url_for('order') }}">Add to Order</a>
-                        <a href="{{ url_for('customization') }}">Customize</a>
+                        <button href="{{ url_for('order') }}">Add to Order</button>
+                        <button href="{{ url_for('customization') }}">Customize</button>
                     </div>
                 {% endfor %}
             </ul>

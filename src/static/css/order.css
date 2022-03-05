@@ -60,11 +60,15 @@ h{
     align-items: center;
 }
 
-.actions > a{
+.actions > button{
     text-align: center;
     flex: 1 1 0px;
     color: black;
     font-size: 14px;
+    padding: 3px;
+    border: 0.5px;
+    border-style: solid;
+    margin: 5px;
 }
 
 img{

@@ -180,27 +180,36 @@ def savedOrders():
 
 @app.route('/cart/', methods=['POST', 'GET'])
 def cart():
+    if request.method == 'POST':
+        updateCart(user_id, request)
+        print("Updated quantities and Sizes")
+        
+        if request.form['cart-form'] == 'save':
+            saveOrderFromCart(user_id, request)
+            print("saved cart to order", request.form.get('order'))
+    
+
     cart = getCart(user_id)
-    return render_template('cart.html', itemList = cart.itemList, isinstance = isinstance, Item = Item)
+    sizeList = [('short', 'Short'), ('tall', 'Tall'), ('grande', 'Grande'), ('venti', 'Venti'), ('trenta', 'Trenta')]
+    return render_template('cart.html', itemList = cart.itemList, sizeList = sizeList, isinstance = isinstance, Item = Item)
 
 
 # CART ROUTING FROM THE ORDER MENU
-@app.route('/addItem/', methods = ['POST'])
+@app.route('/addItem', methods = ['POST'])
 def addItem():
     drink_id = request.form.get('drink-id')
     addItemToCart(user_id, drink_id)
-    cart = getCart(user_id)
-    return render_template('cart.html', itemList = cart.itemList)
+    return redirect("cart")
 
 # REMOVE ITEM FROM CART
-@app.route('/removeItem/', methods = ['POST'])
+@app.route('/removeItem', methods = ['POST','GET'])
 def removeItem():
-    drink_id = request.form.get('drink-id')
-    # addItemToCart(user_id, drink_id)
-    # print(drink_id)
-    cart = getCart(user_id)
-    return render_template('cart.html', itemList = cart.itemList)
-
+    
+    if request.method == 'POST':
+        drink_id = request.form.get('drink-id')
+        removeItemFromCart(user_id, drink_id)
+        
+    return redirect('cart')
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -12,9 +12,9 @@
 <header class=container>
     <h1>CART</h1>
 </header>
-
+<form id="cart-form" method="post">
 <div class=form-container>
-    <form>
+    
         {% for item in itemList: %}
 
             <div class="drink-item">
@@ -22,20 +22,27 @@
                 {{item.name}}
                 <span>Price: 3.65</span>
                 <div class="actions">
-                    <label for="quantity">Quantity:</label>
-                        <input type="number" id="quantity" name="quantity" min="1" max="9" value="1">
+                    <label for="{{item.name}}-quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="{{item.name}}-quantity" min="1" max="9" value="{{item.quantity}}">
                     <label for="size">Size:</label>
-                    <select name="size" id="size">
-                        <option value="tall">Tall</option>
+                    <select name="{{item.name}}-sizeCode" id="size">
+                        <!-- <option value="tall">Tall</option>
                         <option value="grande">Grande</option>
                         <option value="venti">Venti</option>
-                        <option value="trenta">Trenta</option>
+                        <option value="trenta">Trenta</option> -->
+                        {% for value, size in sizeList: %}
+                            <option value="{{value}}" 
+                                {% if value == item.sizeCode: %} 
+                                    selected
+                                {% endif %}>{{size}}
+                            </option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="actions">
                     <button href="{{ url_for('customization') }}">Customize</button>
                     <form action="{{url_for('removeItem')}}" method="post" id="removeItemForm">
-                        <button type="submit" name="drink-id" value="{{item.id}}" form="removeItemForm">Remove</button>
+                        <button type="submit" name="drink-id" value="{{item.name}}" form="removeItemForm">Remove</button>
                     </form>
                 </div>
             </div>
@@ -49,12 +56,12 @@
 
         
         <div class="buttons">
-            <button>Save Order</button>
-            <button>Submit Order</button>
+            <button type="submit" name="cart-form" value="save" form="cart-form">Save Order</button>
+            <button >Submit Order</button>
         </div>
 
-    </form>
+    
 </div>
-
+</form>
 
 {% endblock %}

@@ -34,8 +34,7 @@ if ( window.history.replaceState ) {
             {{ db.child("product_db").child((39)).get().val()["name"] }}</option>
         </select>
         <input type="submit" name= "DrinkButton" value="ChangeDrinkName">
-    </form>
-
+    </form>s
     <h1 style="text-align: center">{{ drink.val()['name'] }}</h1>
     <form method="post">
 
@@ -55,7 +54,7 @@ if ( window.history.replaceState ) {
                     <input type="number" min="0" max ="10" name = {{ i.val()["id"] }}> {{ i.val()["opts"][0] }}
                      {% else %}
                 <select name = {{ i.val()["id"] }}>
-                <option></option>
+                <option >None</option>
                 {% for k in i.val()["opts"] %}
 
                     <option> {{ k }}</option>
@@ -68,8 +67,18 @@ if ( window.history.replaceState ) {
             {%  endif %}
     {% endfor %}
     {% endfor %}
-    <label>Your Drink Name</label>
+    <br>
+        <h2>Additional Options </h2>
+    <label>Size:</label>
 
+    <select name = "size">
+        <option>Short</option>
+        <option>Tall</option>
+        <option>Grande</option>
+        <option>Venti</option>
+    </select>
+    <br>
+        <label>Your Drink Name</label>
     <input type="text" name="custDrinkName" required><br>
     <label>Additional Instructions</label>
     <input type="text" name="custDrinkInstruction"><br>

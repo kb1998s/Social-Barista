@@ -635,19 +635,19 @@ def submit2():
 
         opts = drinkRef.val()["cust_opts"]
 
-
         for i in opts:
             listofcusts.append(db.child("cust_db").child(int(i)).get().val()["id"])
 
 
         for i in range(len(listofcusts)):
-            if request.form.get(str(opts[i])) != "":
+            if request.form.get(str(opts[i])) != "" and request.form.get(str(opts[i])) != "None":
                 custDict[str(listofcusts[i])] = request.form.get(str(opts[i]))
 
+        print(custDict)
         custDrinkName = request.form.get('custDrinkName')
         custDrinkInstructions = request.form.get('custDrinkInstruction')
         db.child("order_test").child("user1").child(custDrinkName).set({"base_product": drinkName,"custom_name": custDrinkName, "special_instructions": custDrinkInstructions
-                                                                        ,"cust": custDict})
+                                                                        ,"cust": custDict, "size": request.form.get("size")})
         return redirect(url_for('submit'))
 
 

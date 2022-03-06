@@ -81,7 +81,7 @@ for i in topFlavors:
 from DrinkLoader import drinkCat_dic
 
 # ORDER, CART
-from order import userOrderInit, getToBeDisplayIndex, addItemToCart, addCustomItemToCart, cartInit, getCart
+from order import *
 from timeHelpers import getGreeting
 user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
 cartInit(user_id)
@@ -108,14 +108,6 @@ def index():
 def order():
         
         return render_template('order.html', drinkCat_dic = drinkCat_dic)
-
-# CART ROUTING FROM THE ORDER MENU
-@app.route('/addItem/', methods = ['POST'])
-def addItem():
-    drink_id = request.form.get('drink-id')
-    addItemToCart(user_id, drink_id)
-    cart = getCart(user_id)
-    return render_template('cart.html', itemList = cart.itemList)
 
 @app.route('/account/')
 def account():
@@ -189,7 +181,26 @@ def savedOrders():
 @app.route('/cart/', methods=['POST', 'GET'])
 def cart():
     cart = getCart(user_id)
+    return render_template('cart.html', itemList = cart.itemList, isinstance = isinstance, Item = Item)
+
+
+# CART ROUTING FROM THE ORDER MENU
+@app.route('/addItem/', methods = ['POST'])
+def addItem():
+    drink_id = request.form.get('drink-id')
+    addItemToCart(user_id, drink_id)
+    cart = getCart(user_id)
     return render_template('cart.html', itemList = cart.itemList)
+
+# REMOVE ITEM FROM CART
+@app.route('/removeItem/', methods = ['POST'])
+def removeItem():
+    drink_id = request.form.get('drink-id')
+    # addItemToCart(user_id, drink_id)
+    # print(drink_id)
+    cart = getCart(user_id)
+    return render_template('cart.html', itemList = cart.itemList)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

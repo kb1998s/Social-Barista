@@ -16,7 +16,7 @@ body{
 }
 
 label {
-    padding: 12px 12px 12px 0;
+    padding: 10px;
     display: inline-block;
   }
 
@@ -24,13 +24,18 @@ label {
     display: flex;
     flex-direction:row;
     align-items: center;
+    padding: 2px;
 }
 
-.actions > a{
+.actions > button{
     text-align: center;
     flex: 1 1 0px;
     color: black;
     font-size: 14px;
+    text-decoration: none;
+    padding: 2px;
+    border: 0.5px;
+    border-style: solid;
 }
 
 img{
@@ -54,6 +59,7 @@ img{
 }
 
 .buttons{
-    padding: 10px;
     float: right;
+    padding: 10px;
+    border: none;
 }

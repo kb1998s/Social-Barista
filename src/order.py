@@ -7,20 +7,14 @@ from dbInit import db
 from DrinkLoader import drinkList
 # from main import db, auth, person
 
-class CustomItem:
-    def __init__(self, name, customizations, sizeCode, quantity, instructions, id):
+class Item:
+    def __init__(self, name, customizations, sizeCode, quantity, instructions, category, id):
         self.name = name
         self.customizations = customizations
         self.sizeCode = sizeCode
         self.quantity = quantity
         self.instructions = instructions
-        self.id = id
-
-class Item:
-    def __init__(self, name, sizeCode, quantity, id):
-        self.name = name
-        self.sizeCode = sizeCode
-        self.quantity = quantity
+        self.category = category
         self.id = id
 
 class Customization:
@@ -37,6 +31,7 @@ class Order:
         self.itemList = itemList
     
 # GET ALL AVAILABLE ORDERS OF CURRENT USER
+# need to fix category tag for drink
 def getOrderList(inventory):
     order_list = []
     for order in inventory:
@@ -53,7 +48,6 @@ def getOrderList(inventory):
         itemList = []
 
         for i in items_dic:
-
             customizations = []
             instructions = items_dic[i]['instructions']
             name = items_dic[i]['name']
@@ -69,7 +63,7 @@ def getOrderList(inventory):
                     custom = Customization(custom_name, custom_option)
                     print(custom_name, custom_option)
                     customizations.append(custom)
-            item = CustomItem(name, customizations, sizeCode, quantity, instructions, i)
+            item = Item(name, customizations, sizeCode, quantity, instructions, i, 'default')
             itemList.append(item)
         cur = Order(order, category, itemList)
         orders.append(cur)
@@ -165,7 +159,7 @@ def cartInit(userId):
     cartInit = {
         'cart' : {
             'category': timeCategory,
-            'items': 'NONE'
+            'items': 'none'
         }
     }
     # init card in db
@@ -206,8 +200,9 @@ def getCart(userId):
         sizeCode = items_dic[item]['sizeCode']
         customizations = items_dic[item]['customizations']
         id =  items_dic[item]['drink_id']
+        category = items_dic[item]['category']
         
-        curItem = CustomItem(name, customizations, sizeCode, quantity, instructions, id)
+        curItem = Item(name, customizations, sizeCode, quantity, instructions, category, id)
         itemList.append(curItem)
      
     cart = Order(name, category, itemList)
@@ -215,15 +210,20 @@ def getCart(userId):
     
 # ADD ITEM TO CART    
 def addItemToCart(userId, drinkId):
-    # drinkName = drinkList[int(drinkId) - 1].name
+    drinkName = drinkList[int(drinkId) - 1].name
     timeCategory = getTimeCategory()
     
     item = {
-        drinkId : {
+        drinkName : {
+                'drink_id': drinkId, 
+                'customizations': 'none',
+                'instructions': 'none',
                 'quantity': 1,
-                'sizeCode': 'short'
+                'sizeCode': 'short',
+                'category': 'default'
             }
     }
+    
     # DB cart updating
     db.child('fav_db').child(userId).child('cart').update({'category': timeCategory})
     db.child('fav_db').child(userId).child('cart').child('items').update(item)
@@ -255,7 +255,7 @@ def addCustomItemToCart(request, userId):
     
     # Processing cus drink name
     if custDrinkName == '':
-        custDrinkName = 'custom' + ' ' + drinkName + ' ' + '1'
+        custDrinkName = 'Custom' + ' ' + drinkName + ' ' + '1'
         item_name_dic = db.child('fav_db').child(userId).child('cart').child('items').shallow().get().val()
         counter = 1
         while custDrinkName in item_name_dic:
@@ -263,15 +263,16 @@ def addCustomItemToCart(request, userId):
             counter += 1
     
     # Updating item to cart
-    if cusDict == {}: cusDict = "NONE"
-    
+    if cusDict == {}: cusDict = "none"
+    if custDrinkInstructions == '': custDrinkInstructions = "none"
     item = {
         custDrinkName : {
                 'drink_id': drink_id, 
                 'customizations': cusDict,
                 'instructions': custDrinkInstructions,
                 'quantity': 1,
-                'sizeCode': sizeCode
+                'sizeCode': sizeCode,
+                'category': 'custom'
             }
     }
     

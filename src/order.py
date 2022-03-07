@@ -2,6 +2,7 @@
 from ast import iter_child_nodes
 from asyncio.windows_events import NULL
 from itertools import count
+from turtle import update
 from unicodedata import category
 from timeHelpers import getTimeCategory
 from dbInit import db
@@ -26,10 +27,11 @@ class Customization:
         return {self.name: self.option}
         
 class Order:
-    def __init__(self, name, category, itemList):
+    def __init__(self, name, category, itemList, orderCount):
         self.name = name
         self.category = category
         self.itemList = itemList
+        self.orderCount = orderCount
     
 # GET ALL AVAILABLE ORDERS OF CURRENT USER
 def getOrderList(inventory):
@@ -45,10 +47,11 @@ def getOrderList(inventory):
         
         category = inventory[order]['category'] 
         items_dic = inventory[order]['items']
+        orderCount = inventory[order]['order_count']
         itemList = []
         
         if items_dic == 'none':
-            cur = Order(order, category, itemList)
+            cur = Order(order, category, itemList, orderCount)
             orders.append(cur)
             continue
         
@@ -72,10 +75,10 @@ def getOrderList(inventory):
                         customizations.update(custom)
             else: customizations = 'none'
             
-            item = Item(name, customizations, sizeCode, quantity, instructions, drink_id, drink_category)
+            item = Item(name, customizations, sizeCode, quantity, instructions, drink_category, drink_id)
             itemList.append(item)
             
-        cur = Order(order, category, itemList)
+        cur = Order(order, category, itemList, orderCount)
         orders.append(cur)
     
     return orders
@@ -92,6 +95,14 @@ def getUsualOrders(orders):
             usualOrders.append(order)
     
     return usualOrders
+
+# TO GET COUNT-BASED ORDERS:
+def getCountBasedOrder(orders):
+    import heapq
+    def sortkey(order):
+        return order.orderCount
+    heapOrders = heapq.nlargest(2, orders, key=sortkey)
+    print(heapOrders)
 
 
 # INIT USUAL ORDER
@@ -113,27 +124,30 @@ def userOrderInit(user_id):
 # Currently only displays maximum 2 orders and 2 items in each order
 def getToBeDisplayIndex(usualOrders):
     curDisplayOrder = []
+    if usualOrders == []:
+        return 'No custom orders have been saved into the system yet'
     for order in usualOrders:
         # print(order.name)
         itemList = order.itemList
-        toBeDisplay = str(order.name) + ": "
+        toBeDisplay = str(order.name).upper() + ": "
         for i in range(len(itemList)):
             if i >= 2: 
                 toBeDisplay += "..."
                 break
             curItem = itemList[i]
-            
-            toBeDisplay += str(curItem.quantity) + " "
-            toBeDisplay += curItem.sizeCode + " "
-            toBeDisplay += curItem.name
+            if curItem.category == 'custom':
+                toBeDisplay += str(curItem.quantity) + " "
+                toBeDisplay += curItem.name
+            else:
+                toBeDisplay += str(curItem.quantity) + " "
+                toBeDisplay += curItem.sizeCode + " "
+                toBeDisplay += curItem.name
             if i < 1 and len(itemList) > 1:
                 toBeDisplay += ", "
         curDisplayOrder.append(toBeDisplay)
-        print(toBeDisplay)
+        print("RS Display:", toBeDisplay)
         
     return curDisplayOrder
-
-
 
     
 # SAVE CURRENT CART TO DB:
@@ -171,7 +185,7 @@ def cartInit(userId):
         'cart' : {
             'category': timeCategory,
             'items': 'none',
-            'added-orders': 'none'
+            'added-orders': 'none',
         }
     }
     # init card in db if user is not in favdb yet
@@ -191,9 +205,10 @@ def getCart(userId):
     inventory = db.child('fav_db').child(userId).child('cart').get().val()
     category = inventory['category'] 
     items_dic = inventory['items']
+    orderCount = 1
     itemList = []
     if items_dic == 'none':
-        return Order('cart', category, []) 
+        return Order('cart', category, [], 0) 
         
     for item in items_dic:
         customizations = {}
@@ -202,6 +217,7 @@ def getCart(userId):
         quantity = items_dic[item]['quantity']
         sizeCode = items_dic[item]['sizeCode']
         custom_inventory = items_dic[item]['customizations']
+        drink_category = items_dic[item]['category']
         # load custom for each item
         if custom_inventory != 'none':
             for cust in custom_inventory:
@@ -212,13 +228,13 @@ def getCart(userId):
                     print(custom)
                     customizations.update(custom)
         else: customizations = 'none'
-        id =  items_dic[item]['drink_id']
+        drink_id =  items_dic[item]['drink_id']
         category = items_dic[item]['category']
         
-        curItem = Item(name, customizations, sizeCode, quantity, instructions, category, id)
+        curItem = Item(name, customizations, sizeCode, quantity, instructions, drink_category, drink_id)
         itemList.append(curItem)
      
-    cart = Order('cart', category, itemList)
+    cart = Order('cart', category, itemList, 0)
     return cart
 
 # UPDATE Order FROM DB
@@ -226,9 +242,10 @@ def getOrder(userId, orderId):
     inventory = db.child('fav_db').child(userId).child(orderId).get().val()
     category = inventory['category'] 
     items_dic = inventory['items']
+    orderCount = inventory['order_count']
     itemList = []
     if items_dic == 'none':
-        return Order(orderId, category, []) 
+        return Order(orderId, category, [], orderCount) 
         
     for item in items_dic:
         customizations = {}
@@ -254,7 +271,7 @@ def getOrder(userId, orderId):
         curItem = Item(name, customizations, sizeCode, quantity, instructions, item_category, id)
         itemList.append(curItem)
      
-    order = Order(orderId, category, itemList)
+    order = Order(orderId, category, itemList, orderCount)
     return order
 
 # UPDATE GIVEN QUANTITY AND SIZES INSIDE THE CART
@@ -262,7 +279,6 @@ def updateCart(userId, request):
     inventory = db.child('fav_db').child(userId).child('cart').get().val()
     timeCategory = getTimeCategory()
     items = inventory['items']
-    
     items_dic = {}
     for name in items:
         instructions = items[name]['instructions']
@@ -286,7 +302,7 @@ def updateCart(userId, request):
                 'category': category
             }
         }
-        # print(item_dic)
+        
         items_dic.update(item_dic)
     
     toBeUpdated = {
@@ -342,6 +358,8 @@ def saveOrderFromCart(userId, request):
 
     inventory = db.child('fav_db').child(userId).child('cart').get().val()
     order_name = request.form.get('order')
+    if order_name == '': 
+        return
     order_instruction = request.form.get('instructions')
     if order_instruction == '': order_instruction = 'none'
     inventory.update({
@@ -351,15 +369,24 @@ def saveOrderFromCart(userId, request):
     toBeUpdated = {
         order_name: inventory
     }
-    cartReInit = {
-        'category': inventory['category'],
-        'items': 'none'
-    }
-    # db update new order, and remove all item from vard
+    # cartReInit = {
+    #     'category': inventory['category'],
+    #     'items': 'none',
+    #     'added-orders': 'none',
+    # }
+    # db update new order
     db.child('fav_db').child(userId).update(toBeUpdated)
+    # db.child('fav_db').child(userId).child('cart').update(cartReInit)
+    
+# REMOVE ALL ITEM FROM THE CART
+def cartReInit(userId):
+    cartReInit = {
+        'category': getTimeCategory(),
+        'items': 'none',
+        'added-orders': 'none',
+    }
     db.child('fav_db').child(userId).child('cart').update(cartReInit)
-    
-    
+
 # ADD ITEM TO CART    
 def addItemToCart(userId, drinkId):
     drinkName = drinkList[int(drinkId) - 1].name
@@ -472,6 +499,7 @@ def addOrderToCart(userId, orderId):
     else: addedOrders.update({orderId: order_count})
     
     if cart_itemList == 'none': cart_itemList = itemList
+    
     elif itemList != 'none':
         for item in itemList:
             cart_itemList.update({
@@ -486,5 +514,44 @@ def addOrderToCart(userId, orderId):
     # DB update
     db.child('fav_db').child(userId).child('cart').update(toBeUpdated)
     
-
+# UPDATE ORDER COUNT OR AN ORDER OF A USER
+def updateOrderCount(userId):
+    addedOrders = db.child('fav_db').child(userId).child('cart').child('added-orders').get().val()
+    orderList = db.child('fav_db').child(userId).shallow().get().val()
+    for order in addedOrders:
+        if order not in orderList:
+            continue
+        order_count = int(addedOrders[order]) + 1
+        toBeUpdated = {
+            'order_count': order_count
+        }
+        db.child('fav_db').child(userId).child(order).update(toBeUpdated)
+    
+def updateDrinkCount(userId):
+    drinkList = []
+    items = db.child('fav_db').child(userId).child('cart').child('items').get().val()
+    count_dic = db.child('user-item-db').child(userId).get().val()
+    if count_dic == None : count_dic = {}
+    
+    for item in items:
+        drinkList.append(items[item]['drink_id'])
+    
+    for item in drinkList:
+        if item in count_dic:
+            item_count = int(count_dic[item]) + 1
+        else:
+            item_count = 1
+        item_dic = {item: item_count}
+        count_dic.update(item_dic)
+    
+    if count_dic == {}: 
+        return   
+    
+    # print(count_dic)
+    keys = db.child('user-item-db').shallow().get().val()
+    if userId not in keys:
+        db.child('user-item-db').child(userId).set(count_dic)
+    else:
+        db.child('user-item-db').child(userId).update(count_dic)
+    
     

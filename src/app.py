@@ -87,6 +87,12 @@ toBeDisplayIndex = getToBeDisplayIndex(usualOrders)
 #HTML app routes
 @app.route("/")
 def index():
+    [order_list, usualOrders] = userOrderInit(user_id)
+    if usualOrders == []: usualOrders == getCountBasedOrder(order_list)
+    # recommendation
+    greeting = getGreeting()
+    toBeDisplayIndex = getToBeDisplayIndex(usualOrders)
+    
     return render_template('index.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered,
                             orders = toBeDisplayIndex, greeting = greeting, length = len(usualOrders))
 
@@ -180,13 +186,18 @@ def cart():
     if request.method == 'POST':
         updateCart(user_id, request)
         print("Updated quantities and Sizes")
-        
+        if request.form.get('cart-form') == 'submit':
+            updateDrinkCount(user_id)
+            updateOrderCount(user_id)
+            print('Submitting the cart for user', user_id)
+            cartReInit(user_id)
         if request.form.get('cart-form') == 'save':
             saveOrderFromCart(user_id, request)
-            print("saved cart to order", request.form.get('order'))
+            print("Saved cart to order", request.form.get('order'))
         if request.form.get('remove') != None:
             drink_id = request.form.get('remove')
             removeItemFromCart(user_id, drink_id)
+        
 
     cart = getCart(user_id)
     # sizeList = [('short', 'Short'), ('tall', 'Tall'), ('grande', 'Grande'), ('venti', 'Venti'), ('trenta', 'Trenta')]
@@ -207,7 +218,7 @@ def removeItem():
     if request.method == 'POST':
         drink_id = request.form.get('drink-id')
         removeItemFromCart(user_id, drink_id)
-        
+    
     return redirect('cart')
 
 # REMOVE AN ORDER
@@ -241,7 +252,12 @@ def cusOrder(orderId):
             
     order = getOrder(user_id, orderId)
     print(order.category)
-    timeList = [('WEEKDAY_MORNING', 'WEEKDAY MORNING'), ('WEEKDAY_NOON', 'WEEKDAY NOON'), ('WEEKDAY_NIGHT', 'WEEKDAY NIGHT'), ('WEEKEND_MORNING', 'WEEKEND MORNING'), ('WEEKEND_NOON', 'WEEKEND NOON'), ('WEEKEND_NIGHT', 'WEEKEND NIGHT')]
+    timeList = [('WEEKDAY_MORNING', 'WEEKDAY MORNING'), 
+                ('WEEKDAY_NOON', 'WEEKDAY NOON'), 
+                ('WEEKDAY_NIGHT', 'WEEKDAY NIGHT'), 
+                ('WEEKEND_MORNING', 'WEEKEND MORNING'), 
+                ('WEEKEND_NOON', 'WEEKEND NOON'), 
+                ('WEEKEND_NIGHT', 'WEEKEND NIGHT')]
     return render_template('order-cus.html', timeList = timeList, order = order, orderId = orderId, itemList = order.itemList, sizeList = sizeList)
  
  

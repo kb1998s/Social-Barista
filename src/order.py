@@ -31,7 +31,6 @@ class Order:
         self.itemList = itemList
     
 # GET ALL AVAILABLE ORDERS OF CURRENT USER
-# need to fix category tag for drink
 def getOrderList(inventory):
     order_list = []
     for order in inventory:
@@ -89,7 +88,7 @@ def getUsualOrders(orders):
 
 # INIT USUAL ORDER
 # Querying database and pass it to getOrderList and getUsualOrders
-def userOrderInit(user_id, db):
+def userOrderInit(user_id):
     
     order_list = []
     usualOrders = []
@@ -201,6 +200,30 @@ def getCart(userId):
      
     cart = Order('cart', category, itemList)
     return cart
+
+# UPDATE Order FROM DB
+def getOrder(userId, orderId):
+    inventory = db.child('fav_db').child(userId).child(orderId).get().val()
+    category = inventory['category'] 
+    items_dic = inventory['items']
+    itemList = []
+    if items_dic == 'none':
+        return Order(orderId, category, []) 
+        
+    for item in items_dic:
+        instructions = items_dic[item]['instructions']
+        name = item
+        quantity = items_dic[item]['quantity']
+        sizeCode = items_dic[item]['sizeCode']
+        customizations = items_dic[item]['customizations']
+        id =  items_dic[item]['drink_id']
+        category = items_dic[item]['category']
+        
+        curItem = Item(name, customizations, sizeCode, quantity, instructions, category, id)
+        itemList.append(curItem)
+     
+    order = Order(orderId, category, itemList)
+    return order
 
 # UPDATE GIVEN QUANTITY AND SIZES INSIDE THE CART
 def updateCart(userId, request):
@@ -343,3 +366,42 @@ def removeItemFromCart(userId, drinkId):
         db.child('fav_db').child(userId).update({'cart': 'none'})
     else:
         db.child('fav_db').child(userId).child('cart').child('items').child(drinkId).remove()
+
+# REMOVE AN ITEM FROM AN ORDER GIVEN ITS ID
+def removeItemFromOrder(userId, drinkId, orderId):
+    keys = db.child('fav_db').child(userId).child(orderId).child('items').child(drinkId).shallow().get().val()
+    if len(keys) == 1 and drinkId in keys:
+        db.child('fav_db').child(userId).update({orderId: 'none'})
+    elif drinkId in keys:
+        db.child('fav_db').child(userId).child(orderId).child('items').child(drinkId).remove()
+
+# REMOVE AN ORDER FROM SAVED ORDERS PAGE
+def removeSavedOrder(userId, orderID):
+    db.child('fav_db').child(userId).child(orderID).remove()
+    print("Removed", orderID)
+    
+# ADD ALL ITEMS OF A SAVED ORDERS TO CART
+def addOrderToCart(userId, orderId):
+    # order init
+    inventory = db.child('fav_db').child(userId).child(orderId).get().val()
+    itemList = inventory['items']
+    
+    # cart init
+    cart_inventory = db.child('fav_db').child(userId).child('cart').get().val()
+    cart_itemList = cart_inventory['items']
+    cart_category = cart_inventory['category']
+    
+    if cart_itemList == 'none': cart_itemList = itemList
+    else:
+        for item in itemList:
+            cart_itemList.update({
+                item: itemList[item]
+            })
+    
+    toBeUpdated = {
+        'items': cart_itemList
+    }
+    print(toBeUpdated)
+    # DB update
+    db.child('fav_db').child(userId).child('cart').update(toBeUpdated)
+    

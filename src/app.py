@@ -6,20 +6,6 @@ from collections import OrderedDict
 
 app = Flask(__name__)
 
-# config = {
-#     'apiKey': "AIzaSyBztWUIwgKYvM8YLFHbpuazAgPBak3gSXE",
-#     'authDomain': "socialbarista-a9ddc.firebaseapp.com",
-#     'projectId': "socialbarista-a9ddc",
-#     'databaseURL': "https://socialbarista-a9ddc-default-rtdb.firebaseio.com/",
-#     'storageBucket': "socialbarista-a9ddc.appspot.com",
-#     'messagingSenderId': "947484314169",
-#     'appId': "1:947484314169:web:7fa9c1b550a1051d1f5be8"}
-
-
-# firebase = pyrebase.initialize_app(config)
-# auth = firebase.auth()
-# db = firebase.database()
-
 #FLAVOR PROFILE LOGIC (using dummt user)
 #flavor profile dict
 
@@ -85,8 +71,8 @@ from order import *
 from timeHelpers import getGreeting
 user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
 cartInit(user_id)
-[order_list, usualOrders] = userOrderInit(user_id, db)
-
+[order_list, usualOrders] = userOrderInit(user_id)
+sizeList = [('short', 'Short'), ('tall', 'Tall'), ('grande', 'Grande'), ('venti', 'Venti'), ('trenta', 'Trenta')]
 
 
 # RECOMMENDATIONS
@@ -107,7 +93,12 @@ def index():
 @app.route('/order/', methods = ['GET'])
 def order():
         
-        return render_template('order.html', drinkCat_dic = drinkCat_dic)
+    return render_template('order.html', drinkCat_dic = drinkCat_dic)
+
+@app.route('/savedOrders/', methods=['POST', 'GET'])
+def savedOrders():
+    order_list = userOrderInit(user_id)[0]
+    return render_template('savedOrders.html', orderList = order_list)
 
 @app.route('/account/')
 def account():
@@ -174,10 +165,6 @@ def map():
 def customization():
     return render_template('customization.html')
 
-@app.route('/savedOrders/')
-def savedOrders():
-    return render_template('savedOrders.html')
-
 @app.route('/cart/', methods=['POST', 'GET'])
 def cart():
     if request.method == 'POST':
@@ -190,7 +177,7 @@ def cart():
     
 
     cart = getCart(user_id)
-    sizeList = [('short', 'Short'), ('tall', 'Tall'), ('grande', 'Grande'), ('venti', 'Venti'), ('trenta', 'Trenta')]
+    # sizeList = [('short', 'Short'), ('tall', 'Tall'), ('grande', 'Grande'), ('venti', 'Venti'), ('trenta', 'Trenta')]
     return render_template('cart.html', itemList = cart.itemList, sizeList = sizeList, isinstance = isinstance, Item = Item)
 
 
@@ -211,5 +198,30 @@ def removeItem():
         
     return redirect('cart')
 
+# REMOVE AN ORDER
+@app.route('/removeOrder', methods = ['POST'])
+def removeOrder():
+    orderId = request.form.get('orderId')
+    removeSavedOrder(user_id, orderId)
+    return redirect('savedOrders')
+
+# ADD AN ORDER TO CART
+@app.route('/addOrder', methods = ['POST'])
+def addOrder():
+    orderId = request.form.get('orderId')
+    addOrderToCart(user_id, orderId)
+    return redirect('cart')
+
+@app.route('/cusOrder', methods=['POST', 'GET'])
+def cusOrder():
+    if request.method == 'POST':
+        orderId = request.form.get('orderId')
+        print("At order custom page for", orderId)
+
+    order = getCart(user_id)
+    
+    return render_template('order-cus.html', orderId = orderId, itemList = order.itemList, sizeList = sizeList, isinstance = isinstance, Item = Item)
+    
 if __name__ == "__main__":
     app.run(debug=True)
+    

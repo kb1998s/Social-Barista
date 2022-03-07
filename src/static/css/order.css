@@ -2,6 +2,10 @@ body{
     background-color:#f5f5f5;
 }
 
+.drinklist-container{
+    
+}
+
 #menu{
     display: block;
     position: relative;
@@ -56,11 +60,15 @@ h{
     align-items: center;
 }
 
-.actions > a{
+.actions > button{
     text-align: center;
     flex: 1 1 0px;
     color: black;
     font-size: 14px;
+    padding: 3px;
+    border: 0.5px;
+    border-style: solid;
+    margin: 5px;
 }
 
 img{
@@ -183,22 +191,14 @@ li > a{
 }
 
 /* Links inside the dropdown */
-.dropdown-content a {
+.dropdown-content button{
   color: black;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
   font-size: 16px;
+  border: none;
 }
-
-.dropdown-content button {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    font-size: 16px;
-    border: none;
-  }
 
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {background-color: #ddd}

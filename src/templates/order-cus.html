@@ -10,9 +10,9 @@
 {% block body %}
 
 <header class=container>
-    <h1>CART</h1>
+    <h1>{{orderId}}</h1>
 </header>
-<form id="cart-form" method="post">
+<form id="order-form" method="post">
 <div class=form-container>
     
         {% for item in itemList: %}
@@ -26,10 +26,6 @@
                         <input type="number" id="quantity" name="{{item.name}}-quantity" min="1" max="9" value="{{item.quantity}}">
                     <label for="size">Size:</label>
                     <select name="{{item.name}}-sizeCode" id="size">
-                        <!-- <option value="tall">Tall</option>
-                        <option value="grande">Grande</option>
-                        <option value="venti">Venti</option>
-                        <option value="trenta">Trenta</option> -->
                         {% for value, size in sizeList: %}
                             <option value="{{value}}" 
                                 {% if value == item.sizeCode: %} 
@@ -47,17 +43,10 @@
                 </div>
             </div>
         {% endfor %}
-        
-        <label for="order-Name">Order Name:</label><br>
-        <input type="text" id="order" name="order"><br>
-
-        <label for="specialInstructions">Special Instructions:</label><br>
-        <input type="text" id="instructions" name="instructions">
 
         
         <div class="buttons">
-            <button type="submit" name="cart-form" value="save" form="cart-form">Save Order</button>
-            <button >Submit Order</button>
+            <button type="submit" name="order-form" value="save" form="order-form">Save Order</button>
         </div>
 
     

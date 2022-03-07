@@ -1,4 +1,5 @@
 # from typing_extensions import Self
+from ast import iter_child_nodes
 from asyncio.windows_events import NULL
 from itertools import count
 from unicodedata import category
@@ -47,7 +48,9 @@ def getOrderList(inventory):
         itemList = []
         
         if items_dic == 'none':
-            return []
+            cur = Order(order, category, itemList)
+            orders.append(cur)
+            continue
         
         for name in items_dic:
             customizations = []
@@ -64,7 +67,8 @@ def getOrderList(inventory):
                     if (cust != None):
                         custom_name = db.child('cust_db').child(cust).child('name').get().val()
                         custom_option = custom_inventory[cust]
-                        custom = Customization(custom_name, custom_option)
+                        custom = {custom_name: custom_option}
+                        # print(custom)
                         customizations.append(custom)
 
             item = Item(name, customizations, sizeCode, quantity, instructions, drink_id, drink_category)
@@ -190,11 +194,21 @@ def getCart(userId):
         return Order('cart', category, []) 
         
     for item in items_dic:
+        customizations = {}
         instructions = items_dic[item]['instructions']
         name = item
         quantity = items_dic[item]['quantity']
         sizeCode = items_dic[item]['sizeCode']
-        customizations = items_dic[item]['customizations']
+        custom_inventory = items_dic[item]['customizations']
+        # load custom for each item
+        if custom_inventory != 'none':
+            for cust in custom_inventory:
+                if (cust != None):
+                    custom_name = db.child('cust_db').child(cust).child('name').get().val()
+                    custom_option = custom_inventory[cust]
+                    custom = {custom_name: custom_option}
+                    print(custom)
+                    customizations.update(custom)
         id =  items_dic[item]['drink_id']
         category = items_dic[item]['category']
         
@@ -214,11 +228,23 @@ def getOrder(userId, orderId):
         return Order(orderId, category, []) 
         
     for item in items_dic:
+        customizations = {}
         instructions = items_dic[item]['instructions']
         name = item
         quantity = items_dic[item]['quantity']
         sizeCode = items_dic[item]['sizeCode']
-        customizations = items_dic[item]['customizations']
+        custom_inventory = items_dic[item]['customizations']
+        # load custom for each item
+        if custom_inventory != 'none':
+            for cust in custom_inventory:
+                if (cust != None):
+                    custom_name = db.child('cust_db').child(cust).child('name').get().val()
+                    custom_option = custom_inventory[cust]
+                    custom = {custom_name: custom_option}
+                    print(custom)
+                    customizations.update(custom)
+        else: customizations = 'none'
+                  
         id =  items_dic[item]['drink_id']
         category = items_dic[item]['category']
         
@@ -394,10 +420,10 @@ def addOrderToCart(userId, orderId):
     # cart init
     cart_inventory = db.child('fav_db').child(userId).child('cart').get().val()
     cart_itemList = cart_inventory['items']
-    cart_category = cart_inventory['category']
-    
+
     if cart_itemList == 'none': cart_itemList = itemList
-    else:
+    
+    elif itemList != 'none':
         for item in itemList:
             cart_itemList.update({
                 item: itemList[item]

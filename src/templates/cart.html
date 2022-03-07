@@ -26,10 +26,6 @@
                         <input type="number" id="quantity" name="{{item.name}}-quantity" min="1" max="9" value="{{item.quantity}}">
                     <label for="size">Size:</label>
                     <select name="{{item.name}}-sizeCode" id="size">
-                        <!-- <option value="tall">Tall</option>
-                        <option value="grande">Grande</option>
-                        <option value="venti">Venti</option>
-                        <option value="trenta">Trenta</option> -->
                         {% for value, size in sizeList: %}
                             <option value="{{value}}" 
                                 {% if value == item.sizeCode: %} 
@@ -38,12 +34,35 @@
                             </option>
                         {% endfor %}
                     </select>
+                    
                 </div>
+
+                <div id="cust">Custom details:</div>
+                    {% if item.customizations == 'none'%}
+                        <span>Default</span>
+                    {% else: %}
+                        {% set i = 0 %}
+                        {% for cust in item.customizations if i <= 2: %}
+                            {% if i == 2: %}
+                                <div>...</div>
+                                {% set i = i + 1 %}
+                            {% else %}
+                                <span>{{cust}}:  {{item.customizations[cust]}}</span>
+                                {% set i = i + 1 %}
+                            {% endif %}
+                        {% endfor%}
+                    {% endif %}
+
+                <div id="instructions">Instructions: </div>
+                {% if item.instructions == 'none': %} 
+                        <span>None</span> 
+                    {% else %}
+                        <span>{{item.instructions}}</span>
+                {% endif %}
+
                 <div class="actions">
                     <button href="{{ url_for('customization') }}">Customize</button>
-                    <!-- <form action="{{url_for('removeItem')}}" method="post" id="removeItemForm"> -->
                         <button type="submit" name="remove" value="{{item.name}}" >Remove</button>
-                    <!-- </form> -->
                 </div>
             </div>
         {% endfor %}

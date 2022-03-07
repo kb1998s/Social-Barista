@@ -36,6 +36,28 @@
                                 {% endfor %}
                             </select>
                         </div>
+                        <div id="cust">Custom details:</div>
+                        {% if item.customizations == 'none'%}
+                            <span>Default</span>
+                        {% else: %}
+                            {% set i = 0 %}
+                            {% for cust in item.customizations if i <= 2: %}
+                                {% if i == 2: %}
+                                    <div>...</div>
+                                    {% set i = i + 1 %}
+                                {% else %}
+                                    <span>{{cust}}:  {{item.customizations[cust]}}</span>
+                                    {% set i = i + 1 %}
+                                {% endif %}
+                            {% endfor%}
+                        {% endif %}
+
+                        <div id="instructions">Instructions: </div>
+                        {% if item.instructions == 'none': %} 
+                                <span>None</span> 
+                            {% else %}
+                                <span>{{item.instructions}}</span>
+                        {% endif %}
                         <div class="actions">
                             <input type="hidden" name="drinkId" value="{{item.name}}">
                             <input type="hidden" name="orderId" value="{{orderId}}">

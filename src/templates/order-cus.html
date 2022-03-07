@@ -12,45 +12,50 @@
 <header class=container>
     <h1>{{orderId}}</h1>
 </header>
-<form id="order-form" method="post">
-<div class=form-container>
-    
-        {% for item in itemList: %}
-
-            <div class="drink-item">
-                <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
-                {{item.name}}
-                <span>Price: 3.65</span>
-                <div class="actions">
-                    <label for="{{item.name}}-quantity">Quantity:</label>
-                        <input type="number" id="quantity" name="{{item.name}}-quantity" min="1" max="9" value="{{item.quantity}}">
-                    <label for="size">Size:</label>
-                    <select name="{{item.name}}-sizeCode" id="size">
-                        {% for value, size in sizeList: %}
-                            <option value="{{value}}" 
-                                {% if value == item.sizeCode: %} 
-                                    selected
-                                {% endif %}>{{size}}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="actions">
-                    <button href="{{ url_for('customization') }}">Customize</button>
-                    <form action="{{url_for('removeItem')}}" method="post" id="removeItemForm">
-                        <button type="submit" name="drink-id" value="{{item.name}}" form="removeItemForm">Remove</button>
-                    </form>
-                </div>
-            </div>
-        {% endfor %}
-
+<form action="" id="order-form" method="post">
+    <div class=form-container>
         
-        <div class="buttons">
-            <button type="submit" name="order-form" value="save" form="order-form">Save Order</button>
-        </div>
+            {% for item in itemList: %}
+                <!-- <form action="" id="item-form" method="post"> -->
+                    
+                    <div class="drink-item">
+                        <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
+                        {{item.name}}
+                        <span>Price: 3.65</span>
+                        <div class="actions">
+                            <label for="{{item.name}}-quantity">Quantity:</label>
+                                <input type="number" id="quantity" name="{{item.name}}-quantity" min="1" max="9" value="{{item.quantity}}">
+                            <label for="size">Size:</label>
+                            <select name="{{item.name}}-sizeCode" id="size">
+                                {% for value, size in sizeList: %}
+                                    <option value="{{value}}" 
+                                        {% if value == item.sizeCode: %} 
+                                            selected
+                                        {% endif %}>{{size}}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="actions">
+                            <input type="hidden" name="drinkId" value="{{item.name}}">
+                            <input type="hidden" name="orderId" value="{{orderId}}">
 
-    
-</div>
+                            <button type="submit"  name="custom" value="{{item.name}}">Customize</button>
+                            <button type="submit"  name="remove" value="{{item.name}}">Remove</button>
+                            
+                        </div>
+                    </div>
+                <!-- </form> -->
+            {% endfor %}
+
+            
+            <div class="buttons">
+                <input type="hidden" name="orderId" value="{{orderId}}">
+                
+                <button type="submit" name="order-form" value="save" form="order-form">Save Order</button>
+            </div>
+
+    </div>
 </form>
 
 {% endblock %}

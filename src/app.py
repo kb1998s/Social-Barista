@@ -97,6 +97,16 @@ def order():
 
 @app.route('/savedOrders/', methods=['POST', 'GET'])
 def savedOrders():
+    
+    if request.method == 'POST':
+        orderId = request.form.get('orderId')
+        if request.form['cus-form'] == 'addToCart': addOrderToCart(user_id, orderId)
+        if request.form['cus-form'] == 'removeOrder': removeSavedOrder(user_id, orderId)
+        if request.form['cus-form'] == 'cusOrder':
+            orderId = request.form['orderId']
+            return redirect('cusOrder/' + orderId)
+            
+    
     order_list = userOrderInit(user_id)[0]
     return render_template('savedOrders.html', orderList = order_list)
 
@@ -171,10 +181,12 @@ def cart():
         updateCart(user_id, request)
         print("Updated quantities and Sizes")
         
-        if request.form['cart-form'] == 'save':
+        if request.form.get('cart-form') == 'save':
             saveOrderFromCart(user_id, request)
             print("saved cart to order", request.form.get('order'))
-    
+        if request.form.get('remove') != None:
+            drink_id = request.form.get('remove')
+            removeItemFromCart(user_id, drink_id)
 
     cart = getCart(user_id)
     # sizeList = [('short', 'Short'), ('tall', 'Tall'), ('grande', 'Grande'), ('venti', 'Venti'), ('trenta', 'Trenta')]
@@ -212,16 +224,24 @@ def addOrder():
     addOrderToCart(user_id, orderId)
     return redirect('cart')
 
-@app.route('/cusOrder', methods=['POST', 'GET'])
-def cusOrder():
+@app.route('/savedOrders/cusOrder/<orderId>', methods=['POST','GET'])
+def cusOrder(orderId):
     if request.method == 'POST':
-        orderId = request.form.get('orderId')
-        print("At order custom page for", orderId)
-
-    order = getCart(user_id)
-    
-    return render_template('order-cus.html', orderId = orderId, itemList = order.itemList, sizeList = sizeList, isinstance = isinstance, Item = Item)
-    
+        if request.form.get('remove') != None:
+            orderId = request.form['orderId']
+            drinkId = request.form['remove']
+            removeItemFromOrder(user_id, drinkId, orderId)
+            print('Remove Item',drinkId,'from order',orderId)
+        if request.form.get('custom') != None:
+            print('Customize Item',drinkId,'from order',orderId)
+        if request.form.get('order-form') == "save":
+            orderId = request.form['orderId']
+            print('Saving order',orderId)
+            
+    order = getOrder(user_id, orderId)
+    return render_template('order-cus.html', orderId = orderId, itemList = order.itemList, sizeList = sizeList)
+ 
+ 
 if __name__ == "__main__":
     app.run(debug=True)
     

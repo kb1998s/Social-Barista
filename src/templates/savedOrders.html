@@ -17,20 +17,23 @@
 
 
 <div class="saved-item">
-    <form method="post" id="cus-form">
-        {% for order in orderList %}
+    
+    {% for order in orderList %}
+        <form method="post" id="cus-form">
             <h>{{order.name}}</h>
             <div class="actions">
-                <form action="{{ url_for('addOrder') }} " id="addOrder-form" method="post">
-                    <button type="submit" form="addOrder-form" name="orderId" value="{{order.name}}" class="button">Add To Cart</button>
-                </form>
-                    <button type="submit" form="cus-form" name="cus-form" value="{{order.name}}" class="button">Customize</button>
-                <form action="{{ url_for('removeOrder') }}" id="removeOrder-form" method="post">
-                    <button type="submit" form="removeOrder-form" name="orderId" value="{{order.name}}" class="button">Remove</button>
-                </form>
+                <input type="hidden" name="orderId" value="{{order.name}}">
+                
+                <button type="submit" name="cus-form" value="addToCart" class="button">Add To Cart</button>
+                
+                <button type="submit" name="cus-form" value="cusOrder" class="button">Customize</button>
+                
+                <button type="submit" name="cus-form" value="removeOrder" class="button">Remove</button>
+                
             </div>
-        {% endfor %}
-    </form>
+        </form>
+    {% endfor %}
+    
 
 
 </div>

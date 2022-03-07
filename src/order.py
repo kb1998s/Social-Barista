@@ -45,7 +45,10 @@ def getOrderList(inventory):
         category = inventory[order]['category'] 
         items_dic = inventory[order]['items']
         itemList = []
-    
+        
+        if items_dic == 'none':
+            return []
+        
         for name in items_dic:
             customizations = []
             instructions = items_dic[name]['instructions']
@@ -359,19 +362,21 @@ def addCustomItemToCart(request, userId):
 # REMOVE AN ITEM FROM CART GIVEN ITS IT
 def removeItemFromCart(userId, drinkId):
     timeCategory = getTimeCategory()
-    print(drinkId)
+    # print(drinkId)
     db.child('fav_db').child(userId).child('cart').update({'category': timeCategory})
-    keys = db.child('fav_db').child(userId).child('cart').child('items').child(drinkId).shallow().get().val()
+    keys = db.child('fav_db').child(userId).child('cart').child('items').shallow().get().val()
     if len(keys) == 1 and drinkId in keys:
-        db.child('fav_db').child(userId).update({'cart': 'none'})
+        db.child('fav_db').child(userId).child('cart').update({'items': 'none'})
     else:
         db.child('fav_db').child(userId).child('cart').child('items').child(drinkId).remove()
 
 # REMOVE AN ITEM FROM AN ORDER GIVEN ITS ID
 def removeItemFromOrder(userId, drinkId, orderId):
-    keys = db.child('fav_db').child(userId).child(orderId).child('items').child(drinkId).shallow().get().val()
+    keys = db.child('fav_db').child(userId).child(orderId).child('items').shallow().get().val()
+    
+    print(drinkId, keys)
     if len(keys) == 1 and drinkId in keys:
-        db.child('fav_db').child(userId).update({orderId: 'none'})
+        db.child('fav_db').child(userId).child(orderId).update({'items': 'none'})
     elif drinkId in keys:
         db.child('fav_db').child(userId).child(orderId).child('items').child(drinkId).remove()
 

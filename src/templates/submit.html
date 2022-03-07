@@ -23,17 +23,6 @@ if ( window.history.replaceState ) {
 
 <div class=form-container>
 
-    <form method="post">
-        <label for="drinkName">Base Drink:</label><br>
-        <select name = "drink">
-            {% for i in range(52) %}
-        <option value="{{ db.child("product_db").child((i + 1)).get().val()["id"] }}">
-            {{ db.child("product_db").child((i + 1)).get().val()["name"] }}</option>
-            {% endfor %}
-            {{ db.child("product_db").child((39)).get().val()["name"] }}</option>
-        </select>
-        <input type="submit" name= "DrinkButton" value="ChangeDrinkName">
-    </form>
     <h1 style="text-align: center">{{ drink.val()['name'] }}</h1>
     <form method="post">
 
@@ -69,8 +58,6 @@ if ( window.history.replaceState ) {
     {% endfor %}
     {% endfor %}
     <br>
-        <h2>Additional Options </h2>
-    <label>Size:</label>
 
     <select name = "size">
         <option>Short</option>
@@ -78,11 +65,10 @@ if ( window.history.replaceState ) {
         <option>Grande</option>
         <option>Venti</option>
     </select>
-    <br>
-        <label>Your Drink Name</label>
+    <br><label style="font-weight: bold">Your Drink Name</label>
     <input type="text" name="custDrinkName" required><br>
-    <label>Additional Instructions</label>
-    <input type="text" name="custDrinkInstruction"><br>
+    <label style="font-weight: bold">Additional Instructions</label>
+    <input type="text" name="custDrinkInstruction" placeholder= "None"><br>
     <input type="submit" name= "DrinkButton" value= "SubmitDrink">
     </form>
 </div>

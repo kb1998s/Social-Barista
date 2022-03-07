@@ -9,7 +9,7 @@ if ( window.history.replaceState ) {
 </script>
 
 {% block head %}
-<link rel="stylesheet" 
+<link rel="stylesheet"
         href="{{ url_for('static', filename='css/submit.css') }}"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
         rel="stylesheet">
@@ -26,21 +26,21 @@ if ( window.history.replaceState ) {
     <form method="post">
         <label for="drinkName">Base Drink:</label><br>
         <select name = "drink">
-            {% for i in range(3) %}
+            {% for i in range(52) %}
         <option value="{{ db.child("product_db").child((i + 1)).get().val()["id"] }}">
             {{ db.child("product_db").child((i + 1)).get().val()["name"] }}</option>
             {% endfor %}
-                <option value="{{ db.child("product_db").child((39)).get().val()["id"] }}">
             {{ db.child("product_db").child((39)).get().val()["name"] }}</option>
         </select>
         <input type="submit" name= "DrinkButton" value="ChangeDrinkName">
-    </form>s
+    </form>
     <h1 style="text-align: center">{{ drink.val()['name'] }}</h1>
     <form method="post">
 
     <h1 style="text-align: center">Customizations</h1>
     <select style = "visibility: hidden" name = "drinkid"><option>{{ drink.val()['id'] }}</option></select>
     {% for j in custCat %}
+        <br>
         <h3>{{ j }}</h3>
         <br>
         {% for key,val in custDict.items() %}
@@ -49,7 +49,8 @@ if ( window.history.replaceState ) {
             <h5>{{ key }}</h5>
         {% for i in custRefs %}
             {% if i.val()["sub-category"]|string() == key|string() and i.val()["category"]|string() == j|string() %}
-                <label > {{ i.val()["name"]}}:</label>
+                <label style="font-weight: bold" > {{ i.val()["name"]}}:</label>
+                <br>
                     {% if  i.val()["opts"]|length == 1 %}
                     <input type="number" min="0" max ="10" name = {{ i.val()["id"] }}> {{ i.val()["opts"][0] }}
                      {% else %}

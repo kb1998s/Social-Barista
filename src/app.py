@@ -365,7 +365,7 @@ db.child("cust_db").child(23).set({"name": "Caramel Brulée Sauce", "category": 
                                           "opts": {0: "pump(s) Caramel Brulée Sauce"}, "id": 23})
                                           
 """
-
+"""
 db.child("cust_db").child(1).set({"name": "Oatmilk", "category": "Add-ins", "sub-category": "Creamer",
                                           "opts": {0: "Extra Splash of Oatmilk", 1: "Light Splash of Oatmilk",
                                                    2: "No Splash of Oatmilk", 3: "Splash of Oatmilk", 4: "Substitute Splash of Oatmilk"}, "id": 1})
@@ -513,60 +513,49 @@ db.child("cust_db").child(49).set({"name": "Milk Temperature", "category": "Milk
 db.child("cust_db").child(50).set({"name": "Shot Prep", "category": "Espresso & Shot Options", "sub-category": "Shot Prep",
                                           "opts": {0: "Upside Down"}, "id": 50})
 
+
+db.child("cust_db").child(51).set({"name": "Ice", "category": "Add-ins", "sub-category": "Ice",
+                                           "opts": {0: "Extra Ice", 1: "Light Ice",
+                                                   2: "Ice", 3: "No Ice"}, "id": 51})
+
+db.child("cust_db").child(52).set({"name": "Lemonade", "category": "Lemonade", "sub-category": "Lemonade",
+                                           "opts": {0: "Extra Lemonade", 1: "Light Lemonade",
+                                                   2: "Lemonade", 3: "No Lemonade"}, "id": 52})
+
 cust = db.child("product_db").child(1).child("cust_opts").get()
 
 user = db.child("user-item-db").child("1XHftVUhoFhBeCoac0p2DhKfoos2").get()
+"""
 
+custlistpop = []
 
-custlistpop = [];
-
-for i in range(44):
+"""
+custlistpop.append(47)
+custlistpop.append(51)
+for i in range(10,46):
     custlistpop.append(i+1)
-print(custlistpop)
+custlistpop.append(50)
+"""
 
+
+for i in range(10,23):
+    custlistpop.append(i+1)
+
+custlistpop.append(30)
+custlistpop.append(31)
+custlistpop.append(32)
+
+for i in range(33,41):
+    custlistpop.append(i+1)
+
+custlistpop.append(51)
+custlistpop.append(42)
+custlistpop.append(43)
+custlistpop.append(44)
+custlistpop.append(50)
 #11
-db.child("product_db").child(1).update({"cust_opts": custlistpop})
+db.child("product_db").child(52).update({"cust_opts": custlistpop})
 
-dict = user.val()
-
-flavorDict = {
-    "sweet": 0,
-    "nutty": 0,
-    "aromatic": 0,
-    "bitter": 0,
-    "robust": 0,
-    "earthy": 0,
-    "tropical": 0,
-    "fruity": 0,
-    "smooth": 0,
-    "creamy": 0,
-    "floral": 0,
-    "refreshing": 0,
-}
-"""
-drinkslist = []
-timesordered = []
-for x,y in dict.items():
-    drinkslist.append(int(x))
-    timesordered.append(int(y))
-
-print(drinkslist)
-print(timesordered)
-
-
-
-flavorlist = []
-
-for i in range(len(drinkslist)):
-    flavorlist.append(db.child("product_db").child(drinkslist[i]).child("flavor").get().val())
-
-
-for i in flavorlist:
-    for k in i:
-        temp = k
-        flavorDict[temp] += 1
-print(flavorDict)
-"""
 
 #HTML app routes
 @app.route("/")

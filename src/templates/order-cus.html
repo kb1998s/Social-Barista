@@ -10,7 +10,7 @@
 {% block body %}
 
 <header class=container>
-    <h1>{{orderId}}</h1>
+    <h1>{{order.name}}</h1>
 </header>
 <form action="" id="order-form" method="post">
     <div class=form-container>
@@ -69,12 +69,22 @@
                     </div>
                 <!-- </form> -->
             {% endfor %}
-
+            
+            <label for="time-category">Time Category:</label>
+            <select name="time-category" id="time-category">
+                {% for value, time in timeList: %}
+                    <option value="{{value}}" 
+                        {% if value == order.category: %} 
+                            selected
+                        {% endif %}>{{time}}
+                    </option>
+                {% endfor %}
+            </select>
             
             <div class="buttons">
                 <input type="hidden" name="orderId" value="{{orderId}}">
                 
-                <button type="submit" name="order-form" value="save" form="order-form">Save Order</button>
+                <button type="submit" name="order-form" value="save" form="order-form">Update Order</button>
             </div>
 
     </div>

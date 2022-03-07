@@ -236,10 +236,13 @@ def cusOrder(orderId):
             print('Customize Item',drinkId,'from order',orderId)
         if request.form.get('order-form') == "save":
             orderId = request.form['orderId']
+            updateOrder(user_id, orderId, request)
             print('Saving order',orderId)
             
     order = getOrder(user_id, orderId)
-    return render_template('order-cus.html', orderId = orderId, itemList = order.itemList, sizeList = sizeList)
+    print(order.category)
+    timeList = [('WEEKDAY_MORNING', 'WEEKDAY MORNING'), ('WEEKDAY_NOON', 'WEEKDAY NOON'), ('WEEKDAY_NIGHT', 'WEEKDAY NIGHT'), ('WEEKEND_MORNING', 'WEEKEND MORNING'), ('WEEKEND_NOON', 'WEEKEND NOON'), ('WEEKEND_NIGHT', 'WEEKEND NIGHT')]
+    return render_template('order-cus.html', timeList = timeList, order = order, orderId = orderId, itemList = order.itemList, sizeList = sizeList)
  
  
 if __name__ == "__main__":

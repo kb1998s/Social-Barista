@@ -1,16 +1,18 @@
-.account-container{
+.container{
     padding: 5px;
     background-color:	#f5f5f5;
     border-bottom: 3px solid black;
     border-top: 3px solid black;
 }
 
-body{
-    background-color:#f5f5f5;
+.custom-container{
+    padding: 20px;
+    height: 80vh;
+    width: 100vw;
 }
 
-p{
-    padding-left: 20px;
+body{
+    background-color:#f5f5f5;
 }
 
 .subhead-container{
@@ -28,11 +30,6 @@ p{
     flex-direction: column;
 }
 
-.subhead-container > a{
-    font-weight: normal;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    color:black;
-    text-decoration: none;
+.buttons{
+    float: right;
 }

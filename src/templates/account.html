@@ -16,9 +16,9 @@
 
 <div class="subhead-container">
     Profile
-    <span>Personal Info & Security</span>
-    <span>Payment</span>
-    <span>Transaction History</span>
+    <span>Personal Info</span>
+    <a href="{{ url_for('savedOrders') }}">Saved Orders</a>
+    {% include 'flavor-profile.html' %}
 </div>
 
 <div class="subhead-container">

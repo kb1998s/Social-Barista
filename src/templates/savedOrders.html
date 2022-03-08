@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" 
+        href="{{ url_for('static', filename='css/order.css') }}"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+<header class=container>
+    <h1>Your Saved Orders</h1>
+</header>
+
+<div class="savePage-container">
+
+
+<div class="saved-item">
+    
+    {% for order in orderList %}
+        <form method="post" id="cus-form">
+            <h>{{order.name}}</h>
+            <div class="actions">
+                <input type="hidden" name="orderId" value="{{order.name}}">
+                
+                <button type="submit" name="cus-form" value="addToCart" class="button">Add To Cart</button>
+                
+                <button type="submit" name="cus-form" value="cusOrder" class="button">Customize</button>
+                
+                <button type="submit" name="cus-form" value="removeOrder" class="button">Remove</button>
+                
+            </div>
+        </form>
+    {% endfor %}
+    
+
+
+</div>
+
+{% endblock %}

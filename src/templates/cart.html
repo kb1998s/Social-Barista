@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" 
+        href="{{ url_for('static', filename='css/submit.css') }}"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+<header class=container>
+    <h1>CART</h1>
+</header>
+<form id="cart-form" method="post">
+<div class=form-container>
+    
+        {% for item in itemList: %}
+
+            <div class="drink-item">
+                <img src="https://globalassets.starbucks.com/assets/b635f407bbcd49e7b8dd9119ce33f76e.jpg?impolicy=1by1_wide_topcrop_630" alt="Starbucks Latte">
+                {{item.name}}
+                <span>Price: 3.65</span>
+                <div class="actions">
+                    <label for="{{item.name}}-quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="{{item.name}}-quantity" min="1" max="9" value="{{item.quantity}}">
+                    <label for="size">Size:</label>
+                    <select name="{{item.name}}-sizeCode" id="size">
+                        {% for value, size in sizeList: %}
+                            <option value="{{value}}" 
+                                {% if value == item.sizeCode: %} 
+                                    selected
+                                {% endif %}>{{size}}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    
+                </div>
+
+                <div id="cust">Custom details:</div>
+                    {% if item.customizations == 'none'%}
+                        <span>Default</span>
+                    {% else: %}
+                        {% set i = 0 %}
+                        {% for cust in item.customizations if i <= 2: %}
+                            {% if i == 2: %}
+                                <div>...</div>
+                                {% set i = i + 1 %}
+                            {% else %}
+                                <span>{{cust}}:  {{item.customizations[cust]}}</span>
+                                {% set i = i + 1 %}
+                            {% endif %}
+                        {% endfor%}
+                    {% endif %}
+
+                <div id="instructions">Instructions: </div>
+                {% if item.instructions == 'none': %} 
+                        <span>None</span> 
+                    {% else %}
+                        <span>{{item.instructions}}</span>
+                {% endif %}
+
+                <div class="actions">
+                    <button type="submit" name="custom" value="{{item.name}}">Customize</button>
+                    <button type="submit" name="remove" value="{{item.name}}" >Remove</button>
+                </div>
+            </div>
+        {% endfor %}
+        
+        <label for="order-Name">Order Name:</label><br>
+        <input type="text" id="order" name="order"><br>
+
+        <label for="specialInstructions">Special Instructions:</label><br>
+        <input type="text" id="instructions" name="instructions">
+
+        
+        <div class="buttons">
+            <button type="submit" name="cart-form" value="save" form="cart-form">Save Order</button>
+            <button type="submit" name="cart-form" value="submit" form="cart-form">Submit Order</button>
+        </div>
+
+    
+</div>
+</form>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" 
+        href="{{ url_for('static', filename='css/customization.css') }}"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+<header class=container>
+    <h1>Drink Customization</h1>
+</header>
+
+<div class="custom-container">
+    Custom Drink feature goes here
+    <!-- IMPLEMENT Custom Drink Feature -->
+
+    <div class="buttons">
+        <form action="{{ url_for('submit') }}">
+            <button> Add to Order </button>
+        </form>
+    </div>
+
+</div>
+
+
+{% endblock %}

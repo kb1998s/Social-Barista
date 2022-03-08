@@ -1,0 +1,10 @@
+<div class="recommendation">
+    <a href="{{url_for('savedOrders')}}"> 
+        <span style="color:crimson">{{greeting}}</span> Looking to order your usual?
+        <div class = "usual-order-container">
+            {% for order in orders %} 
+                <div>{{order}}</div>
+            {% endfor %}
+        </div>
+    </a>
+</div>

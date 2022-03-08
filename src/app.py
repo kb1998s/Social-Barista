@@ -136,6 +136,8 @@ def savedOrders():
 
 @app.route('/account/')
 def account():
+    topFlavors, topStats, numDrinksOrdered = getFlavorProfile(user_id)
+
     return render_template('account.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered)
 
 

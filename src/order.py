@@ -598,6 +598,7 @@ def updateDrinkCount(userId):
     items = db.child('fav_db').child(userId).child('cart').child('items').get().val()
     count_dic = db.child('user-item-db').child(userId).get().val()
     if count_dic == None : count_dic = {}
+    count_dic.update({'bug_holder': 'bug_holder'})
     
     for item in items:
         drinkList.append(items[item]['drink_id'])

@@ -30,9 +30,12 @@ def getFlavorProfile(user_id):
     user = db.child("user-item-db").child(user_id).get()
     dict = user.val()
     if (dict == None):
-        db.child("user-item-db").child(user_id).set({1: 1,
-                                                    'bug_holder': 'bug_holder'})
-        user = db.child("user-item-db").child(user_id).get()
+        # db.child("user-item-db").child(user_id).set({1: 1,
+        #                                             'bug_holder': 'bug_holder'})
+        # user = db.child("user-item-db").child(user_id).get()
+        topFlavors = ['Bitter', 'Sweet', 'Nutty','Aromatic']
+        topStats = [0,0,0,0]
+        return [topFlavors, topStats, 1]
 
     #list of ordered drinks ID's
     drinkslist = []

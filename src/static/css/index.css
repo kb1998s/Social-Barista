@@ -80,6 +80,17 @@ h1{
 }
 
 /* Flavor Profile */
+.profile-message{
+    padding: 5px;
+    text-align: center;
+    display:block;
+    padding-bottom: 20px;
+}
+
+.flavor-data{
+    display: block;
+}
+
 .flavor-container{
     padding: 15px;
     width: 100%;
@@ -107,7 +118,7 @@ h1{
 
 .flavorStats {
   width: 100%; /* Full width */
-  background-color:#e1e1e1; /* Grey background */
+  background-color:#c7c5c5; /* Grey background */
   border-radius: 10%;
 }
 

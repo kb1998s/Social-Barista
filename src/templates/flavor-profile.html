@@ -9,12 +9,17 @@
 {% set percent4 = "%.0f" % ((topStats[3]*100)/totalDrinks) %}
 <!DOCTYPE html>
 <html>
-<body>
+<body onload="buildProfile()">
 
 <div class="flavorProfile">
     <h1>
       Your Top Flavors Profile
     </h1>
+
+    <div class="profile-message">
+      Order more drinks to build your Flavor Profile!
+    </div>
+    <div class="flavor-data">
   <p>{{topFlavors[0]}}</p>
       <div class="flavorStats">
           <div class="flavors" id="stat1">{{ percent1 }}%</div>
@@ -36,12 +41,28 @@
       </div>
       <br>
     <div>Out of {{totalDrinks}} Drinks Ordered</div>
+  </div>
 
 <script>
     document.getElementById("stat1").style.width = "{{percent1}}%";
     document.getElementById("stat2").style.width = "{{percent2}}%";
     document.getElementById("stat3").style.width = "{{percent3}}%";
     document.getElementById("stat4").style.width = "{{percent4}}%";
+
+    var total = parseInt('{{totalDrinks}}')
+    function buildProfile(){
+        if(total < 3){
+          var msg = document.querySelector(".profile-message")
+          msg.style.display = "block"
+          var data = document.querySelector(".flavor-data")
+          data.style.display = "none"
+        }else{
+          var msg = document.querySelector(".profile-message")
+          msg.style.display = "none"
+          var data = document.querySelector(".flavor-data")
+          data.style.display = "block"
+        }
+    }
 </script>
 
 </body>

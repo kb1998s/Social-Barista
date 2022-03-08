@@ -131,7 +131,7 @@ def submit(drinkId):
     
     # if POST
     if request.method == 'POST':
-        if request.form['DrinkButton'] == "SubmitDrink":
+        if request.form['DrinkButton'] == "Add to Order":
             addCustomItemToCart(request, user_id)
             return redirect(url_for('cart'))
     
@@ -187,7 +187,7 @@ def cart():
             removeItemFromCart(user_id, drink_id)
         if request.form.get('custom') != None:
             drink_name = request.form.get('custom')
-            print(drink_name)
+            print('customizing',drink_name,'from cart')
             return redirect('custom/'+ drink_name)
         
     cart = getCart(user_id)
@@ -262,11 +262,12 @@ def customFromOrder(orderId, drinkName):
     inventory = db.child('fav_db').child(user_id).child(orderId).child('items').child(drinkName).get().val()
     drinkId = inventory['drink_id']
     instructions = inventory['instructions']
+    size = inventory['sizeCode']
     # if POST
     if request.method == 'POST':
-        if request.form['DrinkButton'] == "SubmitDrink":
+        if request.form['DrinkButton'] == "Update Drink":
             customizeItemFromOrder(request, user_id, orderId)
-            return redirect(url_for(orderId))
+            return redirect(url_for('cusOrder', orderId=orderId))
     
     # if GET
     print(drinkId)
@@ -286,7 +287,7 @@ def customFromOrder(orderId, drinkName):
         custCat.append(k.val()["category"])
     custCat = list(OrderedDict.fromkeys(custCat))
 
-    return render_template('submit.html', instructions = instructions, custRefs=custRefs, custDrinkName = drinkName, drink = drink, custDict = custDict, custCat = custCat)
+    return render_template('custom.html', sizeList = sizeList, drinkSize = size, instructions = instructions, custRefs=custRefs, custDrinkName = drinkName, drink = drink, custDict = custDict, custCat = custCat)
  
  
 @app.route('/cart/custom/<drinkName>', methods=['POST', 'GET'])
@@ -294,9 +295,10 @@ def customFromCart(drinkName):
     inventory = db.child('fav_db').child(user_id).child('cart').child('items').child(drinkName).get().val()
     drinkId = inventory['drink_id']
     instructions = inventory['instructions']
+    size = inventory['sizeCode']
     # if POST
     if request.method == 'POST':
-        if request.form['DrinkButton'] == "SubmitDrink":
+        if request.form['DrinkButton'] == "Update Drink":
             customizeItemFromOrder(request, user_id, 'cart')
             return redirect(url_for('cart'))
     
@@ -317,8 +319,8 @@ def customFromCart(drinkName):
     for k in custRefs:
         custCat.append(k.val()["category"])
     custCat = list(OrderedDict.fromkeys(custCat))
-
-    return render_template('submit.html', instructions = instructions, custRefs=custRefs, custDrinkName = drinkName, drink = drink, custDict = custDict, custCat = custCat)
+    # print(sizeList)
+    return render_template('custom.html', sizeList = sizeList, drinkSize = size, instructions = instructions, custRefs=custRefs, custDrinkName = drinkName, drink = drink, custDict = custDict, custCat = custCat)
  
 if __name__ == "__main__":
     app.run(debug=True)

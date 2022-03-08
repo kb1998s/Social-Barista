@@ -67,7 +67,7 @@ def getOrderList(inventory):
             # load custom for each item
             if custom_inventory != 'none':
                 for cust in custom_inventory:
-                    if (cust != None):
+                    if (cust != None and cust != 'bug_holder'):
                         custom_name = db.child('cust_db').child(cust).child('name').get().val()
                         custom_option = custom_inventory[cust]
                         custom = {custom_name: custom_option}
@@ -224,7 +224,7 @@ def getCart(userId):
         print(custom_inventory)
         if custom_inventory != 'none':
             for cust in custom_inventory:
-                if (cust != None):
+                if (cust != None and cust != 'bug_holder'):
                     print(cust,' ',item)
                     custom_name = db.child('cust_db').child(cust).child('name').get().val()
                     custom_option = custom_inventory[cust]
@@ -261,7 +261,7 @@ def getOrder(userId, orderId):
         # load custom for each item
         if custom_inventory != 'none':
             for cust in custom_inventory:
-                if (cust != None):
+                if (cust != None and cust != 'bug_holder'):
                     custom_name = db.child('cust_db').child(cust).child('name').get().val()
                     custom_option = custom_inventory[cust]
                     custom = {custom_name: custom_option}
@@ -427,7 +427,7 @@ def addCustomItemToCart(request, userId):
 
     for i in range(len(cusList)):
         value = request.form.get(str(opts[i]))
-        if value != "" and value != "None":
+        if value != "" and value != "None" and value != None:
             cusDict.update({
                 str(cusList[i]) : value
             })
@@ -450,6 +450,7 @@ def addCustomItemToCart(request, userId):
     
     # Updating item to cart
     if cusDict == {}: cusDict = "none"
+    else: cusDict.update({"bug_holder": "bug_holder"})
     if custDrinkInstructions == '': custDrinkInstructions = "none"
     if sizeCode == None: sizeCode= 'short'
     item = {
@@ -482,7 +483,7 @@ def customizeItemFromOrder(request, userId, orderId):
 
     for i in range(len(cusList)):
         value = request.form.get(str(opts[i]))
-        if value != "" and value != "None":
+        if value != "" and value != "None" and value != None:
             cusDict.update({
                 str(cusList[i]) : value
             })
@@ -501,8 +502,10 @@ def customizeItemFromOrder(request, userId, orderId):
             custDrinkName = custDrinkName[:len(custDrinkName) - 1] + str(counter)
             counter += 1
     
+    print(cusDict)
     # Updating item to cart
     if cusDict == {}: cusDict = "none"
+    else: cusDict.update({"bug_holder": "bug_holder"})
     if custDrinkInstructions == '': custDrinkInstructions = "none"
     if sizeCode == None: sizeCode= 'short'
     item = {
@@ -515,6 +518,7 @@ def customizeItemFromOrder(request, userId, orderId):
                 'category': 'custom',
             }
     }
+    print('to be updated', item)
     
     # DB cart updating
     # db.child('fav_db').child(userId).child(orderId).update({'category': timeCategory})

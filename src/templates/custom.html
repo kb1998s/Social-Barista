@@ -18,7 +18,7 @@ if ( window.history.replaceState ) {
 {% block body %}
 
 <header class="container">
-    <h1>Submit a Drink!</h1>
+    <h1>Customize your Drink!</h1>
 </header>
 
 <div class="form-container">
@@ -63,17 +63,28 @@ if ( window.history.replaceState ) {
     </details>
     <label  style="font-weight: bold">Drink Size:</label><br>
 
-    <select name = "size">
+    <!-- <select name = "size">
         <option>Short</option>
         <option>Tall</option>
         <option>Grande</option>
         <option>Venti</option>
+    </select> -->
+
+    <select name="sizeCode" id="size">
+        {% for value, size in sizeList: %}
+            <option value="{{value}}" 
+                {% if value == drinkSize: %} 
+                    selected
+                {% endif %}>{{size}}
+            </option>
+        {% endfor %}
     </select>
-    <br><label style="font-weight: bold">Your Drink Name:</label>
-    <br><input type="text" name="custDrinkName"><br>
+    
+    <br><label style="font-weight: bold" >Your Drink Name:</label>
+    <br><input type="text" name="custDrinkName" value = "{{custDrinkName}}"><br>
     <label style="font-weight: bold">Additional Instructions:</label>
-    <input type="text" name="custDrinkInstruction" placeholder= "None"><br>
-    <br><input type="submit" name= "DrinkButton" value= "Add to Order" class="orderbtn">
+    <input type="text" name="custDrinkInstruction" placeholder= "None" value="{{instructions}}"><br>
+    <br><input type="submit" name= "DrinkButton" value= "Update Drink" class="orderbtn">
     </form>
 </div>
 

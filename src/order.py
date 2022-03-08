@@ -101,8 +101,9 @@ def getCountBasedOrder(orders):
     import heapq
     def sortkey(order):
         return order.orderCount
-    heapOrders = heapq.nlargest(2, orders, key=sortkey)
-    print(heapOrders)
+    heapOrders = heapq.nlargest(1, orders, key=sortkey)
+    return heapOrders
+    # print(heapOrders[0].name)
 
 
 # INIT USUAL ORDER
@@ -124,6 +125,7 @@ def userOrderInit(user_id):
 # Currently only displays maximum 2 orders and 2 items in each order
 def getToBeDisplayIndex(usualOrders):
     curDisplayOrder = []
+    print(usualOrders)
     if usualOrders == []:
         return 'No custom orders have been saved into the system yet'
     for order in usualOrders:
@@ -205,7 +207,7 @@ def getCart(userId):
     inventory = db.child('fav_db').child(userId).child('cart').get().val()
     category = inventory['category'] 
     items_dic = inventory['items']
-    orderCount = 1
+    
     itemList = []
     if items_dic == 'none':
         return Order('cart', category, [], 0) 
@@ -219,9 +221,11 @@ def getCart(userId):
         custom_inventory = items_dic[item]['customizations']
         drink_category = items_dic[item]['category']
         # load custom for each item
+        print(custom_inventory)
         if custom_inventory != 'none':
             for cust in custom_inventory:
                 if (cust != None):
+                    print(cust,' ',item)
                     custom_name = db.child('cust_db').child(cust).child('name').get().val()
                     custom_option = custom_inventory[cust]
                     custom = {custom_name: custom_option}
@@ -422,8 +426,12 @@ def addCustomItemToCart(request, userId):
         cusList.append(db.child("cust_db").child(int(i)).get().val()["id"])
 
     for i in range(len(cusList)):
-        if request.form.get(str(opts[i])) != "":
-            cusDict[str(cusList[i])] = request.form.get(str(opts[i]))
+        value = request.form.get(str(opts[i]))
+        if value != "" and value != "None":
+            cusDict.update({
+                str(cusList[i]) : value
+            })
+            
 
     custDrinkName = request.form.get('custDrinkName')
     custDrinkInstructions = request.form.get('custDrinkInstruction')
@@ -443,6 +451,7 @@ def addCustomItemToCart(request, userId):
     # Updating item to cart
     if cusDict == {}: cusDict = "none"
     if custDrinkInstructions == '': custDrinkInstructions = "none"
+    if sizeCode == None: sizeCode= 'short'
     item = {
         custDrinkName : {
                 'drink_id': drink_id, 
@@ -457,6 +466,59 @@ def addCustomItemToCart(request, userId):
     # DB cart updating
     db.child('fav_db').child(userId).child('cart').update({'category': timeCategory})
     db.child('fav_db').child(userId).child('cart').child('items').update(item)
+    
+# ADD CUSTOM ITEM TO CART
+def customizeItemFromOrder(request, userId, orderId):
+    drink_id = request.form.get('drinkid')
+    sizeCode = request.form.get('sizeCode')
+    drinkRef = db.child("product_db").child(int(drink_id)).get()
+    drinkName = drinkList[int(drink_id) - 1].name
+    cusDict = {}
+    cusList = []
+    opts = drinkRef.val()["cust_opts"]
+
+    for i in opts:
+        cusList.append(db.child("cust_db").child(int(i)).get().val()["id"])
+
+    for i in range(len(cusList)):
+        value = request.form.get(str(opts[i]))
+        if value != "" and value != "None":
+            cusDict.update({
+                str(cusList[i]) : value
+            })
+            
+
+    custDrinkName = request.form.get('custDrinkName')
+    custDrinkInstructions = request.form.get('custDrinkInstruction')
+    
+    
+    # Processing cus drink name
+    if custDrinkName == '':
+        custDrinkName = 'Custom' + ' ' + drinkName + ' ' + '1'
+        item_name_dic = db.child('fav_db').child(userId).child(orderId).child('items').shallow().get().val()
+        counter = 1
+        while custDrinkName in item_name_dic:
+            custDrinkName = custDrinkName[:len(custDrinkName) - 1] + str(counter)
+            counter += 1
+    
+    # Updating item to cart
+    if cusDict == {}: cusDict = "none"
+    if custDrinkInstructions == '': custDrinkInstructions = "none"
+    if sizeCode == None: sizeCode= 'short'
+    item = {
+        custDrinkName : {
+                'drink_id': drink_id, 
+                'customizations': cusDict,
+                'instructions': custDrinkInstructions,
+                'quantity': 1,
+                'sizeCode': sizeCode,
+                'category': 'custom',
+            }
+    }
+    
+    # DB cart updating
+    # db.child('fav_db').child(userId).child(orderId).update({'category': timeCategory})
+    db.child('fav_db').child(userId).child(orderId).child('items').update(item)
 
 # REMOVE AN ITEM FROM CART GIVEN ITS IT
 def removeItemFromCart(userId, drinkId):

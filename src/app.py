@@ -8,8 +8,8 @@ app = Flask(__name__)
 
 #FLAVOR PROFILE LOGIC (using dummt user)
 #flavor profile dict
-
-user = db.child("user-item-db").child("262ZKKD4IDWdNTa6BeSHtEljKJi1").get()
+user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
+user = db.child("user-item-db").child(user_id).get()
 dict = user.val()
 
 flavorDict = {
@@ -69,7 +69,7 @@ from DrinkLoader import drinkCat_dic
 # ORDER, CART
 from order import *
 from timeHelpers import getGreeting
-user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
+
 cartInit(user_id)
 [order_list, usualOrders] = userOrderInit(user_id)
 sizeList = [('short', 'Short'), ('tall', 'Tall'), ('grande', 'Grande'), ('venti', 'Venti'), ('trenta', 'Trenta')]
@@ -88,17 +88,22 @@ toBeDisplayIndex = getToBeDisplayIndex(usualOrders)
 @app.route("/")
 def index():
     [order_list, usualOrders] = userOrderInit(user_id)
-    if usualOrders == []: usualOrders == getCountBasedOrder(order_list)
-    # recommendation
+    # print(usualOrders)
+    if usualOrders == []: usualOrders = getCountBasedOrder(order_list)
+    print(usualOrders)
     greeting = getGreeting()
     toBeDisplayIndex = getToBeDisplayIndex(usualOrders)
     
     return render_template('index.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered,
                             orders = toBeDisplayIndex, greeting = greeting, length = len(usualOrders))
 
-@app.route('/order/', methods = ['GET'])
+@app.route('/order', methods = ['GET','POST'])
 def order():
-        
+    if request.method == 'POST':
+        if request.form.get('customize-drink') != None:
+            drinkId = request.form.get('customize-drink')
+            return redirect('submit/'+ drinkId)
+            
     return render_template('order.html', drinkCat_dic = drinkCat_dic)
 
 @app.route('/savedOrders/', methods=['POST', 'GET'])
@@ -120,10 +125,20 @@ def savedOrders():
 def account():
     return render_template('account.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered)
 
-@app.route('/submit')
-def submit():
-    drink = db.child("product_db").child(1).get()
-    cust = db.child("product_db").child(1).child("cust_opts").get()
+
+@app.route('/submit/<drinkId>', methods=['POST', 'GET'])
+def submit(drinkId):
+    
+    # if POST
+    if request.method == 'POST':
+        if request.form['DrinkButton'] == "SubmitDrink":
+            addCustomItemToCart(request, user_id)
+            return redirect(url_for('cart'))
+    
+    # if GET
+    print(drinkId)
+    drink = db.child("product_db").child(drinkId).get()
+    cust = db.child("product_db").child(drinkId).child("cust_opts").get()
     custVal = cust.val()
 
     custRefs = []
@@ -138,35 +153,8 @@ def submit():
     for k in custRefs:
         custCat.append(k.val()["category"])
     custCat = list(OrderedDict.fromkeys(custCat))
-
-
     return render_template('submit.html', custRefs=custRefs, drink = drink, db = db, custDict = custDict, custCat = custCat)
 
-@app.route('/submit', methods=['POST'])
-def submit2():
-    if request.form['DrinkButton'] == "ChangeDrinkName":
-        sub = request.form.get('drink')
-        drink = db.child("product_db").child(int(sub)).get()
-        cust = db.child("product_db").child(int(sub)).child("cust_opts").get()
-        custVal = cust.val()
-
-        custRefs = []
-        custDict = {}
-
-        for i in custVal:
-            custRefs.append(db.child("cust_db").child(int(i)).get())
-        for k in custRefs:
-            custDict[k.val()["sub-category"]] = k.val()["category"]
-        custCat = []
-        for k in custRefs:
-            custCat.append(k.val()["category"])
-        custCat = list(OrderedDict.fromkeys(custCat))
-
-
-        return render_template('submit.html', custRefs=custRefs, drink=drink, db = db, custCat = custCat, custDict = custDict)
-    elif request.form['DrinkButton'] == "SubmitDrink":
-        addCustomItemToCart(request, user_id)
-        return redirect(url_for('submit'))
 
 
 @app.route('/friends/')
@@ -197,11 +185,14 @@ def cart():
         if request.form.get('remove') != None:
             drink_id = request.form.get('remove')
             removeItemFromCart(user_id, drink_id)
+        if request.form.get('custom') != None:
+            drink_name = request.form.get('custom')
+            print(drink_name)
+            return redirect('custom/'+ drink_name)
         
-
     cart = getCart(user_id)
     # sizeList = [('short', 'Short'), ('tall', 'Tall'), ('grande', 'Grande'), ('venti', 'Venti'), ('trenta', 'Trenta')]
-    return render_template('cart.html', itemList = cart.itemList, sizeList = sizeList, isinstance = isinstance, Item = Item)
+    return render_template('cart.html', itemList = cart.itemList, sizeList = sizeList)
 
 
 # CART ROUTING FROM THE ORDER MENU
@@ -235,7 +226,8 @@ def addOrder():
     addOrderToCart(user_id, orderId)
     return redirect('cart')
 
-@app.route('/savedOrders/cusOrder/<orderId>', methods=['POST','GET'])
+# CUSTOM ORDER PAGE
+@app.route('/savedOrders/cusOrder/<orderId>/', methods=['POST','GET'])
 def cusOrder(orderId):
     if request.method == 'POST':
         if request.form.get('remove') != None:
@@ -243,15 +235,19 @@ def cusOrder(orderId):
             drinkId = request.form['remove']
             removeItemFromOrder(user_id, drinkId, orderId)
             print('Remove Item',drinkId,'from order',orderId)
+            
         if request.form.get('custom') != None:
-            print('Customize Item',drinkId,'from order',orderId)
+            drinkId = request.form['custom']
+            print('Customizing Item',drinkId,'from order',orderId)
+            return redirect('custom/'+ drinkId)
+        
         if request.form.get('order-form') == "save":
             orderId = request.form['orderId']
             updateOrder(user_id, orderId, request)
             print('Saving order',orderId)
             
     order = getOrder(user_id, orderId)
-    print(order.category)
+    # print(order.category)
     timeList = [('WEEKDAY_MORNING', 'WEEKDAY MORNING'), 
                 ('WEEKDAY_NOON', 'WEEKDAY NOON'), 
                 ('WEEKDAY_NIGHT', 'WEEKDAY NIGHT'), 
@@ -260,6 +256,69 @@ def cusOrder(orderId):
                 ('WEEKEND_NIGHT', 'WEEKEND NIGHT')]
     return render_template('order-cus.html', timeList = timeList, order = order, orderId = orderId, itemList = order.itemList, sizeList = sizeList)
  
+@app.route('/savedOrders/cusOrder/<orderId>/custom/<drinkName>', methods=['POST', 'GET'])
+def customFromOrder(orderId, drinkName):
+    
+    inventory = db.child('fav_db').child(user_id).child(orderId).child('items').child(drinkName).get().val()
+    drinkId = inventory['drink_id']
+    instructions = inventory['instructions']
+    # if POST
+    if request.method == 'POST':
+        if request.form['DrinkButton'] == "SubmitDrink":
+            customizeItemFromOrder(request, user_id, orderId)
+            return redirect(url_for(orderId))
+    
+    # if GET
+    print(drinkId)
+    drink = db.child("product_db").child(drinkId).get()
+    cust = db.child("product_db").child(drinkId).child("cust_opts").get()
+    custVal = cust.val()
+
+    custRefs = []
+    custDict = {}
+
+    for i in custVal:
+        custRefs.append(db.child("cust_db").child(int(i)).get())
+    for k in custRefs:
+        custDict[k.val()["sub-category"]] = k.val()["category"]
+    custCat = []
+    for k in custRefs:
+        custCat.append(k.val()["category"])
+    custCat = list(OrderedDict.fromkeys(custCat))
+
+    return render_template('submit.html', instructions = instructions, custRefs=custRefs, custDrinkName = drinkName, drink = drink, custDict = custDict, custCat = custCat)
+ 
+ 
+@app.route('/cart/custom/<drinkName>', methods=['POST', 'GET'])
+def customFromCart(drinkName):
+    inventory = db.child('fav_db').child(user_id).child('cart').child('items').child(drinkName).get().val()
+    drinkId = inventory['drink_id']
+    instructions = inventory['instructions']
+    # if POST
+    if request.method == 'POST':
+        if request.form['DrinkButton'] == "SubmitDrink":
+            customizeItemFromOrder(request, user_id, 'cart')
+            return redirect(url_for('cart'))
+    
+    # if GET
+    print(drinkId)
+    drink = db.child("product_db").child(drinkId).get()
+    cust = db.child("product_db").child(drinkId).child("cust_opts").get()
+    custVal = cust.val()
+
+    custRefs = []
+    custDict = {}
+
+    for i in custVal:
+        custRefs.append(db.child("cust_db").child(int(i)).get())
+    for k in custRefs:
+        custDict[k.val()["sub-category"]] = k.val()["category"]
+    custCat = []
+    for k in custRefs:
+        custCat.append(k.val()["category"])
+    custCat = list(OrderedDict.fromkeys(custCat))
+
+    return render_template('submit.html', instructions = instructions, custRefs=custRefs, custDrinkName = drinkName, drink = drink, custDict = custDict, custCat = custCat)
  
 if __name__ == "__main__":
     app.run(debug=True)

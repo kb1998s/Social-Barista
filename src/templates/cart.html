@@ -61,8 +61,8 @@
                 {% endif %}
 
                 <div class="actions">
-                    <button href="{{ url_for('customization') }}">Customize</button>
-                        <button type="submit" name="remove" value="{{item.name}}" >Remove</button>
+                    <button type="submit" name="custom" value="{{item.name}}">Customize</button>
+                    <button type="submit" name="remove" value="{{item.name}}" >Remove</button>
                 </div>
             </div>
         {% endfor %}

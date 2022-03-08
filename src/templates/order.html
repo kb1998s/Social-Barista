@@ -45,7 +45,9 @@
                         <form action="{{url_for('addItem')}}" method="post" id ="drink-form">
                             <button type="submit" name="drink-id" value="{{item.id}}">Add to Order</button>
                         </form>
-                        <button>Customize</button>
+                        <form action="" method="post" id ="drink-form">
+                            <button type="submit" name="customize-drink" value="{{item.id}}">Customize</button>
+                        </form>
                     </div>
                
                 {% endfor %}
@@ -66,7 +68,7 @@
             <span>Price: 3.65</span>
             <div class = actions>
                 <a>Add To Cart</a>
-                <a href="{{ url_for('submit') }}">Customize</a>
+                <a href="">Customize</a>
                 <a>Remove</a>
             </div>
         </div>

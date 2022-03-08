@@ -5,9 +5,14 @@
     border-top: 3px solid black;
 }
 
+.page-container{
+    height: 100%;
+    min-height: 70vh;
+    max-width: 100%;
+}
+
 .form-container{
     padding: 20px;
-    height: 150vh;
     width: 100vw;
 }
 

@@ -127,7 +127,7 @@ def getToBeDisplayIndex(usualOrders):
     curDisplayOrder = []
     print(usualOrders)
     if usualOrders == []:
-        return 'No custom orders have been saved into the system yet'
+        return ['No custom orders have been saved into the system yet.']
     for order in usualOrders:
         # print(order.name)
         itemList = order.itemList

@@ -8,9 +8,8 @@ app = Flask(__name__)
 
 #FLAVOR PROFILE LOGIC (using dummt user)
 #flavor profile dict
-user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
-user = db.child("user-item-db").child(user_id).get()
-dict = user.val()
+user_id = "usertest"
+
 
 flavorDict = {
     "sweet": 0,
@@ -27,40 +26,54 @@ flavorDict = {
     "refreshing": 0,
 }
 
-#list of ordered drinks ID's
-drinkslist = []
-#number of times drink was ordered
-timesordered = []
-for x,y in dict.items():
-    drinkslist.append(int(x))
-    timesordered.append(int(y))
+def getFlavorProfile(user_id):
+    # flavor init:
+    user = db.child("user-item-db").child(user_id).get()
+    dict = user.val()
+    if (dict == None):
+        db.child("user-item-db").child(user_id).set({1: 1,
+                                                    'bug_holder': 'bug_holder'})
+        user = db.child("user-item-db").child(user_id).get()
 
-flavorlist = []
-for i in range(len(drinkslist)):
-    flavorlist.append(db.child("product_db").child(drinkslist[i]).child("flavor").get().val())
+    #list of ordered drinks ID's
+    drinkslist = []
+    #number of times drink was ordered
+    timesordered = []
 
-#Count number of times flavor was ordered
-for i, item in enumerate(flavorlist):
-    for k in item:
-        temp = k
-        flavorDict[temp] += timesordered[i]
+    for x,y in dict.items():
+        if (x != 'bug_holder'):
+            drinkslist.append(int(x))
+            timesordered.append(int(y))
 
-#Get total drinks ordered
-numDrinksOrdered = 0
-for i, item in enumerate(timesordered):
-    numDrinksOrdered += timesordered[i]
+    flavorlist = []
+    for i in range(len(drinkslist)):
+        flavorlist.append(db.child("product_db").child(drinkslist[i]).child("flavor").get().val())
 
-#Get top 4 stats
-import heapq
-heapFlavors = heapq.nlargest(4, flavorDict, key=flavorDict.get)
+    #Count number of times flavor was ordered
+    for i, item in enumerate(flavorlist):
+        for k in item:
+            temp = k
+            flavorDict[temp] += timesordered[i]
 
-topFlavors = []
-topStats = []
-for i in heapFlavors:
-    topFlavors.append(i)
+    #Get total drinks ordered
+    numDrinksOrdered = 0
+    for i, item in enumerate(timesordered):
+        numDrinksOrdered += timesordered[i]
 
-for i in topFlavors:
-    topStats.append(flavorDict[i])
+    #Get top 4 stats
+    import heapq
+    heapFlavors = heapq.nlargest(4, flavorDict, key=flavorDict.get)
+
+    topFlavors = []
+    topStats = []
+    for i in heapFlavors:
+        topFlavors.append(i)
+
+    for i in topFlavors:
+        topStats.append(flavorDict[i])
+    
+    return [topFlavors, topStats, numDrinksOrdered]
+
 #END FLAVOR PROFILE
 
 # DRINKS MENU LOADING -- for testing only
@@ -93,7 +106,7 @@ def index():
     print(usualOrders)
     greeting = getGreeting()
     toBeDisplayIndex = getToBeDisplayIndex(usualOrders)
-    
+    topFlavors, topStats, numDrinksOrdered = getFlavorProfile(user_id)
     return render_template('index.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered,
                             orders = toBeDisplayIndex, greeting = greeting, length = len(usualOrders))
 

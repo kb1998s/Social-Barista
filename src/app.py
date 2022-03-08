@@ -10,8 +10,8 @@ app = Flask(__name__)
 #flavor profile dict
 user_id = "usertest"
 
-
-flavorDict = {
+def getFlavorProfile(user_id):
+    flavorDict = {
     "sweet": 0,
     "nutty": 0,
     "aromatic": 0,
@@ -24,9 +24,8 @@ flavorDict = {
     "creamy": 0,
     "floral": 0,
     "refreshing": 0,
-}
+    }
 
-def getFlavorProfile(user_id):
     # flavor init:
     user = db.child("user-item-db").child(user_id).get()
     dict = user.val()
@@ -70,6 +69,7 @@ def getFlavorProfile(user_id):
         topFlavors.append(i)
 
     for i in topFlavors:
+
         topStats.append(flavorDict[i])
     
     return [topFlavors, topStats, numDrinksOrdered]

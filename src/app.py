@@ -17,6 +17,8 @@ firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 db = firebase.database()
 
+db.child("product_db").child(102).update({"img": ""})
+
 #HTML app routess
 @app.route("/")
 def index():
@@ -29,8 +31,8 @@ def account():
     return render_template('account.html')
 @app.route('/submit')
 def submit():
-    drink = db.child("product_db").child(1).get()
-    cust = db.child("product_db").child(1).child("cust_opts").get()
+    drink = db.child("product_db").child(34).get()
+    cust = db.child("product_db").child(34).child("cust_opts").get()
     custVal = cust.val()
 
     custRefs = []
@@ -51,7 +53,7 @@ def submit():
 
 @app.route('/submit', methods=['POST'])
 def submit2():
-    if request.form['DrinkButton'] == "SubmitDrink":
+    if request.form['DrinkButton'] == "Add to Order":
 
         id = request.form.get('drinkid')
         drinkRef = db.child("product_db").child(int(id)).get()

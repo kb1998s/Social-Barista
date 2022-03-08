@@ -17,16 +17,18 @@ if ( window.history.replaceState ) {
 
 {% block body %}
 
-<header class=container>
+<header class="container">
     <h1>Submit a Drink!</h1>
 </header>
 
-<div class=form-container>
+<div class="form-container">
 
     <h1 style="text-align: center">{{ drink.val()['name'] }}</h1>
+    <img src="{{ drink.val()["img"] }}" style="width:300px;height:300px;"/><br>
     <form method="post">
-
-    <h1 style="text-align: center">Customizations</h1>
+    <br>
+    <details>
+    <summary style="font-size: 30px">Customizations</summary>
     <select style = "visibility: hidden" name = "drinkid"><option>{{ drink.val()['id'] }}</option></select>
     {% for j in custCat %}
         <br>
@@ -35,7 +37,8 @@ if ( window.history.replaceState ) {
         {% for key,val in custDict.items() %}
             {% if val == j %}
                   <br>
-            <h5>{{ key }}</h5>
+             <details>
+            <summary style="font-size: 20px">{{ key }}</summary>
         {% for i in custRefs %}
             {% if i.val()["sub-category"]|string() == key|string() and i.val()["category"]|string() == j|string() %}
                 <label style="font-weight: bold" > {{ i.val()["name"]}}:</label>
@@ -53,11 +56,12 @@ if ( window.history.replaceState ) {
                 </select><br>
             {% endif %}
         {% endfor %}
-
+            </details>
             {%  endif %}
     {% endfor %}
     {% endfor %}
-    <br>
+    </details>
+    <label  style="font-weight: bold">Drink Size:</label><br>
 
     <select name = "size">
         <option>Short</option>
@@ -65,14 +69,12 @@ if ( window.history.replaceState ) {
         <option>Grande</option>
         <option>Venti</option>
     </select>
-    <br><label style="font-weight: bold">Your Drink Name</label>
-    <input type="text" name="custDrinkName" required><br>
-    <label style="font-weight: bold">Additional Instructions</label>
+    <br><label style="font-weight: bold">Your Drink Name:</label>
+    <br><input type="text" name="custDrinkName" required><br>
+    <label style="font-weight: bold">Additional Instructions:</label>
     <input type="text" name="custDrinkInstruction" placeholder= "None"><br>
-    <input type="submit" name= "DrinkButton" value= "SubmitDrink">
+    <br><input type="submit" name= "DrinkButton" value= "Add to Order" class="button">
     </form>
 </div>
-
-<div style="clear:both; margin-bottom: 300px "></div>
 
 {% endblock %}

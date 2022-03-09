@@ -83,8 +83,9 @@
             
             <div class="buttons">
                 <input type="hidden" name="orderId" value="{{orderId}}">
-                
+                {% if itemList|length > 1%}
                 <button type="submit" name="order-form" value="save" form="order-form">Update Order</button>
+                {% endif %}
             </div>
 
     </div>

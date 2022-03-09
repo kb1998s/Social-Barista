@@ -1,15 +1,18 @@
-.container{
-    padding: 5px;
+.map-container{
+    padding: 0px;
     background-color:	#f5f5f5;
     border-bottom: 3px solid black;
     border-top: 3px solid black;
 }
 
-#map{
-    padding: 20px;
-    height: 80vh;
-    width: 100vw;
+.map-container > h1{
+    font-size: 20px;
 }
+
+#map {
+    min-height: 68vh;
+    width: 100%;
+  }
 
 body{
     background-color:#f5f5f5;

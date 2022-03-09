@@ -8,8 +8,8 @@ app = Flask(__name__)
 
 #FLAVOR PROFILE LOGIC (using dummt user)
 #flavor profile dict
-# user_id = "usertest"
-user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
+user_id = "usertest"
+# user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
 
 def getFlavorProfile(user_id):
     flavorDict = {

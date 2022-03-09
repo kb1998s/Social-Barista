@@ -69,7 +69,7 @@
                     </div>
                 <!-- </form> -->
             {% endfor %}
-            
+            {% if itemList|length > 1%}
             <label for="time-category">Time Category:</label>
             <select name="time-category" id="time-category">
                 {% for value, time in timeList: %}
@@ -83,10 +83,11 @@
             
             <div class="buttons">
                 <input type="hidden" name="orderId" value="{{orderId}}">
-                {% if itemList|length > 1%}
+                
                 <button type="submit" name="order-form" value="save" form="order-form">Update Order</button>
-                {% endif %}
+                
             </div>
+            {% endif %}
 
     </div>
 </form>

@@ -128,7 +128,9 @@ def savedOrders():
     
     if request.method == 'POST':
         orderId = request.form.get('orderId')
-        if request.form['cus-form'] == 'addToCart': addOrderToCart(user_id, orderId)
+        if request.form['cus-form'] == 'addToCart': 
+            addOrderToCart(user_id, orderId)
+            return redirect(url_for('cart'))
         if request.form['cus-form'] == 'removeOrder': removeSavedOrder(user_id, orderId)
         if request.form['cus-form'] == 'cusOrder':
             orderId = request.form['orderId']

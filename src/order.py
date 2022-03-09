@@ -283,6 +283,9 @@ def updateCart(userId, request):
     inventory = db.child('fav_db').child(userId).child('cart').get().val()
     timeCategory = getTimeCategory()
     items = inventory['items']
+    if (items == 'none'): 
+        print('There is no item in cart')
+        return
     items_dic = {}
     for name in items:
         instructions = items[name]['instructions']
@@ -373,14 +376,9 @@ def saveOrderFromCart(userId, request):
     toBeUpdated = {
         order_name: inventory
     }
-    # cartReInit = {
-    #     'category': inventory['category'],
-    #     'items': 'none',
-    #     'added-orders': 'none',
-    # }
+    
     # db update new order
     db.child('fav_db').child(userId).update(toBeUpdated)
-    # db.child('fav_db').child(userId).child('cart').update(cartReInit)
     
 # REMOVE ALL ITEM FROM THE CART
 def cartReInit(userId):
@@ -580,7 +578,7 @@ def addOrderToCart(userId, orderId):
     # DB update
     db.child('fav_db').child(userId).child('cart').update(toBeUpdated)
     
-# UPDATE ORDER COUNT OR AN ORDER OF A USER
+# UPDATE ORDER COUNT OF AN ORDER OF A USER
 def updateOrderCount(userId):
     addedOrders = db.child('fav_db').child(userId).child('cart').child('added-orders').get().val()
     orderList = db.child('fav_db').child(userId).shallow().get().val()
@@ -597,6 +595,9 @@ def updateDrinkCount(userId):
     drinkList = []
     items = db.child('fav_db').child(userId).child('cart').child('items').get().val()
     count_dic = db.child('user-item-db').child(userId).get().val()
+    if items == 'none': 
+        print('There is no drink inside the cart to submit')
+        return
     if count_dic == None : count_dic = {}
     count_dic.update({'bug_holder': 'bug_holder'})
     

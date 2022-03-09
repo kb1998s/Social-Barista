@@ -5,6 +5,10 @@
         href="{{ url_for('static', filename='css/map.css') }}"/>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
         rel="stylesheet">
+<script src="{{ url_for('static', filename='js/legitmap.js') }}"></script>
+<script> src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwb8wZn4eMHx--aqcz7LRpayAMs5bhj-Q&callback=initMap&libraries=places&v=weekly&channel=2"</script>
+<!-- jsFiddle will insert css and js -->
+
 {% endblock %}
 
 {% block body %}
@@ -13,9 +17,11 @@
     <h1>Choose a Location</h1>
 </header>
 
-<div id="map">
-    Map feature goes here
-    <!-- IMPLEMENT JOSHS MAP FEATURE -->
-</div>
+<div id="map"></div>
+
+<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwb8wZn4eMHx--aqcz7LRpayAMs5bhj-Q&libraries=places&callback=initMap">
+</script>
 
 {% endblock %}

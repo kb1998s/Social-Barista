@@ -5,11 +5,10 @@
     border-top: 3px solid black;
 }
 
-#map{
-    padding: 20px;
-    height: 80vh;
-    width: 100vw;
-}
+#map {
+    min-height: 70vh;
+    width: 100%;
+  }
 
 body{
     background-color:#f5f5f5;

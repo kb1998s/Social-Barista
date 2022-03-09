@@ -196,6 +196,7 @@ def cart():
             updateDrinkCount(user_id)
             updateOrderCount(user_id)
             print('Submitting the cart for user', user_id)
+            submitCart(user_id, request)
             cartReInit(user_id)
         if request.form.get('cart-form') == 'save':
             saveOrderFromCart(user_id, request)

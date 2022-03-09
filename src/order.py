@@ -1,6 +1,7 @@
 # from typing_extensions import Self
 from ast import iter_child_nodes
 from asyncio.windows_events import NULL
+from dis import Instruction
 from itertools import count
 from turtle import update
 from unicodedata import category
@@ -621,5 +622,31 @@ def updateDrinkCount(userId):
         db.child('user-item-db').child(userId).set(count_dic)
     else:
         db.child('user-item-db').child(userId).update(count_dic)
+
+
+def submitCart(userId, request):
+    inventory = db.child('fav_db').child(userId).child('cart').get().val()
+    if inventory == 'none':
+        return
+    
+    orderName = request.form.get('order')
+    instructions = request.form.get('instructions')
+    if orderName == None or  orderName == '': orderName ='none'
+    if instructions == None or instructions == '': instructions = 'none'
+    items = inventory['items']
+    
+    toBeSubmitted = {
+        userId: {
+            'orderName': orderName,
+            'items': items,
+            'instructions': instructions
+        }
+    }
+    
+    # write
+    employee_ref = db.child('employee-db').get().val()
+    if employee_ref == None: db.child('employee-db').set(toBeSubmitted)
+    else: db.child('employee-db').update(toBeSubmitted)
+    
     
     

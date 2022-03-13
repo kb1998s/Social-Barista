@@ -1,7 +1,12 @@
 let map;
 let service;
 let infowindow;
-
+/*This function initializes the map, and the area in which it is focusing. Also, initializes the request
+ or search of the map (what is to be found)
+ @param takes in no parameters
+ @return map of the specified location
+ @see Map of location, finding Starbucks locations
+*/
 function initMap() {
   const ellensburg = new google.maps.LatLng(46.9965, 120.5478);
 
@@ -27,7 +32,13 @@ function initMap() {
     }
   });
 }
-
+/* This function returns the marker on the map which actually locates the Starbucks 
+and places a tag on that location. It takes in the place that was written before as an arg
+and this is the location of what the map is showing
+@param place the location that was written above and is where the map is located
+@return returns the mark of the Starbucks location on map
+@see red tag on the map of location
+*/
 function createMarker(place) {
   if (!place.geometry || !place.geometry.location) return;
 

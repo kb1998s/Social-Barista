@@ -1,5 +1,8 @@
 import pyrebase
 
+"""Database initializing for any module in need
+"""
+
 #Add your own details
 config = {
     'apiKey': "AIzaSyBztWUIwgKYvM8YLFHbpuazAgPBak3gSXE",

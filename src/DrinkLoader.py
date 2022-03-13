@@ -16,6 +16,8 @@ auth = firebase.auth()
 db = firebase.database()
 
 class Drink:
+    """Drink class for handling all drinks loaded from the productDB
+    """
     def __init__(self, name, cat, subcat, flavor, opts, id):  
         self.id = id
         self.name = name
@@ -26,6 +28,11 @@ class Drink:
     
 
 def getDrinkList():
+    """Load from the database process drink to Drink Object
+
+    Returns:
+        drink_list (Drink list): list of Drink Object
+    """
     product_db_ref = db.child("product_db")
     inventory = product_db_ref.get().val()
     drink_list = []
@@ -46,6 +53,11 @@ def getDrinkList():
 drinkList = getDrinkList()
 
 def getDrinkCatDic():
+    """Process all the drinks to an dictionary that specify its category and sub-category
+
+    Returns:
+        drinkCat_dic (JSON dictionary): dictionary of drink-category-subcategory
+    """
     drinkCat_dic = {}
     subcat_dic = {}
     subcat_cat_dic = {}

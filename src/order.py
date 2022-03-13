@@ -12,6 +12,20 @@ from DrinkLoader import drinkList
 
 class Item:
     def __init__(self, name, customizations, sizeCode, quantity, instructions, category, id):
+        """
+        Get and process all the order data from the user and append them to Item object
+        Args:
+            name (String):  name of item
+            customizations (JSON dictionary): customizations of item
+            sizeCode (int): size of item
+            quantity (int): quantity of item
+            instructions (String): instruction of item
+            category (_type_): category of item
+            id (_type_): id of item
+        Returns:
+            order_list (Order object - list): list of order objects
+
+        """
         self.name = name
         self.customizations = customizations
         self.sizeCode = sizeCode
@@ -21,13 +35,39 @@ class Item:
         self.id = id
 
 class Customization:
+    
     def __init__(self, name, option):
+        """Process Customization in OOP-form
+
+        Args:
+            name (String): name of cust
+            option (String): cust option
+        """
         self.name = name
         self.option = option
     def getDict(self):
+        """Dictionary-ing this customization
+
+        Returns:
+            dict (JSON dictionary): dictionary of this customization
+        """
         return {self.name: self.option}
         
 class Order:
+    """
+    Get and process all the order data from the user and append them to Order object
+    Args:
+        name (String): name of Order
+        customizations (JSON dictionary): Customization of Order
+        sizeCode (int): size of Order
+        quantity (int): quantity of Order
+        instructions (String): instructions of Order
+        category (_type_): category of Order
+        id (_type_): id of Order
+    Returns:
+        order_list (Order object - list): list of order objects
+
+    """
     def __init__(self, name, category, itemList, orderCount):
         self.name = name
         self.category = category
@@ -36,6 +76,13 @@ class Order:
     
 # GET ALL AVAILABLE ORDERS OF CURRENT USER
 def getOrderList(inventory):
+    """Get and process all the order data from the user and append them to Order object
+    Args:
+        inventory (JSON dictionary):  inventory of the user
+    Returns:
+        order_list (Order object - list): list of order objects
+
+    """
     order_list = []
     for order in inventory:
         # print(order)
@@ -87,6 +134,12 @@ def getOrderList(inventory):
 
 # TO GET TIME-BASED ORDERS
 def getUsualOrders(orders):
+    """Get Order based on the current time tag and append it to another list of Order Object
+    Args:
+        orders (Order object - list):  list of available orders
+    Returns:
+        order_list (Order object - list): list of order objects
+    """
     
     curTime = getTimeCategory()
     usualOrders = []
@@ -99,6 +152,12 @@ def getUsualOrders(orders):
 
 # TO GET COUNT-BASED ORDERS:
 def getCountBasedOrder(orders):
+    """Get the n-most checked out orders by the user
+    Args:
+        orders (Order object - list):  list of available orders
+    Returns:
+        order_list (Order object - list): list of order objects
+    """
     import heapq
     def sortkey(order):
         return order.orderCount
@@ -110,6 +169,14 @@ def getCountBasedOrder(orders):
 # INIT USUAL ORDER
 # Querying database and pass it to getOrderList and getUsualOrders
 def userOrderInit(user_id):
+    """Initializing order list and usual order list
+    Args:
+        user_id (_type_): _description_
+
+    Returns:
+        order_list (Order list): list of available order
+        usualOrders (Order list): list of usual order
+    """
     
     order_list = []
     usualOrders = []
@@ -125,6 +192,13 @@ def userOrderInit(user_id):
 # Sort out usual orders that going to be display in the index page (index.html)
 # Currently only displays maximum 2 orders and 2 items in each order
 def getToBeDisplayIndex(usualOrders):
+    """Process usual order to String values that is going to be display in the index page
+    Args:
+        orders (Order object - list):  list of recommended orders
+    Returns:
+        toBeDisplay (String list): List of strings to be displayed.
+
+    """
     curDisplayOrder = []
     print(usualOrders)
     if usualOrders == []:
@@ -155,6 +229,14 @@ def getToBeDisplayIndex(usualOrders):
     
 # SAVE CURRENT CART TO DB:
 def saveOrder(order, userId):
+    """Save the given order for this userId
+    Args:
+        order (Order object):  Current Order
+        userId (String): id of user
+    Returns:
+        Save this order for this userId in the Database (favdb).
+
+    """
     items_dic = {}
     for item in order.itemList:
         items_dic.update({
@@ -183,6 +265,12 @@ def saveOrder(order, userId):
 
 # CART INIT
 def cartInit(userId):
+    """Initialize the values of the cart if the user is not available in favdb
+    Args:
+        userId (String): Id of the user
+    Returns:
+        None
+    """
     timeCategory = getTimeCategory()
     cartInit = {
         'cart' : {
@@ -205,6 +293,13 @@ def cartInit(userId):
 
 # UPDATE CART FROM DB
 def getCart(userId):
+    """Get the cart of this user, process it as an object of Order class
+    Args:
+        userId (String): id of user
+    Returns:
+        cart (Order Object)
+
+    """
     inventory = db.child('fav_db').child(userId).child('cart').get().val()
     category = inventory['category'] 
     items_dic = inventory['items']
@@ -244,6 +339,14 @@ def getCart(userId):
 
 # UPDATE Order FROM DB
 def getOrder(userId, orderId):
+    """Get a specific order of this user, process this order and return it as an Order object
+    Args:
+        userId (String): id of user
+        orderId (String): id of order
+    Returns:
+        order (Order Object)
+
+    """
     inventory = db.child('fav_db').child(userId).child(orderId).get().val()
     category = inventory['category'] 
     items_dic = inventory['items']
@@ -281,6 +384,14 @@ def getOrder(userId, orderId):
 
 # UPDATE GIVEN QUANTITY AND SIZES INSIDE THE CART
 def updateCart(userId, request):
+    """Real-time update the current cart for this user in the database
+    Args:
+        userId (String): id of user
+        request (form-request): request that store the submitted-form from Flask Template
+    Returns:
+        None
+
+    """
     inventory = db.child('fav_db').child(userId).child('cart').get().val()
     timeCategory = getTimeCategory()
     items = inventory['items']
@@ -323,6 +434,15 @@ def updateCart(userId, request):
 
 # UPDATE GIVEN QUANTITY AND SIZES FOR EACH DRINK AND CATEGORY INSIDE THE ORDER
 def updateOrder(userId, orderId, request):
+    """Real-time update the current order for this user in the database
+    Args:
+        userId (String): id of user
+        orderId (String): id of the order
+        request (form-request): request that store the submitted-form from Flask Template
+    Returns:
+        None
+
+    """
     inventory = db.child('fav_db').child(userId).child(orderId).get().val()
     timeCategory = request.form.get('time-category')
     items = inventory['items']
@@ -363,7 +483,14 @@ def updateOrder(userId, orderId, request):
 
 # SAVE ORDER FROM CART
 def saveOrderFromCart(userId, request):
+    """Save the current cart to be a custom-order
+    Args:
+        userId (String): id of user
+        request (form-request): request that store the submitted-form from Flask Template
+    Returns:
+        None
 
+    """
     inventory = db.child('fav_db').child(userId).child('cart').get().val()
     order_name = request.form.get('order')
     if order_name == '': 
@@ -383,6 +510,13 @@ def saveOrderFromCart(userId, request):
     
 # REMOVE ALL ITEM FROM THE CART
 def cartReInit(userId):
+    """Helper function to reinitialize the cart everytime submitted a cart
+    Args:
+        userId (String): id of user
+    Returns:
+        None
+
+    """
     cartReInit = {
         'category': getTimeCategory(),
         'items': 'none',
@@ -413,6 +547,14 @@ def addItemToCart(userId, drinkId):
     
 # ADD CUSTOM ITEM TO CART
 def addCustomItemToCart(request, userId):
+    """Add a custom item to cart
+    Args:
+        userId (String): id of user
+        request (form-request): request that store the submitted-form from Flask Template
+    Returns:
+        None
+
+    """
     drink_id = request.form.get('drinkid')
     sizeCode = request.form.get('sizeCode')
     drinkRef = db.child("product_db").child(int(drink_id)).get()
@@ -469,6 +611,15 @@ def addCustomItemToCart(request, userId):
     
 # ADD CUSTOM ITEM TO CART
 def customizeItemFromOrder(request, userId, orderId):
+    """Add a custom item to cart
+    Args:
+        userId (String): id of user
+        orderId (String): id of order
+        request (form-request): request that store the submitted-form from Flask Template
+    Returns:
+        None
+
+    """
     drink_id = request.form.get('drinkid')
     sizeCode = request.form.get('sizeCode')
     drinkRef = db.child("product_db").child(int(drink_id)).get()
@@ -525,6 +676,15 @@ def customizeItemFromOrder(request, userId, orderId):
 
 # REMOVE AN ITEM FROM CART GIVEN ITS IT
 def removeItemFromCart(userId, drinkId):
+    """ Remove an Item from cart
+    Args:
+        userId (String): id of user
+        drinkId (String): id of the drink
+        orderId (String): id of order
+        request (form-request): request that store the submitted-form from Flask Template
+    Returns:
+        None
+"""
     timeCategory = getTimeCategory()
     # print(drinkId)
     db.child('fav_db').child(userId).child('cart').update({'category': timeCategory})
@@ -536,6 +696,13 @@ def removeItemFromCart(userId, drinkId):
 
 # REMOVE AN ITEM FROM AN ORDER GIVEN ITS ID
 def removeItemFromOrder(userId, drinkId, orderId):
+    """Remove an Item from Order
+    Args:
+        userId (String): id of user
+        drinkId (String): id of the drink
+        orderId (String): id of order
+        request (form-request): request that store the submitted-form from Flask Template
+"""
     keys = db.child('fav_db').child(userId).child(orderId).child('items').shallow().get().val()
     
     print(drinkId, keys)
@@ -546,11 +713,24 @@ def removeItemFromOrder(userId, drinkId, orderId):
 
 # REMOVE AN ORDER FROM SAVED ORDERS PAGE
 def removeSavedOrder(userId, orderID):
+    """Remove a saved Order
+
+    Args:
+        userId (String): id of user
+        orderId (String): id of order
+    """
     db.child('fav_db').child(userId).child(orderID).remove()
     print("Removed", orderID)
     
 # ADD ALL ITEMS OF A SAVED ORDERS TO CART
 def addOrderToCart(userId, orderId):
+    """Add all the items of current order to cart
+    Args:
+        userId (String): id of user
+        orderId (String): id of order
+    Returns:
+        None
+    """
     # order init
     inventory = db.child('fav_db').child(userId).child(orderId).get().val()
     itemList = inventory['items']
@@ -581,6 +761,11 @@ def addOrderToCart(userId, orderId):
     
 # UPDATE ORDER COUNT OF AN ORDER OF A USER
 def updateOrderCount(userId):
+    """Update Order Count
+
+    Args:
+        userId (String): id of user
+    """
     addedOrders = db.child('fav_db').child(userId).child('cart').child('added-orders').get().val()
     orderList = db.child('fav_db').child(userId).shallow().get().val()
     for order in addedOrders:
@@ -593,6 +778,12 @@ def updateOrderCount(userId):
         db.child('fav_db').child(userId).child(order).update(toBeUpdated)
     
 def updateDrinkCount(userId):
+    """ From the current cart, update the drink count to user-item-db for the current user 
+    Args:
+        userId (String): id of user
+    Returns:
+        None
+    """
     drinkList = []
     items = db.child('fav_db').child(userId).child('cart').child('items').get().val()
     count_dic = db.child('user-item-db').child(userId).get().val()
@@ -625,6 +816,13 @@ def updateDrinkCount(userId):
 
 
 def submitCart(userId, request):
+    """ Submit this cart to employee side
+    Args:
+        userId (String): id of user
+        request (form-request): request that store the submitted-form from Flask Template
+    Returns:
+        None
+    """
     inventory = db.child('fav_db').child(userId).child('cart').get().val()
     if inventory == 'none':
         return

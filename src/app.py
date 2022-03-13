@@ -12,6 +12,17 @@ app = Flask(__name__)
 user_id = "NzkGCghmk4MO4mCjwn3DQ8n3LxH2"
 
 def getFlavorProfile(user_id):
+    
+    """
+    Retrieve data from the database, sort and get 4 most flavor ordered  by this user
+    Args:
+        userId (String): id of user
+    Returns:
+       [topFlavors (String list): list of flavors ordered by the user,
+        topStats (int list): drink-stats of the current user,
+        numDrinksOrdered (int): number of drinks ordered]
+    """
+    
     flavorDict = {
     "sweet": 0,
     "nutty": 0,
@@ -104,6 +115,14 @@ toBeDisplayIndex = getToBeDisplayIndex(usualOrders)
 #HTML app routes
 @app.route("/")
 def index():
+    """
+    Get recommendation, drink profile and display it in the index page.
+    Args:
+        None
+    Returns:
+       Index page (index.html)
+    """
+    
     [order_list, usualOrders] = userOrderInit(user_id)
     # print(usualOrders)
     if usualOrders == []: usualOrders = getCountBasedOrder(order_list)
@@ -116,6 +135,15 @@ def index():
 
 @app.route('/order', methods = ['GET','POST'])
 def order():
+    """
+    Load drink from Drink Loader module and display menu of drinks in the order page
+    Handling form for drink customization from this page.
+    Args:
+        None
+    Returns:
+       Order page (order.html)
+
+    """
     if request.method == 'POST':
         if request.form.get('customize-drink') != None:
             drinkId = request.form.get('customize-drink')
@@ -125,6 +153,15 @@ def order():
 
 @app.route('/savedOrders/', methods=['POST', 'GET'])
 def savedOrders():
+    """
+    Displaying all custom order.
+    Handling form for adding the order to cart, customizing order, deleting that order
+    Args:
+        None
+    Returns:
+       Saved Order page (savedOrders.html)
+
+    """
     
     if request.method == 'POST':
         orderId = request.form.get('orderId')
@@ -142,6 +179,12 @@ def savedOrders():
 
 @app.route('/account/')
 def account():
+    """
+    Loadding drink profile to the account page and display it.
+
+    Returns:
+        Account Page (account.html)
+    """
     topFlavors, topStats, numDrinksOrdered = getFlavorProfile(user_id)
 
     return render_template('account.html', topFlavors = topFlavors, topStats = topStats, totalDrinks = numDrinksOrdered)
@@ -149,7 +192,16 @@ def account():
 
 @app.route('/submit/<drinkId>', methods=['POST', 'GET'])
 def submit(drinkId):
-    
+    """
+    Handle Customizing a drink from the order page
+
+    Args:
+        drinkId (String): Id of that drink
+
+    Returns:
+        submit page (submit.html) by default
+        cart page (cart.html) if the user decide to add to the cart after customizing
+    """
     # if POST
     if request.method == 'POST':
         if request.form['DrinkButton'] == "Add to Order":
@@ -180,18 +232,38 @@ def submit(drinkId):
 
 @app.route('/friends/')
 def friends():
+    """
+    Rendering Friends page
+
+    Returns:
+        Friends page (friends.html)
+    """
     return render_template('friends.html')
 
 @app.route('/map/')
 def map():
+    """
+    Rendering the map
+    More detail in static/js/map.js
+    Returns:
+        Map page (map.html)
+    """
     return render_template('map.html')
 
-@app.route('/customization/')
-def customization():
-    return render_template('customization.html')
 
 @app.route('/cart/', methods=['POST', 'GET'])
 def cart():
+    """
+    Render and handling multiple form from cart page including 
+    -updating quantity, size
+    -save the cart
+    -remove item from cart
+    -customize an item from the cart
+    
+
+    Returns:
+        cart page (cart.html)
+    """
     if request.method == 'POST':
         updateCart(user_id, request)
         print("Updated quantities and Sizes")
@@ -220,6 +292,11 @@ def cart():
 # CART ROUTING FROM THE ORDER MENU
 @app.route('/addItem', methods = ['POST'])
 def addItem():
+    """
+    Routing, handling for adding an item to cart
+    Returns:
+        cart page (cart.html)
+    """
     drink_id = request.form.get('drink-id')
     addItemToCart(user_id, drink_id)
     return redirect("cart")
@@ -227,6 +304,12 @@ def addItem():
 # REMOVE ITEM FROM CART
 @app.route('/removeItem', methods = ['POST','GET'])
 def removeItem():
+    """
+    Remove an Item from the Cart. Redirect to the cart page
+
+    Returns:
+        cart page (cart.html)
+    """
     
     if request.method == 'POST':
         drink_id = request.form.get('drink-id')
@@ -237,6 +320,12 @@ def removeItem():
 # REMOVE AN ORDER
 @app.route('/removeOrder', methods = ['POST'])
 def removeOrder():
+    """
+    Removing an Order from saved Order page
+
+    Returns:
+        redirect to Saved Order Page.
+    """
     orderId = request.form.get('orderId')
     removeSavedOrder(user_id, orderId)
     return redirect('savedOrders')
@@ -244,6 +333,11 @@ def removeOrder():
 # ADD AN ORDER TO CART
 @app.route('/addOrder', methods = ['POST'])
 def addOrder():
+    """Add an Order to Cart
+
+    Returns:
+        Redirect to cart page
+    """
     orderId = request.form.get('orderId')
     addOrderToCart(user_id, orderId)
     return redirect('cart')
@@ -251,6 +345,17 @@ def addOrder():
 # CUSTOM ORDER PAGE
 @app.route('/savedOrders/cusOrder/<orderId>/', methods=['POST','GET'])
 def cusOrder(orderId):
+    """Custom order page, handling these form:
+    _Remove that Custom order
+    _Customize that Order
+    _Save that order
+
+    Args:
+        orderId (String): id or order
+
+    Returns:
+        Custom Order Page (cusOrder.html)
+    """
     if request.method == 'POST':
         if request.form.get('remove') != None:
             orderId = request.form['orderId']
@@ -280,6 +385,16 @@ def cusOrder(orderId):
  
 @app.route('/savedOrders/cusOrder/<orderId>/custom/<drinkName>', methods=['POST', 'GET'])
 def customFromOrder(orderId, drinkName):
+    """Handling customization of drink from CusOrder Page
+
+    Args:
+        orderId (String): id of order
+        drinkName (String): name of drink
+
+    Returns:
+        custom page (custom.html by default)
+        redirect to CusOrder page
+    """
     
     inventory = db.child('fav_db').child(user_id).child(orderId).child('items').child(drinkName).get().val()
     drinkId = inventory['drink_id']
@@ -314,6 +429,15 @@ def customFromOrder(orderId, drinkName):
  
 @app.route('/cart/custom/<drinkName>', methods=['POST', 'GET'])
 def customFromCart(drinkName):
+    """Handling customize a drink from the cart
+
+    Args:
+        drinkName (String): name of drink
+
+    Returns:
+        custom page (custom.html) by default
+        cart page for redirection after customization.
+    """
     inventory = db.child('fav_db').child(user_id).child('cart').child('items').child(drinkName).get().val()
     drinkId = inventory['drink_id']
     instructions = inventory['instructions']

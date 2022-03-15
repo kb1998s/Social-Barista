@@ -5,14 +5,6 @@ import datetime
 
 # get day type category:
 def categorizeDay(cur):
-    """categorizing Day and return the coresponding tag
-
-    Args:
-        cur (date): current date
-
-    Returns:
-        res (String): day-based tag
-    """
     res = ''
     if cur.weekday() > 4:
         res = "WEEKEND"
@@ -24,14 +16,6 @@ time = dt.now()
 
 # get time-based category
 def CategorizeTime(current):
-    """Categorizing time of the day, and return the corresponding tag
-
-    Args:
-        current (time): current time
-
-    Returns:
-        res (String): time-based tag
-    """
     res = ''
     morningStart = datetime.time(5, 0 ,0)
     morningEnd = datetime.time(11,59,59)
@@ -56,11 +40,6 @@ def CategorizeTime(current):
     return res
 
 def getTimeCategory():
-    """Combining day-based category and time-based category
-
-    Returns:
-        day-time-based tag
-    """
     day = date.today()
     time = dt.now().time()
     day = categorizeDay(day)
@@ -68,11 +47,6 @@ def getTimeCategory():
     return day + "_" + time
 
 def getGreeting():
-    """Generate Greeting for index page based on the time-based tag
-
-    Returns:
-        greeting (string): 
-    """
     cur = getTimeCategory()
     switcher = {
         "WEEKDAY_MORNING": "Good morning!",
@@ -85,3 +59,4 @@ def getGreeting():
     
     return switcher.get(cur, "Hi")
 
+print(getTimeCategory())

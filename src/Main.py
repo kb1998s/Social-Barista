@@ -1,6 +1,5 @@
 from audioop import add
 from flask import Flask, render_template, url_for, request, redirect
-import pyrebase
 from dbInit import config, firebase, auth, db
 from collections import OrderedDict
 
